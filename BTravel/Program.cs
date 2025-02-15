@@ -1,3 +1,6 @@
+using BTravel.DAL;
+using Microsoft.EntityFrameworkCore;
+
 namespace BTravel
 {
     public class Program
@@ -8,6 +11,11 @@ namespace BTravel
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            //*** Add BTravel dbContext
+            var dbConnectionString = builder.Configuration.GetValue<string>("ConnectionStrings:BTravelConnection");
+            builder.Services.AddDbContext<BTravelDbContext>(opt => opt.UseMySql(dbConnectionString, ServerVersion.AutoDetect(dbConnectionString)));
+
 
             var app = builder.Build();
 
