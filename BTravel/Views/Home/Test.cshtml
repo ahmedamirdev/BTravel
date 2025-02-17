@@ -1,0 +1,75 @@
+﻿@{
+    Layout = null; // No default layout
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signature Pad with Fabric.js</title>
+
+    <!-- Import Fabric.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+
+    <style>
+        canvas {
+            border: 2px solid black;
+            width: 100%;
+            max-width: 600px;
+            height: 200px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Sign Below</h2>
+    <canvas id="signatureCanvas" width="600" height="200"></canvas>
+    <br>
+    <button id="clear">Clear</button>
+    <button id="save">Save</button>
+
+    <form id="signatureForm" method="post" action="/Home/SaveSignature">
+        <input type="hidden" name="SignatureData" id="signatureData">
+    </form>
+
+    <script>
+        var canvas = new fabric.Canvas("signatureCanvas", {
+            isDrawingMode: true // Enables free drawing
+        });
+
+        // Set up drawing properties
+        canvas.freeDrawingBrush.color = "black";
+        canvas.freeDrawingBrush.width = 3;
+
+        document.getElementById("clear").addEventListener("click", function () {
+            canvas.clear(); // Clears the signature
+        });
+
+        document.getElementById("save").addEventListener("click", function () {
+            // if (canvas.isEmpty()) {
+            //     alert("Please provide a signature!");
+            //     return;
+            // }
+            // var signatureImage = canvas.toDataURL(); Convert signature to Base64
+            // document.getElementById("signatureData").value = signatureImage;
+            // document.getElementById("signatureForm").submit();
+             var signatureData = canvas.toDataURL(); // Convert to Base64
+            console.log(signatureData);
+        });
+
+
+
+             
+
+
+    </script>
+
+</body>
+</html>
