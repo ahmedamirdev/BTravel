@@ -4,9 +4,9 @@ namespace BTravel.Controllers
 {
     public class ContractsController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Add()
         {
-            return View("~/Views/Dashboard/Contracts/Index.cshtml");
+            return View("~/Views/Dashboard/Contracts/Add.cshtml");
         }
     }
 }
