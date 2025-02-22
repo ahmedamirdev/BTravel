@@ -23,8 +23,4 @@
     <ProjectReference Include="..\BTravel.DAL\BTravel.DAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Dashboard\Contracts\" />
-  </ItemGroup>
-
 </Project>

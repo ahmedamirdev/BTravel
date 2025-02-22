@@ -1,6 +1,8 @@
-﻿@{
+﻿@using BTravel.DAL.Entities
+@{
     ViewData["Title"] = "Home Page";
 }
+@model List<Contract>;
 
 <div class="container-fluid bg-primary py-5 mb-5 hero-header">
     <div class="container py-5">
@@ -17,7 +19,21 @@
     </div>
 </div>
 
+<div> 
 
+    @{
+        foreach (var item in Model)
+        {
+            <div class="position-relative h-100">
+                @item.ContractId -- @item.HotelName
+            </div>
+        }
+
+    }
+
+
+
+</div>
 
 <!-- About Start -->
 <div class="container-xxl py-5">
@@ -30,7 +46,7 @@
             </div>
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
                 <h6 class="section-title bg-white text-start text-primary pe-3">About Us</h6>
-                <h1 class="mb-4">Welcome to <span class="text-primary">Btravelmate</span></h1>
+                <h1 class="mb-4">Welcome to <span class="text-primary">safey</span></h1>
                 <p class="mb-4">Your Gateway to Exceptional Travel Experiences!. At BTravelMate, we redefine the art of travel, seamlessly blending business and leisure to curate unforgettable experiences for you. Whether you're jetting off for a business meeting, seeking a cozy accommodation, or planning a dream vacation, BTravelMate is your trusted companion every step of the way.</p>
                 <p class="mb-4">Your Journey Starts Here: Embark on a journey with BTravelMate and open the door to a world of possibilities. Whether you're a seasoned business traveler or a leisure seeker, let us be your travel mate, guiding you towards unparalleled experiences. Ready to start your adventure? Explore our services now!</p>
                 <div class="row gy-2 gx-4 mb-4">
