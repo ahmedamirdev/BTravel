@@ -1,9 +1,14 @@
 /********** Template CSS **********/
 :root {
-    --primary: #86B817;
+    
+/*    --primary: #86B817;*/
+    --primary: #003468;
     --secondary: #FE8800;
     --light: #F5F5F5;
     --dark: #14141F;
+}
+body {
+    scroll-behavior: smooth;
 }
 
 .fw-medium {
@@ -43,6 +48,7 @@
     font-family: 'Nunito', sans-serif;
     font-weight: 600;
     transition: .5s;
+
 }
 
 .btn.btn-primary,
@@ -116,7 +122,7 @@
     }
 
     .navbar-light .navbar-collapse {
-        margin-top: 15px;
+        margin-top: 10px;
         border-top: 1px solid #DDDDDD;
     }
 
@@ -172,7 +178,7 @@
 
 /*** Hero Header ***/
 .hero-header {
-    background: linear-gradient(rgba(20, 20, 31, .7), rgba(20, 20, 31, .7)), url(../img/bg-hero.jpg);
+    background: linear-gradient(rgba(20, 20, 31), rgba(20, 20, 31,.5)), url(../img/bg-hero.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
