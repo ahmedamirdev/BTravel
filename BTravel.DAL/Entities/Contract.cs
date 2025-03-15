@@ -34,7 +34,7 @@ namespace BTravel.DAL.Entities
 
         public string SignatureUrl { get; set; }
 
-        public int StatusId { get; set; }
+        public int StatusId { get; set; } // Enum 1 = Pending , 2 = Opened , 3 = Signed 
 
         public string HotelName { get; set; }
 
@@ -44,9 +44,19 @@ namespace BTravel.DAL.Entities
 
         public decimal RatePerNight { get; set; }
 
+        public decimal  TaxPerc { get; set; }
+
+        public decimal Total { get; set; }
+
         public int CommonUserId { get; set; }
          
         [ForeignKey("CommonUserId")]
         public CommonUser CommonUser { get; set; }
+
+        public ICollection<ContractRoom> Rooms { get; set; }
+
+        public ICollection<ContractFile> Files { get; set; }
+
+
     }
 }

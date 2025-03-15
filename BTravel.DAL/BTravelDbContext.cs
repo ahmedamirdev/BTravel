@@ -25,6 +25,10 @@ namespace BTravel.DAL
 
         public DbSet<CommonUser> CommonUsers { get; set; }
 
+        public DbSet<ContractRoom> ContractRooms { get; set; }
+
+        public DbSet<ContractFile> ContractFiles { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         
@@ -41,6 +45,24 @@ namespace BTravel.DAL
                 .HasOne(u => u.CommonUser)
                 .WithMany(c => c.Contracts)
                 .HasForeignKey(f => f.CommonUserId);
+
+            modelBuilder.Entity<Entities.ContractRoom>()
+                .HasIndex(i => i.ContractRoomId)
+                .IsUnique();
+
+            modelBuilder.Entity<Entities.ContractRoom>()
+               .HasOne(u => u.Contract)
+               .WithMany(c => c.Rooms)
+               .HasForeignKey(f => f.ContractId);
+
+            modelBuilder.Entity<Entities.ContractFile>()
+            .HasIndex(i => i.ContractFileID)
+            .IsUnique();
+
+            modelBuilder.Entity<Entities.ContractFile>()
+              .HasOne(u => u.Contract)
+              .WithMany(c => c.Files)
+              .HasForeignKey(f => f.ContractId);
         }
     }
 

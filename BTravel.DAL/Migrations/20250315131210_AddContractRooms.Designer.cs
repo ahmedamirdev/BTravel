@@ -4,6 +4,7 @@ using BTravel.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BTravel.DAL.Migrations
 {
     [DbContext(typeof(BTravelDbContext))]
-    partial class BTravelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250315131210_AddContractRooms")]
+    partial class AddContractRooms
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,12 +180,6 @@ namespace BTravel.DAL.Migrations
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TaxPerc")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("decimal(65,30)");
-
                     b.HasKey("ContractId");
 
                     b.HasIndex("CommonUserId");
@@ -191,49 +188,6 @@ namespace BTravel.DAL.Migrations
                         .IsUnique();
 
                     b.ToTable("Contracts");
-                });
-
-            modelBuilder.Entity("BTravel.DAL.Entities.ContractFile", b =>
-                {
-                    b.Property<int>("ContractFileID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ContractFileID"));
-
-                    b.Property<int>("ContractId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DeletedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("DeletedBy")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FileURL")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit(1)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit(1)");
-
-                    b.HasKey("ContractFileID");
-
-                    b.HasIndex("ContractFileID")
-                        .IsUnique();
-
-                    b.HasIndex("ContractId");
-
-                    b.ToTable("ContractFiles");
                 });
 
             modelBuilder.Entity("BTravel.DAL.Entities.ContractRoom", b =>
@@ -313,17 +267,6 @@ namespace BTravel.DAL.Migrations
                     b.Navigation("CommonUser");
                 });
 
-            modelBuilder.Entity("BTravel.DAL.Entities.ContractFile", b =>
-                {
-                    b.HasOne("BTravel.DAL.Entities.Contract", "Contract")
-                        .WithMany("Files")
-                        .HasForeignKey("ContractId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Contract");
-                });
-
             modelBuilder.Entity("BTravel.DAL.Entities.ContractRoom", b =>
                 {
                     b.HasOne("BTravel.DAL.Entities.Contract", "Contract")
@@ -342,8 +285,6 @@ namespace BTravel.DAL.Migrations
 
             modelBuilder.Entity("BTravel.DAL.Entities.Contract", b =>
                 {
-                    b.Navigation("Files");
-
                     b.Navigation("Rooms");
                 });
 #pragma warning restore 612, 618
