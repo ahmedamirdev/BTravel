@@ -61,5 +61,7 @@ namespace BTravel.DAL.Entities
 
         public ICollection<Contract> Contracts { get; set; }
 
+        public int RoleId { get; set; } // 1 = Admin , 2 = client
+
     }
 }
