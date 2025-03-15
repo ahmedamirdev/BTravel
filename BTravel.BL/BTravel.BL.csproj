@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\CommonUser\Commands\" />
+    <Folder Include="Services\CommonUser\Queries\" />
+    <Folder Include="Services\Contracts\Commands\" />
+    <Folder Include="Services\Contracts\Queries\" />
+  </ItemGroup>
+
+</Project>
