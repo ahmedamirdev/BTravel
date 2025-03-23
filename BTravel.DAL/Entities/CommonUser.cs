@@ -27,13 +27,13 @@ namespace BTravel.DAL.Entities
 
         public int CreatedBy { get; set; }
 
-        public DateTime LastModifiedAt { get; set; }
+        public DateTime? LastModifiedAt { get; set; }
 
-        public int LastModifiedBy { get; set; }
+        public int? LastModifiedBy { get; set; }
 
-        public DateTime DeletedAt { get; set; }
+        public DateTime? DeletedAt { get; set; }
 
-        public int DeletedBy { get; set; }
+        public int? DeletedBy { get; set; }
 
         public bool IsDeleted { get; set; }
 
@@ -41,23 +41,23 @@ namespace BTravel.DAL.Entities
 
         public string Password { get; set; }
 
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
 
-        public string CompanyName { get; set; }
+        public string? CompanyName { get; set; }
 
-        public string CardNumber { get; set; }
+        public string? CardNumber { get; set; }
 
-        public DateTime CardExpDate { get; set; }
+        public DateTime? CardExpDate { get; set; }
 
-        public string CardCVC { get; set; }
+        public string? CardCVC { get; set; }
 
-        public string NameOnCreditCard { get; set; }
+        public string? NameOnCreditCard { get; set; }
 
-        public string BillingAddress { get; set; }
+        public string? BillingAddress { get; set; }
 
-        public string PostalCode { get; set; }
+        public string? PostalCode { get; set; }
 
-        public string DefaultSignatureUrl { get; set; }
+        public string? DefaultSignatureUrl { get; set; }
 
         public ICollection<Contract> Contracts { get; set; }
 

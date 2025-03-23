@@ -4,6 +4,7 @@ using BTravel.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BTravel.DAL.Migrations
 {
     [DbContext(typeof(BTravelDbContext))]
-    partial class BTravelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250323185541_updateCommonUser")]
+    partial class updateCommonUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,10 +57,10 @@ namespace BTravel.DAL.Migrations
                     b.Property<string>("DefaultSignatureUrl")
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime?>("DeletedAt")
+                    b.Property<DateTime>("DeletedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int?>("DeletedBy")
+                    b.Property<int>("DeletedBy")
                         .HasColumnType("int");
 
                     b.Property<string>("FullName")
@@ -76,10 +79,10 @@ namespace BTravel.DAL.Migrations
                     b.Property<bool>("IsPrimaryMailVerified")
                         .HasColumnType("bit(1)");
 
-                    b.Property<DateTime?>("LastModifiedAt")
+                    b.Property<DateTime>("LastModifiedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int?>("LastModifiedBy")
+                    b.Property<int>("LastModifiedBy")
                         .HasColumnType("int");
 
                     b.Property<string>("NameOnCreditCard")

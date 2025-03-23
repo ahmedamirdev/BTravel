@@ -25,7 +25,7 @@ namespace BTravel.CommonDefinitions.Requests
         public long LanguageId { get; set; }
         public string Language { get; set; }
 
-        public long UserID { get; set; }
+        public int UserID { get; set; }
 
         public string Search { get; set; }
     }
