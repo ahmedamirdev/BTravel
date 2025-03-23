@@ -15,6 +15,7 @@ namespace BTravel
             //*** Add BTravel dbContext
             var dbConnectionString = builder.Configuration.GetValue<string>("ConnectionStrings:BTravelConnection");
             builder.Services.AddDbContext<BTravelDbContext>(opt => opt.UseMySql(dbConnectionString, ServerVersion.AutoDetect(dbConnectionString)));
+           
 
 
             var app = builder.Build();
