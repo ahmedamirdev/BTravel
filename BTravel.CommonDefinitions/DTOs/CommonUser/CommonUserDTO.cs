@@ -8,9 +8,10 @@ namespace BTravel.CommonDefinitions.DTOs.CommonUser
 {
     public class CommonUserDTO
     {
-        public int id { get; set; }
-        public string Name { get; set; }
-
+        public int CommonUserId { get; set; }
+        public string FullName { get; set; }
+        public string PhoneNumber { get; set; }
+        public string PrimaryMail { get; set; }
 
     }
 }

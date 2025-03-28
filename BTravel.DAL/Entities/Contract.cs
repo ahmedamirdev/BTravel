@@ -53,10 +53,8 @@ namespace BTravel.DAL.Entities
         [ForeignKey("CommonUserId")]
         public CommonUser CommonUser { get; set; }
 
-        public ICollection<ContractRoom> Rooms { get; set; }
+        public virtual ICollection<ContractRoom> Rooms { get; set; }
 
-        public ICollection<ContractFile> Files { get; set; }
-
-
+        public virtual ICollection<ContractFile> Files { get; set; }
     }
 }

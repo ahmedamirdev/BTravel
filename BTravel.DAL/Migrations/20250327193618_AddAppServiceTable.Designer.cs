@@ -4,6 +4,7 @@ using BTravel.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BTravel.DAL.Migrations
 {
     [DbContext(typeof(BTravelDbContext))]
-    partial class BTravelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250327193618_AddAppServiceTable")]
+    partial class AddAppServiceTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -370,41 +373,6 @@ namespace BTravel.DAL.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("BTravel.DAL.Entities.RoleAppService", b =>
-                {
-                    b.Property<int>("RoleAppServiceId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("RoleAppServiceId"));
-
-                    b.Property<int>("AppServiceId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit(1)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit(1)");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RoleAppServiceId");
-
-                    b.HasIndex("AppServiceId");
-
-                    b.HasIndex("RoleAppServiceId")
-                        .IsUnique();
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("RoleAppServices");
-                });
-
             modelBuilder.Entity("BTravel.DAL.Entities.CommonUser", b =>
                 {
                     b.HasOne("BTravel.DAL.Entities.Role", "Role")
@@ -449,30 +417,6 @@ namespace BTravel.DAL.Migrations
                     b.Navigation("Contract");
                 });
 
-            modelBuilder.Entity("BTravel.DAL.Entities.RoleAppService", b =>
-                {
-                    b.HasOne("BTravel.DAL.Entities.AppService", "AppService")
-                        .WithMany("RoleAppServices")
-                        .HasForeignKey("AppServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BTravel.DAL.Entities.Role", "Role")
-                        .WithMany("RoleAppServices")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppService");
-
-                    b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("BTravel.DAL.Entities.AppService", b =>
-                {
-                    b.Navigation("RoleAppServices");
-                });
-
             modelBuilder.Entity("BTravel.DAL.Entities.CommonUser", b =>
                 {
                     b.Navigation("Contracts");
@@ -488,8 +432,6 @@ namespace BTravel.DAL.Migrations
             modelBuilder.Entity("BTravel.DAL.Entities.Role", b =>
                 {
                     b.Navigation("CommonUsers");
-
-                    b.Navigation("RoleAppServices");
                 });
 #pragma warning restore 612, 618
         }

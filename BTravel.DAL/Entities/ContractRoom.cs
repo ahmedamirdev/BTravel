@@ -46,8 +46,6 @@ namespace BTravel.DAL.Entities
         public int ContractId { get; set; }
 
         [ForeignKey("ContractId")]
-        public Contract Contract { get; set; }
-
-
+        public virtual Contract Contract { get; set; }
     }
 }

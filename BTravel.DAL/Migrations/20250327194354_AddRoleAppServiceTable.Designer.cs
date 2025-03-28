@@ -4,6 +4,7 @@ using BTravel.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BTravel.DAL.Migrations
 {
     [DbContext(typeof(BTravelDbContext))]
-    partial class BTravelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250327194354_AddRoleAppServiceTable")]
+    partial class AddRoleAppServiceTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -402,7 +405,7 @@ namespace BTravel.DAL.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleAppServices");
+                    b.ToTable("RoleAppService");
                 });
 
             modelBuilder.Entity("BTravel.DAL.Entities.CommonUser", b =>

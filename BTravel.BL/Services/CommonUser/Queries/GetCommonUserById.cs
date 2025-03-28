@@ -29,8 +29,8 @@ namespace BTravel.BL.Services.CommonUser.Queries
             var query = _baseRequest.Context.CommonUsers.Where(c => c.IsDeleted != true && c.CommonUserId == id)
                 .Select(c => new CommonUserDTO
                 {
-                    id =c.CommonUserId,
-                    Name = c.FullName
+                    CommonUserId =c.CommonUserId,
+                    FullName = c.FullName
 
                 }).FirstOrDefault();
 

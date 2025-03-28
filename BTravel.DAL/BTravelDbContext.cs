@@ -29,16 +29,32 @@ namespace BTravel.DAL
 
         public DbSet<ContractFile> ContractFiles { get; set; }
 
+        public DbSet<Role> Roles { get; set; }
+
+        public DbSet<AppService> AppServices { get; set; }
+
+        public DbSet<RoleAppService> RoleAppServices { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-        
-            modelBuilder.Entity<Entities.Contract>()
-                //.ToTable("commonUser")
-                .HasIndex(u => u.ContractId)
-                .IsUnique();
+            #region CommonUser
+
             modelBuilder.Entity<CommonUser>()
                 //.ToTable("commonUser")
                 .HasIndex(u => u.CommonUserId)
+                .IsUnique();
+
+            modelBuilder.Entity<CommonUser>()
+              .HasOne(u => u.Role)
+              .WithMany(c => c.CommonUsers)
+              .HasForeignKey(f => f.RoleId);
+
+            #endregion
+
+            #region Contract
+
+            modelBuilder.Entity<Entities.Contract>()
+                .HasIndex(u => u.ContractId)
                 .IsUnique();
 
             modelBuilder.Entity<Entities.Contract>()
@@ -46,25 +62,67 @@ namespace BTravel.DAL
                 .WithMany(c => c.Contracts)
                 .HasForeignKey(f => f.CommonUserId);
 
-            modelBuilder.Entity<Entities.ContractRoom>()
+            #endregion
+
+            #region ContractFile
+
+            modelBuilder.Entity<ContractFile>()
+            .HasIndex(i => i.ContractFileID)
+            .IsUnique();
+
+            modelBuilder.Entity<ContractFile>()
+              .HasOne(u => u.Contract)
+              .WithMany(c => c.Files)
+              .HasForeignKey(f => f.ContractId);
+
+            #endregion
+
+            #region ContractRoom
+
+            modelBuilder.Entity<ContractRoom>()
                 .HasIndex(i => i.ContractRoomId)
                 .IsUnique();
 
-            modelBuilder.Entity<Entities.ContractRoom>()
+            modelBuilder.Entity<ContractRoom>()
                .HasOne(u => u.Contract)
                .WithMany(c => c.Rooms)
                .HasForeignKey(f => f.ContractId);
 
-            modelBuilder.Entity<Entities.ContractFile>()
-            .HasIndex(i => i.ContractFileID)
-            .IsUnique();
+            #endregion
 
-            modelBuilder.Entity<Entities.ContractFile>()
-              .HasOne(u => u.Contract)
-              .WithMany(c => c.Files)
-              .HasForeignKey(f => f.ContractId);
+            #region Role
+
+            modelBuilder.Entity<Role>()
+                .HasIndex(u => u.RoleId)
+                .IsUnique();
+
+            #endregion
+
+            #region AppService
+
+            modelBuilder.Entity<AppService>()
+                .HasIndex(u => u.AppServiceId)
+                .IsUnique();
+
+            #endregion
+
+            #region RoleAppService
+
+            modelBuilder.Entity<RoleAppService>()
+                .HasIndex(u => u.RoleAppServiceId)
+                .IsUnique();
+
+            modelBuilder.Entity<RoleAppService>()
+               .HasOne(u => u.Role)
+               .WithMany(c => c.RoleAppServices)
+               .HasForeignKey(f => f.RoleId);
+
+            modelBuilder.Entity<RoleAppService>()
+               .HasOne(u => u.AppService)
+               .WithMany(c => c.RoleAppServices)
+               .HasForeignKey(f => f.AppServiceId);
+
+            #endregion
         }
     }
-
-    
 }

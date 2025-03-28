@@ -59,9 +59,11 @@ namespace BTravel.DAL.Entities
 
         public string? DefaultSignatureUrl { get; set; }
 
-        public ICollection<Contract> Contracts { get; set; }
+        public virtual ICollection<Contract> Contracts { get; set; }
 
         public int RoleId { get; set; } // 1 = Admin , 2 = client
 
+        [ForeignKey("RoleId")]
+        public virtual Role Role { get; set; }
     }
 }

@@ -11,6 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BTravel.CommonDefinitions\BTravel.CommonDefinitions.csproj" />
     <ProjectReference Include="..\BTravel.DAL\BTravel.DAL.csproj" />
   </ItemGroup>

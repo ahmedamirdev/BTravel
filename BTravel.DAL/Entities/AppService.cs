@@ -8,29 +8,26 @@ using System.Threading.Tasks;
 
 namespace BTravel.DAL.Entities
 {
-    public class ContractFile
+    public class AppService
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ContractFileID { get; set; }
+        public int AppServiceId { get; set; }
 
         public DateTime CreatedAt { get; set; }
-
-        public int CreatedBy { get; set; }
-
-        public DateTime DeletedAt { get; set; }
-
-        public int DeletedBy { get; set; }
 
         public bool IsDeleted { get; set; }
 
         public bool IsActive { get; set; }
 
-        public int ContractId { get; set; }
+        public string Name { get; set; }
 
-        [ForeignKey("ContractId")]
-        public virtual Contract Contract { get; set; }
+        public string ViewName { get; set; }
 
-        public string FileURL { get; set; }
+        public string Description { get; set; }
+
+        public string ClassName { get; set; }
+
+        public virtual ICollection<RoleAppService> RoleAppServices { get; set; }  
     }
 }

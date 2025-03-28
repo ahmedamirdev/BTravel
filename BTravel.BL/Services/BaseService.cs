@@ -53,8 +53,7 @@ namespace BTravel.BL.Services
             return query;
         }
 
-
-        public static bool CheckRoleAccessability(long roleID, string serviceName, BTravelDbContext context = null, string connectionString = null)
+        public static bool CheckRoleAccessability(int roleID, string serviceName, BTravelDbContext context = null, string connectionString = null)
         {
             if (context == null)
                 context = new BTravelDbContext(GetDBContextConnectionOptions(connectionString));
@@ -65,14 +64,13 @@ namespace BTravel.BL.Services
             if (roleID == (long)ERole.Admin)
                 return true;
 
-            //var service = context.AppServices.FirstOrDefault(c => !c.IsDeleted.Value && c.Name.ToLower() == serviceName.ToLower());
-            //if (service == null)
-            //    return false;
+            var service = context.AppServices.FirstOrDefault(c => !c.IsDeleted && c.Name.ToLower() == serviceName.ToLower());
+            if (service == null)
+                return false;
 
-            var canAccess = true;
+            var canAccess = false;
 
-            //if (!service.AllowAnonymous.Value)
-            //    canAccess = context.AppRoleServices.Any(c => c.RoleId == roleID && c.AppServiceId == service.Id && c.IsActive && !c.IsDeleted.Value);
+            canAccess = context.RoleAppServices.Any(c => c.RoleId == roleID && c.AppServiceId == service.AppServiceId && c.IsActive && !c.IsDeleted);
 
             return canAccess;
         }
