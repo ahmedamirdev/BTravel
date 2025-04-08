@@ -26,7 +26,7 @@ namespace BTravel
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                             .AddCookie(options =>
                             {
-                                options.LoginPath = "/Home/TestLogin"; // Redirect to login if not authenticated
+                                options.LoginPath = "/Dashboard/Login"; // Redirect to login if not authenticated
                                 options.AccessDeniedPath = "/Account/AccessDenied"; // Redirect if access denied
                             });
 
@@ -69,6 +69,7 @@ namespace BTravel
 
             builder.Services.AddMvc().AddSessionStateTempDataProvider();
 
+            builder.Services.AddControllers();
 
 
             //***************************************** Build the WebApplication *****************************************//
@@ -94,9 +95,12 @@ namespace BTravel
 
             app.UseRouting();
 
+            
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+           // app.UseEndpoints(e => e.MapControllers());
 
             //*** Add Custom Middleware
             //app.UseMiddleware<MyCustomMiddleware>();

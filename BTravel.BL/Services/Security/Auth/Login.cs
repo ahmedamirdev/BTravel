@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using BTravel.BL.Services.CommonUser.Queries;
 using BTravel.CommonDefinitions.DTOs.Auth;
 using BTravel.CommonDefinitions.DTOs.CommonUser;
 using BTravel.CommonDefinitions.Requests;
@@ -28,78 +29,48 @@ namespace BTravel.BL.Services.Security.Auth
             response.Success = false;
             response.StatusCode = System.Net.HttpStatusCode.BadRequest;
 
-            ////*** Check data is not empty
-            //if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Password))
-            //{
-            //    response.Message = "Email or Password is empty";
-            //    return response;
-            //}
-            ////*** Check Email
-            //var currCommonUser = _request.Context.CommonUsers.FirstOrDefault(u => u.PrimaryEmail == model.Email && !u.IsDeleted.Value);
-            //if (currCommonUser == null)
-            //{
-            //    response.Message = "Invalid Email or Password";
-            //    return response;
-            //}
-            //else
-            //{
-            //    //*** Check Password
-            //    PasswordHasher<DAL.DB.CommonUser> hasher = new PasswordHasher<DAL.DB.CommonUser>();
-            //    var compareHash = hasher.VerifyHashedPassword(currCommonUser, currCommonUser.HashedPassword, model.Password);
-            //    if (compareHash == PasswordVerificationResult.Failed)
-            //    {
-            //        response.Message = "Invalid Email or Password";
-            //        return response;
-            //    }
+            //*** Check data is not empty
+            if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Password))
+            {
+                response.Message = "Email or Password is empty";
+                return response;
+            }
+            //*** Check Email
+            var currCommonUser = _request.Context.CommonUsers.FirstOrDefault(u => u.PrimaryMail == model.Email && !u.IsDeleted);
+            if (currCommonUser == null)
+            {
+                response.Message = "Invalid Email or Password";
+                return response;
+            }
+            else
+            {
+                //*** Check Password
+                PasswordHasher<DAL.Entities.CommonUser> hasher = new PasswordHasher<DAL.Entities.CommonUser>();
+                var compareHash = hasher.VerifyHashedPassword(currCommonUser, currCommonUser.Password, model.Password);
+                if (compareHash == PasswordVerificationResult.Failed)
+                {
+                    response.Message = "Invalid Email or Password";
+                    return response;
+                }
 
-            //    if (currCommonUser.IsActive.Value)
-            //    {
-            //        //*** UnSuspend User if suspended
-            //        if (currCommonUser.IsSuspended.Value)
-            //        {
-            //            var request = new BaseRequest
-            //            {
-            //                Context = _request.Context,
-            //            };
+                if (currCommonUser.IsActive)
+                {
+                    //*** Update LastLoginAt
+                    currCommonUser.LastLoginAt = DateTime.UtcNow;
 
-            //            UnSuspendUser query = new UnSuspendUser(request);
-            //            var UnSuspendUserResponse = query.UnSuspend(currCommonUser.CommonUserId);
-            //        }
+                    _request.Context.SaveChanges();
 
-            //        //*** Update LastLoginAt
-            //        currCommonUser.LastLoginAt = DateTime.UtcNow;
-
-            //        //*** Update FCM Token
-            //        currCommonUser.FcmToken = model.FcmToken;
-
-            //        currCommonUser.LastModifiedAt = DateTime.UtcNow;
-
-            //        _request.Context.SaveChanges();
-
-            //        response.Success = true;
-            //        response.Message = "Login Succeeded";
-            //        response.StatusCode = HttpStatusCode.OK;
-            //        response.Data = new LoginResponseDTO
-            //        {
-            //            Token = new TokenManager(_request).CreateJwtToken(currCommonUser),
-
-            //            User = new GetUserById(_request).GetById(currCommonUser.CommonUserId).Data,
-            //        };
-            //    }
-            //    else //*** IsActive = False
-            //    {
-            //        if (currCommonUser.LastLoginAt.HasValue) //*** Not First Login
-            //        {
-            //            response.Message = "User is not Active. Please contact support via support@finds.com";
-            //            return response;
-            //        }
-            //        else //*** First Login and user didn't activate his account
-            //        {
-            //            response.Message = "Login Failed. Please verify your email";
-            //            return response;
-            //        }
-            //    }
-            //}
+                    response.Success = true;
+                    response.Message = "Login Succeeded";
+                    response.StatusCode = HttpStatusCode.OK;
+                    response.Data = new GetCommonUserById(_request).GetById(currCommonUser.CommonUserId).Data;
+                }
+                else //*** IsActive = False
+                {
+                    response.Message = "User is not Active. Please contact support";
+                    return response;
+                }
+            }
 
             return response;
         }

@@ -4,11 +4,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using BTravel.BL.Services.Security.Encryption;
 using BTravel.CommonDefinitions.DTOs.CommonUser;
 using BTravel.CommonDefinitions.Enums;
 using BTravel.CommonDefinitions.Requests;
 using BTravel.CommonDefinitions.Responses;
 using BTravel.DAL.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace BTravel.BL.Services.CommonUser.Commands
 {
@@ -21,7 +23,7 @@ namespace BTravel.BL.Services.CommonUser.Commands
             _request = request;
         }
 
-        public BaseResponse<int> Add(AddCommonUserDTO model)
+        public BaseResponse<int> Add(CommonUserAddDTO model)
         {
             var response = new BaseResponse<int>();
             response.Success = false;
@@ -30,15 +32,14 @@ namespace BTravel.BL.Services.CommonUser.Commands
             var isPrimaryEmailExist = _request.Context.CommonUsers.Any(c => c.PrimaryMail.ToLower() == model.PrimaryMail.ToLower() && !c.IsDeleted);
             if (isPrimaryEmailExist)
             {
-                response.Message = "Primary Email Is Already Exist ";
+                response.Message = "Primary Email Is Already Exist";
                 return response;
             }
-
 
             var isPhoneNumberExist = _request.Context.CommonUsers.Any(c => c.PhoneNumber.ToLower() == model.PhoneNumber.ToLower() && !c.IsDeleted);
             if (isPrimaryEmailExist)
             {
-                response.Message = "Phone Number Is Already Exist ";
+                response.Message = "Phone Number Is Already Exist";
                 return response;
             }
 
@@ -49,6 +50,9 @@ namespace BTravel.BL.Services.CommonUser.Commands
                 return response;
             }
 
+            PasswordHasher<DAL.Entities.CommonUser> hasher = new PasswordHasher<DAL.Entities.CommonUser>();
+            var hashResult = hasher.HashPassword(new DAL.Entities.CommonUser(), model.Password);
+
             var newCommonUser = new DAL.Entities.CommonUser();
 
             newCommonUser.FullName = model.FullName;
@@ -57,23 +61,30 @@ namespace BTravel.BL.Services.CommonUser.Commands
             newCommonUser.IsPrimaryMailVerified = true;
             newCommonUser.CreatedAt = DateTime.UtcNow;
             newCommonUser.CreatedBy = _request.UserID;
-            newCommonUser.Password = model.Password;
+            newCommonUser.Password = hashResult;
             newCommonUser.IsActive = true;
             newCommonUser.IsDeleted = false;
             newCommonUser.RoleId = model.RoleId;
+
+            newCommonUser.CompanyName = model.CompanyName;
+            newCommonUser.NameOnCreditCard = AESEncryptionHelper.Encrypt(model.NameOnCreditCard);
+            newCommonUser.CardNumber = AESEncryptionHelper.Encrypt(model.CardNumber);
+            newCommonUser.CardCVC = AESEncryptionHelper.Encrypt(model.CardCVC);
+            newCommonUser.CardExpDate = AESEncryptionHelper.Encrypt(model.CardExpDate);
+            newCommonUser.BillingAddress = model.BillingAddress;
+            newCommonUser.PostalCode = model.PostalCode;
+
 
             _request.Context.CommonUsers.Add(newCommonUser);
             _request.Context.SaveChanges();
 
             response.Data = newCommonUser.CommonUserId;
 
-            response.Message = "New Common User Added Successfully ";
+            response.Message = "New Common User Added Successfully";
             response.Success = true;
             response.StatusCode = System.Net.HttpStatusCode.OK;
 
             return response;
         }
-
-
     }
 }

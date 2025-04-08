@@ -4,13 +4,14 @@
 
 <style>
 	/* input:invalid {
-			border: 2px solid red;
-		} */
+						border: 2px solid red;
+					} */
 
 	.invalid-input {
 		border: 2px solid red !important;
 	}
 </style>
+
 
 <div class="container">
 	<div class="page-inner">
@@ -105,125 +106,21 @@
 							</div>
 						</div>
 						<div class="card-header">
-							<div class="card-title">Customer Details (New Customer)</div>
+							<div class="card-title">Customer Details</div>
 						</div>
 						<div class="card-body">
 							<div class="row">
 								<div class="col-md-6 col-lg-6">
 									<div class="form-group">
-										<label style="font-weight:bold">Full Name</label>
+										<label style="font-weight:bold">Search for Cusomters</label>
 										<div class="input-icon">
 											<span class="input-icon-addon">
 												<i class="fas fa-user"></i>
 											</span>
-											<input asp-for="CommonUserAddDTO.FullName" class="form-control" type="text" required />
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Company Name</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-user"></i>
-											</span>
-											<input asp-for="CommonUserAddDTO.CompanyName" class="form-control" type="text" required />
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Email</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-at"></i>
-											</span>
-											<input asp-for="CommonUserAddDTO.PrimaryMail" class="form-control" type="email" required />
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Phone Number</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-phone"></i>
-											</span>
-											<input asp-for="CommonUserAddDTO.PhoneNumber" class="form-control" type="text" required />
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Name on Credit Card</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-id-card"></i>
-											</span>
-											<input asp-for="CommonUserAddDTO.NameOnCreditCard" class="form-control" type="text" required />
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Credit Card No.</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-credit-card"></i>
-											</span>
-											<input asp-for="CommonUserAddDTO.CardNumber" class="form-control" type="text" required />
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Exp. Date</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-calendar-alt"></i>
-											</span>
-											<input asp-for="CommonUserAddDTO.CardExpDate" type="date" class="form-control" required />
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">CVC. Code</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-credit-card"></i>
-											</span>
-											<input asp-for="CommonUserAddDTO.CardCVC" class="form-control" type="text" required />
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Billing Address</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-map-marker-alt"></i>
-											</span>
-											<input asp-for="CommonUserAddDTO.BillingAddress" class="form-control" type="text" required />
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Postal Code</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-info"></i>
-											</span>
-											<input asp-for="CommonUserAddDTO.PostalCode" class="form-control" type="text" required />
+											<select id="CommonUserId" style="width: 200px;">
+												<option value="">Search for a Customer</option>
+											</select>
+											@* <input asp-for="CommonUserAddDTO.FullName" class="form-control" type="text" required /> *@
 										</div>
 									</div>
 								</div>
@@ -272,7 +169,6 @@
 	</div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 	let roomIndex = 0;
 
@@ -322,5 +218,29 @@
 		if (!isValid) {
 			event.preventDefault(); // Stop form submission if there are invalid fields
 		}
+	});
+</script>
+
+<script>
+	   $(document).ready(function() {
+	  $('#CommonUserId').select2({
+		placeholder: "Search for a Customer",
+		ajax: {
+		  url: '/api/CommonUsers/Search', // The API URL where your fruits are fetched from
+		  dataType: 'json',
+		  delay: 250, // Delay in milliseconds to avoid hitting the server too often
+		  data: function (params) {
+			return {
+			  term: params.term // The search term
+			};
+		  },
+		  processResults: function (data) {
+			return {
+			  results: data // The returned data should be in {id, text} format for Select2
+			};
+		  },
+		  cache: true // Cache the results for future searches
+		}
+	  });
 	});
 </script>

@@ -14,16 +14,21 @@ using BTravel.BL.Services.Security.Auth;
 using BTravel.BL.Services.Security.Encryption;
 using BTravel.BL.Services.Mail;
 using System.Xml.Linq;
+using BTravel.CommonDefinitions.Requests;
+using BTravel.DAL;
+using BTravel.CommonDefinitions.DTOs.Auth;
 
 namespace BTravel.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly BTravelDbContext _dbContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, BTravelDbContext dbcontext)
         {
             _logger = logger;
+            _dbContext = dbcontext;
         }
 
         public IActionResult Index()
@@ -67,6 +72,7 @@ namespace BTravel.Controllers
             int UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID"));
 
 
+
             //string originalText = "123-456-789 ENG&1";
             //Console.WriteLine("Original Text: " + originalText);
 
@@ -91,33 +97,44 @@ namespace BTravel.Controllers
         {
             //await HttpContext.SignOutAsync();
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("MyHomeView", "Home");
+            return RedirectToAction("Login", "Home");
         }
 
         [HttpGet]
-        public IActionResult TestLogin()
+        public IActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> TestLoginPost()
+        public async Task<IActionResult> LoginPost(LoginDTO model)
         {
-            var claims = new[]
+            var request = new BaseRequest();
+            request.Context = _dbContext;
+
+            var query = new Login(request);
+            var response = query.CheckCredentials(model);
+
+            if (response.Success)
             {
-                new Claim("Email", "ahmed_amirr@hotmail.com"),
-                new Claim("UserID", "12"),
-                new Claim("RoleID", "134"),
-                //new Claim("JWT", token)
-            };
+                var claims = new[]
+                {
+                    new Claim("UserID", response.Data.CommonUserId.ToString()),
+                    new Claim("RoleID", response.Data.RoleId.ToString())
+                };
 
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var authProperties = new AuthenticationProperties { AllowRefresh = true };
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var authProperties = new AuthenticationProperties { AllowRefresh = true };
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-
-            return RedirectToAction("MyHomeView", "Home"); // Redirect to secure page
+                return RedirectToAction("MyHomeView", "Home"); // Redirect to secure page
+            }
+            else
+            {
+                ViewBag["ErrorMessage"] = "Invalid Email or Password";
+                return View();
+            }
         }
 
         //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

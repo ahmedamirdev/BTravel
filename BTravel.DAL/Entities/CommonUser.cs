@@ -47,7 +47,7 @@ namespace BTravel.DAL.Entities
 
         public string? CardNumber { get; set; }
 
-        public DateTime? CardExpDate { get; set; }
+        public string? CardExpDate { get; set; }
 
         public string? CardCVC { get; set; }
 
@@ -65,5 +65,6 @@ namespace BTravel.DAL.Entities
 
         [ForeignKey("RoleId")]
         public virtual Role Role { get; set; }
+        public DateTime? LastLoginAt { get; set; }
     }
 }
