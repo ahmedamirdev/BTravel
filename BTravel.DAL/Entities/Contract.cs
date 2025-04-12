@@ -30,9 +30,9 @@ namespace BTravel.DAL.Entities
 
         public bool IsActive { get; set; }
 
-        public DateTime SignedAt { get; set; }
+        public DateTime? SignedAt { get; set; }
 
-        public string SignatureUrl { get; set; }
+        public string? SignatureUrl { get; set; }
 
         public int StatusId { get; set; } // Enum 1 = Pending , 2 = Opened , 3 = Signed 
 
@@ -42,11 +42,14 @@ namespace BTravel.DAL.Entities
 
         public int NoOfNights { get; set; }
 
+        [Column(TypeName = "decimal(65,2)")]
         public decimal RatePerNight { get; set; }
-
+        [Column(TypeName = "decimal(65,2)")]
         public decimal  TaxPerc { get; set; }
-
+        [Column(TypeName = "decimal(65,2)")]
         public decimal Total { get; set; }
+        [Column(TypeName = "decimal(65,2)")]
+        public decimal SubTotal { get; set; }
 
         public int CommonUserId { get; set; }
          

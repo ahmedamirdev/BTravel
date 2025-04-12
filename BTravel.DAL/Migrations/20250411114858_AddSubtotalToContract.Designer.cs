@@ -4,6 +4,7 @@ using BTravel.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BTravel.DAL.Migrations
 {
     [DbContext(typeof(BTravelDbContext))]
-    partial class BTravelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250411114858_AddSubtotalToContract")]
+    partial class AddSubtotalToContract
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -203,25 +206,26 @@ namespace BTravel.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("RatePerNight")
-                        .HasColumnType("decimal(65,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("SignatureUrl")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime?>("SignedAt")
+                    b.Property<DateTime>("SignedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("SubTotal")
-                        .HasColumnType("decimal(65,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<decimal>("TaxPerc")
-                        .HasColumnType("decimal(65,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<decimal>("Total")
-                        .HasColumnType("decimal(65,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.HasKey("ContractId");
 

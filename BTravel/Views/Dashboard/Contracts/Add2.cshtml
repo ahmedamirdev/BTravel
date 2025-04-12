@@ -2,16 +2,32 @@
 @using BTravel.DAL.Entities;
 @model ContractAddDTO
 
-<style>
-	/* input:invalid {
-						border: 2px solid red;
-					} */
+@{
+	var successMessage = TempData["SuccessMessage"] as string;
+	var errorMessage = TempData["ErrorMessage"] as string;
+}
+@if (!string.IsNullOrEmpty(successMessage))
+{
+	<script>
+		Swal.fire({
+			icon: 'success',
+			title: 'Success!',
+			text: '@successMessage'
+		});
 
-	.invalid-input {
-		border: 2px solid red !important;
-	}
-</style>
 
+	</script>
+}
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+	<script>
+		Swal.fire({
+			icon: 'error',
+			title: 'Error!',
+			text: '@errorMessage'
+		});
+	</script>
+}
 
 <div class="container">
 	<div class="page-inner">
@@ -39,7 +55,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12">
-				<form id="addForm" asp-action="AddContract" asp-controller="Contracts" method="post" novalidate>
+				<form id="addForm" asp-action="Add2" asp-controller="Contracts" method="post" novalidate>
 					<div class="card">
 						<div class="card-header">
 							<div class="card-title">Hotel Details</div>
@@ -110,15 +126,15 @@
 						</div>
 						<div class="card-body">
 							<div class="row">
-								<div class="col-md-6 col-lg-6">
+								<div class="col-md-12 col-lg-12">
 									<div class="form-group">
 										<label style="font-weight:bold">Search for Cusomters</label>
 										<div class="input-icon">
 											<span class="input-icon-addon">
 												<i class="fas fa-user"></i>
 											</span>
-											<select id="CommonUserId" style="width: 200px;">
-												<option value="">Search for a Customer</option>
+											<select id="CommonUserId" name="CommonUserId" style="width: 100%;">
+												<option value="">Search for a Customers</option>
 											</select>
 											@* <input asp-for="CommonUserAddDTO.FullName" class="form-control" type="text" required /> *@
 										</div>
@@ -169,6 +185,8 @@
 	</div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
 	let roomIndex = 0;
 
@@ -192,14 +210,6 @@
 </script>
 
 <script>
-	// document.getElementById("addForm").addEventListener("submit", function(event) {
-	// 	let inputs = this.querySelectorAll("input:invalid");
-	// 	alert(inputs);
-	// 	inputs.forEach(input => input.classList.add("invalid-input"));
-	// });
-
-
-
 		document.getElementById("addForm").addEventListener("submit", function(event) {
 
 		let inputs = this.querySelectorAll("input");
@@ -226,7 +236,7 @@
 	  $('#CommonUserId').select2({
 		placeholder: "Search for a Customer",
 		ajax: {
-		  url: '/api/CommonUsers/Search', // The API URL where your fruits are fetched from
+		  url: '/api/CommonUsers/Search', // The API URL where your customers are fetched from
 		  dataType: 'json',
 		  delay: 250, // Delay in milliseconds to avoid hitting the server too often
 		  data: function (params) {
@@ -235,8 +245,14 @@
 			};
 		  },
 		  processResults: function (data) {
+			// Assuming the API returns an array of customers with id and text fields
 			return {
-			  results: data // The returned data should be in {id, text} format for Select2
+			  results: data.map(function(customer) {
+				return {
+				  id: customer.id, // The customer ID (or whatever field is unique)
+				  text: customer.name // The customer name (or the field you want displayed)
+				};
+			  })
 			};
 		  },
 		  cache: true // Cache the results for future searches

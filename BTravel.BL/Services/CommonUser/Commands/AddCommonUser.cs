@@ -29,24 +29,35 @@ namespace BTravel.BL.Services.CommonUser.Commands
             response.Success = false;
             response.StatusCode = System.Net.HttpStatusCode.BadRequest;
 
+            //*** Data Validations
+            if (model == null)
+            {
+                response.Message = "Model data is empty";
+                return response;
+            }
+            if (string.IsNullOrWhiteSpace(model.PrimaryMail) || string.IsNullOrWhiteSpace(model.FullName) || string.IsNullOrWhiteSpace(model.PhoneNumber) || string.IsNullOrWhiteSpace(model.Password))
+            {
+                response.Message = "Full Name, Email, Phone Number or Password is empty";
+                return response;
+            }
+            if (model.RoleId != (int)ERole.Admin && model.RoleId != (int)ERole.Client)
+            {
+                response.Message = "Invalid RoleID";
+                return response;
+            }
+
+            //check primary mail
             var isPrimaryEmailExist = _request.Context.CommonUsers.Any(c => c.PrimaryMail.ToLower() == model.PrimaryMail.ToLower() && !c.IsDeleted);
             if (isPrimaryEmailExist)
             {
                 response.Message = "Primary Email Is Already Exist";
                 return response;
             }
-
+            //check phone number
             var isPhoneNumberExist = _request.Context.CommonUsers.Any(c => c.PhoneNumber.ToLower() == model.PhoneNumber.ToLower() && !c.IsDeleted);
             if (isPrimaryEmailExist)
             {
                 response.Message = "Phone Number Is Already Exist";
-                return response;
-            }
-
-            var isModelValid = model.RoleId == (int)ERole.Admin || model.RoleId == (int)ERole.Client;
-            if (!isModelValid)
-            {
-                response.Message = "Invalid Role ID";
                 return response;
             }
 
@@ -74,13 +85,12 @@ namespace BTravel.BL.Services.CommonUser.Commands
             newCommonUser.BillingAddress = model.BillingAddress;
             newCommonUser.PostalCode = model.PostalCode;
 
-
             _request.Context.CommonUsers.Add(newCommonUser);
             _request.Context.SaveChanges();
 
             response.Data = newCommonUser.CommonUserId;
 
-            response.Message = "New Common User Added Successfully";
+            response.Message = "New User Added Successfully";
             response.Success = true;
             response.StatusCode = System.Net.HttpStatusCode.OK;
 

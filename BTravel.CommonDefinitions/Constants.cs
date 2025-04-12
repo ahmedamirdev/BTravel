@@ -8,7 +8,7 @@ namespace BTravel.CommonDefinitions
 {
     public class Constants
     {
-        public const int defaultPageSize = 25;
+        public const int defaultPageSize = 10;
 
 
         public static string[] allowedFileExtensions = {

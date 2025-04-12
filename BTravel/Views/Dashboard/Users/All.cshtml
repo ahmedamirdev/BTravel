@@ -1,0 +1,140 @@
+﻿@using BTravel.CommonDefinitions.DTOs.CommonUser
+@using BTravel.CommonDefinitions.DTOs.Contract;
+@using BTravel.CommonDefinitions.Enums
+@using BTravel.CommonDefinitions.Responses
+@using BTravel.DAL.Entities;
+@model BaseResponse<IEnumerable<CommonUserDTO>>;
+
+@{
+	var successMessage = TempData["SuccessMessage"] as string;
+	var errorMessage = TempData["ErrorMessage"] as string;
+}
+@if (!string.IsNullOrEmpty(successMessage))
+{
+	<script>
+		Swal.fire({
+			icon: 'success',
+			title: 'Success!',
+			text: '@successMessage'
+		});
+
+
+	</script>
+}
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+	<script>
+		Swal.fire({
+			icon: 'error',
+			title: 'Error!',
+			text: '@errorMessage'
+		});
+	</script>
+}
+
+
+<div class="container">
+	<div class="page-inner">
+		<div class="page-header">
+			<h4 class="fw-bold mb-3">Users List</h4>
+			<ul class="breadcrumbs mb-3">
+				<li class="nav-home">
+					<a href="~/Dashboard/Index">
+						<i class="icon-home"></i>
+					</a>
+				</li>
+				<li class="separator">
+					<i class="icon-arrow-right"></i>
+				</li>
+				<li class="nav-item">
+					<a href="#">Users</a>
+				</li>
+				<li class="separator">
+					<i class="icon-arrow-right"></i>
+				</li>
+				<li class="nav-item">
+					<a href="#">All</a>
+				</li>
+			</ul>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="table-responsive">
+					<table id="basic-datatables" class="table align-items-center mb-0">
+						<thead class="thead-light">
+							<tr>
+								<th scope="col">#ID</th>
+								<th scope="col" class="text-start">Full Name</th>
+								<th scope="col" class="text-start">Email</th>
+								<th scope="col" class="text-start">Phone No.</th>
+								<th scope="col" class="text-end">Role</th>
+								<th scope="col" class="text-end">Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							@{
+								foreach (var item in Model.Data)
+								{
+									<tr>
+										<th scope="row">#@item.CommonUserId</th>
+										<td class="text-start">@item.FullName</td>
+										<td class="text-start">@item.PrimaryMail</td>
+										<td class="text-start">@item.PhoneNumber</td>
+										<td class="text-end">
+											@{
+												if (item.RoleId == (int)ERole.Admin)
+												{
+													<span class="badge badge-success fw-bolder">Admin</span>
+												}
+												else if (item.RoleId == (int)ERole.Client)
+												{
+													<span class="badge badge-info fw-bolder">Customer</span>
+												}
+											}
+										</td>
+										<td class="text-end">
+											<span class="badge badge-success fw-bolder">Active</span>
+										</td>
+									</tr>
+								}
+							}
+						</tbody>
+					</table>
+					<div class="pagination-container">
+						<div class="pagination-summary">
+							<p>Showing @Model.From to @Model.To of @Model.TotalCount entries</p>
+						</div>
+						<div class="pagination-controls">
+							@if (Model.TotalPages > 1)
+							{
+								<ul class="pagination">
+									@if ((Model.PageIndex + 1) > 1)
+									{
+										<li><a href="@Url.Action("All" , "Users", new { PageIndex = Model.PageIndex - 1 })">Prev</a></li>
+									}
+
+									@for (int i = 1; i <= Model.TotalPages; i++)
+									{
+										if (i == (Model.PageIndex + 1))
+										{
+											<li class="active"><span>@i</span></li>
+										}
+										else
+										{
+											<li><a href="@Url.Action("All" , "Users", new { PageIndex = i - 1 })">@i</a></li>
+										}
+									}
+
+									@if ((Model.PageIndex + 1) < Model.TotalPages)
+									{
+										<li><a href="@Url.Action("All" , "Users", new { PageIndex = Model.PageIndex + 1 })">Next</a></li>
+									}
+								</ul>
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

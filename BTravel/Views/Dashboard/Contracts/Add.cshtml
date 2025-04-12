@@ -2,15 +2,32 @@
 @using BTravel.DAL.Entities;
 @model ContractAddDTO
 
-<style>
-	/* input:invalid {
-			border: 2px solid red;
-		} */
+@{
+	var successMessage = TempData["SuccessMessage"] as string;
+	var errorMessage = TempData["ErrorMessage"] as string;
+}
+@if (!string.IsNullOrEmpty(successMessage))
+{
+	<script>
+		Swal.fire({
+			icon: 'success',
+			title: 'Success!',
+			text: '@successMessage'
+		});
 
-	.invalid-input {
-		border: 2px solid red !important;
-	}
-</style>
+
+	</script>
+}
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+	<script>
+		Swal.fire({
+			icon: 'error',
+			title: 'Error!',
+			text: '@errorMessage'
+		});
+	</script>
+}
 
 <div class="container">
 	<div class="page-inner">
@@ -296,14 +313,6 @@
 </script>
 
 <script>
-	// document.getElementById("addForm").addEventListener("submit", function(event) {
-	// 	let inputs = this.querySelectorAll("input:invalid");
-	// 	alert(inputs);
-	// 	inputs.forEach(input => input.classList.add("invalid-input"));
-	// });
-
-
-
 		document.getElementById("addForm").addEventListener("submit", function(event) {
 
 		let inputs = this.querySelectorAll("input");

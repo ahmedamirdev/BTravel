@@ -14,7 +14,10 @@ namespace BTravel.CommonDefinitions.Responses
         public HttpStatusCode StatusCode { get; set; }
         public int TotalCount { get; set; }
         public int PageSize { get; set; }
-        public int PageIndex { get; set; }
+        public int PageIndex { get; set; } // where PageIndex start from 0
+        public int TotalPages { get; set; }
+        public int From => (PageIndex * PageSize) + 1;
+        public int To => Math.Min((PageIndex + 1) * PageSize, TotalCount);
     } 
 
     public class BaseResponse<T>
@@ -24,7 +27,10 @@ namespace BTravel.CommonDefinitions.Responses
         public HttpStatusCode StatusCode { get; set; }
         public int TotalCount { get; set; }
         public int PageSize { get; set; }
-        public int PageIndex { get; set; }
+        public int PageIndex { get; set; } // where PageIndex start from 0
+        public int TotalPages { get; set; }
+        public int From => (PageIndex * PageSize) + 1; 
+        public int To => Math.Min((PageIndex + 1) * PageSize, TotalCount);
 
         public T Data { get; set; }
     }
