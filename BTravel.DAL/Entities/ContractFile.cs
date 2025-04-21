@@ -31,6 +31,7 @@ namespace BTravel.DAL.Entities
         [ForeignKey("ContractId")]
         public virtual Contract Contract { get; set; }
 
-        public string FileURL { get; set; }
+        public string FileUrl { get; set; }
+        public string FileName { get; set; }
     }
 }

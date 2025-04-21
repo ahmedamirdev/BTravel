@@ -23,6 +23,7 @@ namespace BTravel.CommonDefinitions.DTOs.CommonUser
         public string? BillingAddress { get; set; }
         public string? PostalCode { get; set; }
         public string? DefaultSignatureUrl { get; set; }
+        public bool IsActive { get; set; }
 
         public int RoleId { get; set; } // 1 = Admin , 2 = client
         public string RoleName { get; set; }

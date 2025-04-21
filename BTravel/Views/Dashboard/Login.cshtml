@@ -8,7 +8,7 @@
 <html lang="en">
 <head>
 	<!-- Design by foolishdeveloper.com -->
-	<title>Glassmorphism login Form Tutorial in html css</title>
+	<title>BTravelMate - Login</title>
 
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -150,21 +150,18 @@
 	</style>
 </head>
 <body>
-
-
-
 	<div class="background">
 		<div class="shape"></div>
 		<div class="shape"></div>
 	</div>
-	<form id="addForm" asp-action="Login" asp-controller="Dashboard" method="post" novalidate>
-		<h3>Login Here</h3>
+	<form id="addForm" asp-action="LoginPost" asp-controller="Dashboard" method="post" novalidate>
+		<h3>Login</h3>
 
-		<label for="username">Username</label>
+		<label for="Email">Email</label>
 		<input asp-for="Email" class="form-control" type="text" required />
 
-		<label for="password">Password</label>
-		<input asp-for="Password" class="form-control" type="text" required />
+		<label for="Password">Password</label>
+		<input asp-for="Password" class="form-control" type="password" required />
 
 		<button class="btn btn-success" type="submit" style="font-weight:bold">Login</button>
 		<br />
@@ -172,10 +169,6 @@
 		{
 			<label style="color:red; font-weight:bold">@TempData["ErrorMessage"]</label>
 		}
-		
 	</form>
-	
-
-
 </body>
 </html>

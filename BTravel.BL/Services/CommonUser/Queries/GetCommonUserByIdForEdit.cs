@@ -12,33 +12,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BTravel.BL.Services.CommonUser.Queries
 {
-    public class GetCommonUserById : BaseService
+    public class GetCommonUserByIdForEdit : BaseService
     {
         private readonly BaseRequest _request;
 
-        public GetCommonUserById(BaseRequest request)
+        public GetCommonUserByIdForEdit(BaseRequest request)
         {
             _request = request;
         }
 
-        public BaseResponse<CommonUserDTO> GetById(int id)
+        public BaseResponse<CommonUserAddDTO> GetById(int id)
         {
-            var response = new BaseResponse<CommonUserDTO>();
+            var response = new BaseResponse<CommonUserAddDTO>();
             response.Success = false;
             response.StatusCode = HttpStatusCode.BadRequest;
 
             var query = _request.Context.CommonUsers
-                        .Include(c => c.Role)
                         .Where(c => c.IsDeleted != true && c.CommonUserId == id)
-                        .Select(c => new CommonUserDTO
+                        .Select(c => new CommonUserAddDTO
                         {
                             CommonUserId = c.CommonUserId,
                             FullName = c.FullName,
                             PhoneNumber = c.PhoneNumber,
                             PrimaryMail = c.PrimaryMail,
-                            IsPrimaryMailVerified = c.IsPrimaryMailVerified,
-                            CreatedAt = c.CreatedAt.AddHours(2),
-                            ImageUrl = c.ImageUrl,
                             CompanyName = c.CompanyName,
 
                             CardNumber = AESEncryptionHelper.Decrypt(c.CardNumber),
@@ -48,12 +44,8 @@ namespace BTravel.BL.Services.CommonUser.Queries
 
                             BillingAddress = c.BillingAddress,
                             PostalCode = c.PostalCode,
-                            DefaultSignatureUrl = c.DefaultSignatureUrl,
 
                             RoleId = c.RoleId,
-                            RoleName = c.Role.Name,
-
-                            IsActive = c.IsActive,
                         }).FirstOrDefault();
 
             if (query == null)

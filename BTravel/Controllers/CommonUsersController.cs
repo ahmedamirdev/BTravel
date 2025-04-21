@@ -16,9 +16,9 @@ namespace BTravel.Controllers
     {
         private readonly BTravelDbContext _context;
 
-        public CommonUsersController(BTravelDbContext dbcontext)
+        public CommonUsersController(BTravelDbContext context)
         {
-            _context = dbcontext;
+            _context = context;
         }
 
         //[Route("/api/users/search")]
@@ -27,6 +27,7 @@ namespace BTravel.Controllers
         public async Task<IActionResult> Search(string term)
         {
             var results = await _context.CommonUsers
+                .Where(c => !c.IsDeleted && c.IsActive)
                 .Where(c => c.FullName.Contains(term) || c.PrimaryMail.Contains(term) || c.PhoneNumber.Contains(term))
                 .Select(c => new { id = c.CommonUserId, name = c.FullName })
                 .ToListAsync();

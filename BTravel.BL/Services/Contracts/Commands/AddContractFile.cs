@@ -73,7 +73,8 @@ namespace BTravel.BL.Services.Contracts.Commands
                 }
 
                 DAL.Entities.ContractFile newFile = new DAL.Entities.ContractFile();
-                newFile.FileURL = virtualPath;
+                newFile.FileUrl = virtualPath;
+                newFile.FileName = fileName;
                 newFile.ContractId = ContractId;
                 newFile.CreatedAt = DateTime.UtcNow;
                 newFile.CreatedBy = _request.UserID;
@@ -83,6 +84,11 @@ namespace BTravel.BL.Services.Contracts.Commands
                 _request.Context.SaveChanges();
 
                 insertedFileId = newFile.ContractFileID;
+            }
+            else
+            {
+                response.Message = "File is invalid";
+                return response;
             }
 
             response.Data = insertedFileId;

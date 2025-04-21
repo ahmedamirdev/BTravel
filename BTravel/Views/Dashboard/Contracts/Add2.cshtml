@@ -43,7 +43,7 @@
 					<i class="icon-arrow-right"></i>
 				</li>
 				<li class="nav-item">
-					<a href="#">Contracts</a>
+					<a href="~/Contracts/All">Contracts</a>
 				</li>
 				<li class="separator">
 					<i class="icon-arrow-right"></i>
@@ -142,6 +142,8 @@
 								</div>
 							</div>
 						</div>
+					</div>
+					<div class="card">
 						<div class="card-header">
 							<div class="card-title">
 								Room Details
@@ -198,7 +200,7 @@
 			<td><input type="date" name="Rooms[${roomIndex}].CheckOut" class="form-control" required /></td>
 			<td><input type="number" name="Rooms[${roomIndex}].NumOfNights" class="form-control" required /></td>
 			<td><input type="text" name="Rooms[${roomIndex}].RoomAmenities" class="form-control" required /></td>
-			<td><button type="button" class="btn btn-icon btn-round btn-danger remove-room"><i class="fas fa-window-close"></i></button></td>
+			<td><button type="button" class="btn btn-icon btn-round btn-danger btn-sm remove-room"><i class="fas fa-times"></i></button></td>
 		</tr>`;
 		$("#roomsTable tbody").append(row);
 		roomIndex++;

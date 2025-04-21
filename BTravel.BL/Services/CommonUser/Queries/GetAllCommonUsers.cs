@@ -22,7 +22,7 @@ namespace BTravel.BL.Services.CommonUser.Queries
             _request = request;
         }
 
-        public BaseResponse<IEnumerable<CommonUserDTO>> GetAll(PublicRequest model)
+        public BaseResponse<IEnumerable<CommonUserDTO>> GetAll(string search)
         {
             var response = new BaseResponse<IEnumerable<CommonUserDTO>>();
             response.Success = false;
@@ -37,9 +37,10 @@ namespace BTravel.BL.Services.CommonUser.Queries
                             PhoneNumber = c.PhoneNumber,
                             PrimaryMail = c.PrimaryMail,
                             IsPrimaryMailVerified = c.IsPrimaryMailVerified,
-                            CreatedAt = c.CreatedAt,
+                            CreatedAt = c.CreatedAt.AddHours(2),
                             ImageUrl = c.ImageUrl,
                             CompanyName = c.CompanyName,
+
                             CardNumber = AESEncryptionHelper.Decrypt(c.CardNumber),
                             CardExpDate = AESEncryptionHelper.Decrypt(c.CardExpDate),
                             CardCVC = AESEncryptionHelper.Decrypt(c.CardCVC),
@@ -51,7 +52,13 @@ namespace BTravel.BL.Services.CommonUser.Queries
 
                             RoleId = c.RoleId,
                             RoleName = c.Role.Name,
+
+                            IsActive = c.IsActive,
                         });
+
+            //query = ApplyFilter(query, model.Filter);
+
+            query = ApplySearch(query, search);
 
             response.TotalCount = query.Count();
             response.PageIndex = _request.PageIndex;
@@ -65,6 +72,41 @@ namespace BTravel.BL.Services.CommonUser.Queries
             response.StatusCode = System.Net.HttpStatusCode.OK;
 
             return response;
+        }
+
+        //private static IQueryable<ContractDTO> ApplyFilter(IQueryable<ContractDTO> query, ContractDTO filterDTO)
+        //{
+        //    if (filterDTO == null)
+        //        return query;
+
+        //    if (filterDTO.BusinessId > 0)
+        //    {
+        //        query = query.Where(q => q.Business.Id == (int)filterDTO.BusinessId);
+        //    }
+        //    if (filterDTO.CommonUserId > 0)
+        //    {
+        //        query = query.Where(q => q.User.CommonUserId == filterDTO.CommonUserId);
+        //    }
+        //    if (filterDTO.ActionId > 0)
+        //    {
+        //        query = query.Where(q => q.ActionId == filterDTO.ActionId);
+        //    }
+
+        //    return query;
+        //}
+
+        private static IQueryable<CommonUserDTO> ApplySearch(IQueryable<CommonUserDTO> query, string search)
+        {
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                search = search.ToLower();
+
+                query = query.Where(x => x.FullName.ToLower().Contains(search)
+                                      || x.PhoneNumber.ToLower().Contains(search)
+                                      || x.PrimaryMail.ToLower().Contains(search));
+            }
+
+            return query;
         }
     }
 }

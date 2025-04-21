@@ -21,20 +21,29 @@ namespace BTravel.BL.Services.Contracts.Queries
             _request = request;
         }
 
-        public BaseResponse<IEnumerable<ContractDTO>> GetAll(PublicRequest model)
+        public BaseResponse<IEnumerable<ContractDTO>> GetAll(string search)
         {
             var response = new BaseResponse<IEnumerable<ContractDTO>>();
             response.Success = false;
             response.StatusCode = System.Net.HttpStatusCode.BadRequest;
 
+            if (string.IsNullOrWhiteSpace(search))
+                search = "";
+            
+            search = search.ToLower();
+
             var query = _request.Context.Contracts.Where(c => !c.IsDeleted)
+                        .Where(x => x.HotelName.ToLower().Contains(search) 
+                            || x.CommonUser.FullName.ToLower().Contains(search)
+                            || x.CommonUser.PrimaryMail.ToLower().Contains(search)
+                            || x.ContractId.ToString().Contains(search))
                         .OrderByDescending(f => f.ContractId)
                         .Select(c => new ContractDTO
                         {
                             ContractId = c.ContractId,
-                            CreatedAt = c.CreatedAt,
+                            CreatedAt = c.CreatedAt.AddHours(2),
                             CreatedBy = c.CreatedBy,
-                            LastModifiedAt = c.LastModifiedAt,
+                            LastModifiedAt = c.LastModifiedAt.AddHours(2),
                             LastModifiedBy = c.LastModifiedBy,
                             SignedAt = c.SignedAt,
                             SignatureUrl = c.SignatureUrl,
@@ -55,7 +64,7 @@ namespace BTravel.BL.Services.Contracts.Queries
                                 PhoneNumber = c.CommonUser.PhoneNumber,
                                 PrimaryMail = c.CommonUser.PrimaryMail,
                                 IsPrimaryMailVerified = c.CommonUser.IsPrimaryMailVerified,
-                                CreatedAt = c.CommonUser.CreatedAt,
+                                CreatedAt = c.CommonUser.CreatedAt.AddHours(2),
                                 ImageUrl = c.CommonUser.ImageUrl,
                                 CompanyName = c.CommonUser.CompanyName,
 
@@ -82,11 +91,15 @@ namespace BTravel.BL.Services.Contracts.Queries
                                         CheckOut = r.CheckOut,
                                         NumOfNights = r.NumOfNights,
                                         RoomAmenities = r.RoomAmenities,
-                                        CreatedAt = r.CreatedAt,
+                                        CreatedAt = r.CreatedAt.AddHours(2),
                                         CreatedBy = r.CreatedBy,
                                         ContractId = r.ContractId,
                                     }),
                         });
+
+            //query = ApplyFilter(query, model.Filter);
+
+            //query = ApplySearch(query, search);
 
             response.TotalCount = query.Count();
             response.PageIndex = _request.PageIndex;
@@ -100,6 +113,39 @@ namespace BTravel.BL.Services.Contracts.Queries
             response.StatusCode = System.Net.HttpStatusCode.OK;
 
             return response;
+        }
+
+        //private static IQueryable<ContractDTO> ApplyFilter(IQueryable<ContractDTO> query, ContractDTO filterDTO)
+        //{
+        //    if (filterDTO == null)
+        //        return query;
+
+        //    if (filterDTO.BusinessId > 0)
+        //    {
+        //        query = query.Where(q => q.Business.Id == (int)filterDTO.BusinessId);
+        //    }
+        //    if (filterDTO.CommonUserId > 0)
+        //    {
+        //        query = query.Where(q => q.User.CommonUserId == filterDTO.CommonUserId);
+        //    }
+        //    if (filterDTO.ActionId > 0)
+        //    {
+        //        query = query.Where(q => q.ActionId == filterDTO.ActionId);
+        //    }
+
+        //    return query;
+        //}
+
+        private static IQueryable<ContractDTO> ApplySearch(IQueryable<ContractDTO> query, string search)
+        {
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                search = search.ToLower();
+
+                query = query.Where(x => x.HotelName.ToLower().Contains(search));
+            }
+
+            return query;
         }
     }
 }

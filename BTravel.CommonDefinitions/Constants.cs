@@ -8,6 +8,10 @@ namespace BTravel.CommonDefinitions
 {
     public class Constants
     {
+        public const string BaseUrl = "https://localhost:7248/";
+        // Testing Server : https://localhost:7248/
+        // Production Server : https://prod-api.finds.live/
+
         public const int defaultPageSize = 10;
 
 
@@ -42,6 +46,12 @@ namespace BTravel.CommonDefinitions
                                                         ".ogg",
                                                         ".wma",
                                                         ".amr",
+
+
+                                                        // Files Extensions
+                                                        ".doc",
+                                                        ".docx",
+                                                        ".pdf",
                                                        };
 
         public static string[] allowedImageExtensions = {

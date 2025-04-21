@@ -1,30 +1,29 @@
 ﻿@using BTravel.CommonDefinitions.DTOs.Contract;
 @using BTravel.DAL.Entities;
-@model ContractAddDTO
+@model ContractEditDTO
 
 @{
 	var successMessage = TempData["SuccessMessage"] as string;
 	var errorMessage = TempData["ErrorMessage"] as string;
+	int currRoomIndex = 0;
 }
 @if (!string.IsNullOrEmpty(successMessage))
 {
 	<script>
 		Swal.fire({
-			icon: 'success',
-			title: 'Success!',
-			text: '@successMessage'
+		icon: 'success',
+		title: 'Success!',
+		text: '@successMessage'
 		});
-
-
 	</script>
 }
 @if (!string.IsNullOrEmpty(errorMessage))
 {
 	<script>
 		Swal.fire({
-			icon: 'error',
-			title: 'Error!',
-			text: '@errorMessage'
+		icon: 'error',
+		title: 'Error!',
+		text: '@errorMessage'
 		});
 	</script>
 }
@@ -32,7 +31,12 @@
 <div class="container">
 	<div class="page-inner">
 		<div class="page-header">
-			<h4 class="fw-bold mb-3">Add New Contract</h4>
+			<h4 class="fw-bold mb-3">
+				Edit Contract
+				<span class="badge badge-info fw-extrabold fs-4">
+					<a href="~/Contracts/Details/@Model.ContractId">#@Model.ContractId</a>
+				</span>
+			</h4>
 			<ul class="breadcrumbs mb-3">
 				<li class="nav-home">
 					<a href="~/Dashboard/Index">
@@ -49,13 +53,14 @@
 					<i class="icon-arrow-right"></i>
 				</li>
 				<li class="nav-item">
-					<a href="#">Add New Contract</a>
+					<a href="#">Edit Contract</a>
 				</li>
 			</ul>
 		</div>
 		<div class="row">
 			<div class="col-md-12">
-				<form id="addForm" asp-action="Add" asp-controller="Contracts" method="post" novalidate>
+				<form id="editForm" asp-action="Edit" asp-controller="Contracts" method="post" novalidate>
+					<input hidden asp-for="ContractId" class="form-control" type="text" required />
 					<div class="card">
 						<div class="card-header">
 							<div class="card-title">Hotel Details</div>
@@ -121,131 +126,6 @@
 								</div>
 							</div>
 						</div>
-						<div class="card-header">
-							<div class="card-title">Customer Details (New Customer)</div>
-						</div>
-						<div class="card-body">
-							<div class="row">
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Full Name</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-user"></i>
-											</span>
-											<input asp-for="CommonUserAddDTO.FullName" class="form-control" type="text" required />
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Company Name</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-user"></i>
-											</span>
-											<input asp-for="CommonUserAddDTO.CompanyName" class="form-control" type="text" required />
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Email</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-at"></i>
-											</span>
-											<input asp-for="CommonUserAddDTO.PrimaryMail" class="form-control" type="email" required />
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Phone Number</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-phone"></i>
-											</span>
-											<input asp-for="CommonUserAddDTO.PhoneNumber" class="form-control" type="text" required />
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Name on Credit Card</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-id-card"></i>
-											</span>
-											<input asp-for="CommonUserAddDTO.NameOnCreditCard" class="form-control" type="text" required />
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Credit Card No.</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-credit-card"></i>
-											</span>
-											<input asp-for="CommonUserAddDTO.CardNumber" class="form-control" type="text" required />
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Exp. Date</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-calendar-alt"></i>
-											</span>
-											<input asp-for="CommonUserAddDTO.CardExpDate" type="date" class="form-control" required />
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">CVC. Code</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-credit-card"></i>
-											</span>
-											<input asp-for="CommonUserAddDTO.CardCVC" class="form-control" type="text" required />
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Billing Address</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-map-marker-alt"></i>
-											</span>
-											<input asp-for="CommonUserAddDTO.BillingAddress" class="form-control" type="text" />
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Postal Code</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-info"></i>
-											</span>
-											<input asp-for="CommonUserAddDTO.PostalCode" class="form-control" type="text" />
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
 					</div>
 					<div class="card">
 						<div class="card-header">
@@ -275,6 +155,24 @@
 											</tr>
 										</thead>
 										<tbody>
+											@{
+												if (Model.Rooms != null)
+												{
+													for (int i = 0; i < Model.Rooms.Count; i++)
+													{
+														<tr>
+															<td><input type="text" name="Rooms[@i].RoomType" class="form-control" value="@Model.Rooms[i].RoomType" required /></td>
+															<td><input type="text" name="Rooms[@i].Names" class="form-control" value="@Model.Rooms[i].Names" required /></td>
+															<td><input type="date" name="Rooms[@i].CheckIn" class="form-control" value="@Model.Rooms[i].CheckIn.ToString("yyyy-MM-dd")" required /></td>
+															<td><input type="date" name="Rooms[@i].CheckOut" class="form-control" value="@Model.Rooms[i].CheckOut.ToString("yyyy-MM-dd")" required /></td>
+															<td><input type="number" name="Rooms[@i].NumOfNights" class="form-control" value="@Model.Rooms[i].NumOfNights" required /></td>
+															<td><input type="text" name="Rooms[@i].RoomAmenities" class="form-control" value="@Model.Rooms[i].RoomAmenities" required /></td>
+															<td><button type="button" class="btn btn-icon btn-round btn-danger btn-sm remove-room"><i class="fas fa-times"></i></button></td>
+														</tr>
+														currRoomIndex = i;
+													}
+												}
+											}
 										</tbody>
 									</table>
 								</div>
@@ -282,7 +180,6 @@
 						</div>
 						<div class="card-action">
 							<button class="btn btn-success" type="submit" style="font-weight:bold">Save Contract</button>
-							<button class="btn btn-danger" type="reset" style="font-weight:bold">Reset Form</button>
 						</div>
 					</div>
 				</form>
@@ -292,10 +189,12 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-	let roomIndex = 0;
+	let roomIndex = @currRoomIndex;
 
 	$("#addRoom").click(function () {
+		roomIndex++;
 		let row = `<tr>
 			<td><input type="text" name="Rooms[${roomIndex}].RoomType" class="form-control" required /></td>
 			<td><input type="text" name="Rooms[${roomIndex}].Names" class="form-control" required /></td>
@@ -306,16 +205,30 @@
 			<td><button type="button" class="btn btn-icon btn-round btn-danger btn-sm remove-room"><i class="fas fa-times"></i></button></td>
 		</tr>`;
 		$("#roomsTable tbody").append(row);
-		roomIndex++;
+
+		reindexRooms();
 	});
 
 	$(document).on("click", ".remove-room", function () {
 		$(this).closest("tr").remove();
+		reindexRooms();
 	});
+
+	function reindexRooms() {
+		$("#roomsTable tbody tr").each(function (index) {
+			$(this).find("input, select, textarea").each(function () {
+				let name = $(this).attr("name");
+				if (name) {
+					let newName = name.replace(/Rooms\[\d+\]/, `Rooms[${index}]`);
+					$(this).attr("name", newName);
+				}
+			});
+		});
+	}
 </script>
 
 <script>
-		document.getElementById("addForm").addEventListener("submit", function(event) {
+		document.getElementById("editForm").addEventListener("submit", function(event) {
 
 		let inputs = this.querySelectorAll("input");
 

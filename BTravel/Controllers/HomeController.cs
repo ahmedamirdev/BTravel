@@ -32,31 +32,26 @@ namespace BTravel.Controllers
         }
 
         public IActionResult Index()
-
         {
-            List<Contract> data = new List<Contract>();
-
-            data.Add(new Contract
-            {
-                ContractId = 1,
-                HotelName = "shiraton",
-
-            });
-            data.Add(new Contract
-            {
-                ContractId = 2,
-                HotelName = "sofitel",
-
-            });
-            data.Add(new Contract
-            {
-                ContractId = 3,
-                HotelName = "helton",
-
-            });
+            //if (User.Identity.IsAuthenticated)
+            //{
 
 
-            return View(data);
+            //    int RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID"));
+            //    int UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID"));
+
+            //    var x = User.Claims.First(c => c.Type == "RoleID");
+            //    var x2 = User.Claims.First(c => c.Type == "RoleID").Value;
+
+            //    var x3 = User.Claims.First(c => c.Type == "UserID");
+            //    var x4 = User.Claims.First(c => c.Type == "UserID").Value;
+
+
+            //    var y = User.Identity.IsAuthenticated;
+            //    var z = User.Identity.AuthenticationType;
+            //}
+
+            return View();
         }
 
         public IActionResult Test()
@@ -92,55 +87,5 @@ namespace BTravel.Controllers
 
             return View();
         }
-
-        public async Task<IActionResult> Logout()
-        {
-            //await HttpContext.SignOutAsync();
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Home");
-        }
-
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> LoginPost(LoginDTO model)
-        {
-            var request = new BaseRequest();
-            request.Context = _dbContext;
-
-            var query = new Login(request);
-            var response = query.CheckCredentials(model);
-
-            if (response.Success)
-            {
-                var claims = new[]
-                {
-                    new Claim("UserID", response.Data.CommonUserId.ToString()),
-                    new Claim("RoleID", response.Data.RoleId.ToString())
-                };
-
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var authProperties = new AuthenticationProperties { AllowRefresh = true };
-
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
-
-                return RedirectToAction("MyHomeView", "Home"); // Redirect to secure page
-            }
-            else
-            {
-                ViewBag["ErrorMessage"] = "Invalid Email or Password";
-                return View();
-            }
-        }
-
-        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        //public IActionResult Error()
-        //{
-        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        //}
     }
 }

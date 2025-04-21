@@ -55,7 +55,7 @@ namespace BTravel.BL.Services.CommonUser.Commands
             }
             //check phone number
             var isPhoneNumberExist = _request.Context.CommonUsers.Any(c => c.PhoneNumber.ToLower() == model.PhoneNumber.ToLower() && !c.IsDeleted);
-            if (isPrimaryEmailExist)
+            if (isPhoneNumberExist)
             {
                 response.Message = "Phone Number Is Already Exist";
                 return response;
@@ -90,7 +90,7 @@ namespace BTravel.BL.Services.CommonUser.Commands
 
             response.Data = newCommonUser.CommonUserId;
 
-            response.Message = "New User Added Successfully";
+            response.Message = $"New User #{newCommonUser.CommonUserId} Added Successfully";
             response.Success = true;
             response.StatusCode = System.Net.HttpStatusCode.OK;
 

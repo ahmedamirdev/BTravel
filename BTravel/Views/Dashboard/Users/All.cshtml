@@ -17,8 +17,6 @@
 			title: 'Success!',
 			text: '@successMessage'
 		});
-
-
 	</script>
 }
 @if (!string.IsNullOrEmpty(errorMessage))
@@ -36,7 +34,7 @@
 <div class="container">
 	<div class="page-inner">
 		<div class="page-header">
-			<h4 class="fw-bold mb-3">Users List</h4>
+			<h4 class="fw-bold mb-3">Customers List</h4>
 			<ul class="breadcrumbs mb-3">
 				<li class="nav-home">
 					<a href="~/Dashboard/Index">
@@ -47,7 +45,7 @@
 					<i class="icon-arrow-right"></i>
 				</li>
 				<li class="nav-item">
-					<a href="#">Users</a>
+					<a href="#">Customers</a>
 				</li>
 				<li class="separator">
 					<i class="icon-arrow-right"></i>
@@ -60,6 +58,12 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="table-responsive">
+					@{
+						if (Model.Data == null || Model.Data.Count() <= 0)
+						{
+							<h4 class="fw-bold mb-3">No data found</h4>
+						}
+					}
 					<table id="basic-datatables" class="table align-items-center mb-0">
 						<thead class="thead-light">
 							<tr>
@@ -67,8 +71,9 @@
 								<th scope="col" class="text-start">Full Name</th>
 								<th scope="col" class="text-start">Email</th>
 								<th scope="col" class="text-start">Phone No.</th>
+								<th scope="col" class="text-center">Created At</th>
 								<th scope="col" class="text-end">Role</th>
-								<th scope="col" class="text-end">Status</th>
+								<th scope="col" class="text-end">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -76,10 +81,13 @@
 								foreach (var item in Model.Data)
 								{
 									<tr>
-										<th scope="row">#@item.CommonUserId</th>
+										<th scope="row">
+											<a target="_blank" href="~/Users/Details/@item.CommonUserId">#@item.CommonUserId</a>
+										</th>
 										<td class="text-start">@item.FullName</td>
 										<td class="text-start">@item.PrimaryMail</td>
 										<td class="text-start">@item.PhoneNumber</td>
+										<td class="text-center">@item.CreatedAt.ToShortDateString()</td>
 										<td class="text-end">
 											@{
 												if (item.RoleId == (int)ERole.Admin)
@@ -93,7 +101,15 @@
 											}
 										</td>
 										<td class="text-end">
-											<span class="badge badge-success fw-bolder">Active</span>
+											<!-- Edit button -->
+											<a target="_blank" href="~/Users/Edit/@item.CommonUserId" class="btn btn-icon btn-round btn-info btn-sm" title="Edit">
+												<i class="fas fa-pen fa-xs"></i>
+											</a>
+
+											<!-- Delete button -->
+											<button class="btn btn-icon btn-round btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Delete" onclick="setDeleteUserId(@item.CommonUserId)">
+												<i class="fas fa-times"></i>
+											</button>
 										</td>
 									</tr>
 								}
@@ -138,3 +154,35 @@
 		</div>
 	</div>
 </div>
+
+<!-- Delete User Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form id="deleteUser" method="post" asp-action="Delete" asp-controller="Users">
+				<div class="modal-header">
+					<h5 class="modal-title" id="deleteModalLabel">Delete Contract <span id="modalDeleteUserId" class="fw-bolder"></span></h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+
+				<div class="modal-body">
+					<input type="hidden" name="CommonUserId" id="DeleteCommonUserId" />
+					<h5>Are you sure you want to delete user ?</h5>
+					<small class="text-danger">** All data will be lost</small>
+				</div>
+
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success">Delete</button>
+					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script>
+	function setDeleteUserId(id) {
+		document.getElementById("DeleteCommonUserId").value = id;
+		document.getElementById("modalDeleteUserId").textContent = "#" + id;
+	}
+</script>

@@ -21,9 +21,9 @@ namespace BTravel.Controllers
     {
         private readonly BTravelDbContext _context;
 
-        public ContractsController(BTravelDbContext dbcontext)
+        public ContractsController(BTravelDbContext context)
         {
-            _context = dbcontext;
+            _context = context;
         }
 
         public IActionResult Add()
@@ -97,7 +97,7 @@ namespace BTravel.Controllers
             };
 
             var query = new GetAllContracts(request);
-            var response = query.GetAll(new PublicRequest());
+            var response = query.GetAll(string.Empty);
 
             return View("~/Views/Dashboard/Contracts/All.cshtml", response);
         }
@@ -118,12 +118,12 @@ namespace BTravel.Controllers
             if (response.Success)
             {
                 TempData["SuccessMessage"] = response.Message;
-                return RedirectToAction("All", "Contracts"); // redirect to list page after success
+                return RedirectToAction("Details", "Contracts", new { Id = ContractId });
             }
             else
             {
                 TempData["ErrorMessage"] = response.Message;
-                return RedirectToAction("All", "Contracts"); // redirect to list page after success
+                return RedirectToAction("Details", "Contracts", new { Id = ContractId });
             }
         }
 
@@ -149,6 +149,121 @@ namespace BTravel.Controllers
             {
                 TempData["ErrorMessage"] = response.Message;
                 return RedirectToAction("All", "Contracts"); // redirect to list page after success
+            }
+        }
+
+        public IActionResult Details(int Id)
+        {
+            var request = new BaseRequest
+            {
+                Context = _context,
+                RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID")),
+                UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID")),
+            };
+
+            var query = new GetContractById(request);
+            var response = query.GetById(Id);
+
+            if (response.Success)
+            {
+                //TempData["SuccessMessage"] = response.Message;
+                return View("~/Views/Dashboard/Contracts/Details.cshtml", response.Data);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = response.Message;
+                return RedirectToAction("All", "Contracts"); // redirect to list page after success
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Search(string text)
+        {
+            var request = new BaseRequest
+            {
+                Context = _context,
+                RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID")),
+                UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID")),
+            };
+
+            var query = new GetAllContracts(request);
+            var response = query.GetAll(text);
+
+            return View("~/Views/Dashboard/Contracts/All.cshtml", response);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int Id)
+        {
+            var request = new BaseRequest
+            {
+                Context = _context,
+                RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID")),
+                UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID")),
+            };
+
+            var query = new GetContractByIdForEdit(request);
+            var response = query.GetById(Id);
+
+            if (response.Success)
+            {
+                TempData["SuccessMessage"] = response.Message;
+                return View("~/Views/Dashboard/Contracts/Edit.cshtml", response.Data);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = response.Message;
+                return RedirectToAction("All", "Contracts"); // redirect to list page after success
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Edit(ContractEditDTO model)
+        {
+            var request = new BaseRequest
+            {
+                Context = _context,
+                RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID")),
+                UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID")),
+            };
+
+            var query = new EditContract(request);
+            var response = query.Edit(model);
+
+            if (response.Success)
+            {
+                TempData["SuccessMessage"] = response.Message;
+                return RedirectToAction("Details", "Contracts", new { Id = model.ContractId });
+            }
+            else
+            {
+                TempData["ErrorMessage"] = response.Message;
+                return View("~/Views/Dashboard/Contracts/Edit.cshtml", model);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult DeleteFile(int FileId)
+        {
+            var request = new BaseRequest
+            {
+                Context = _context,
+                RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID")),
+                UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID")),
+            };
+
+            var query = new DeleteFile(request);
+            var response = query.Delete(FileId);
+
+            if (response.Success)
+            {
+                TempData["SuccessMessage"] = response.Message;
+                return RedirectToAction("Details", "Contracts", new { Id = response.Data });
+            }
+            else
+            {
+                TempData["ErrorMessage"] = response.Message;
+                return RedirectToAction("Details", "Contracts", new { Id = response.Data });
             }
         }
     }
