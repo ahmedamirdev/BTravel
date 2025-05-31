@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BTravel.DAL.Entities;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace BTravel.DAL
 {
@@ -20,6 +23,32 @@ namespace BTravel.DAL
                 };
 
                 context.Roles.AddRange(roles);
+                context.SaveChanges();
+            }
+
+            if (!context.CommonUsers.Any())
+            {
+                var roleAdminId = context.Roles.FirstOrDefault(r => r.Name == "Admin").RoleId;
+
+                PasswordHasher<DAL.Entities.CommonUser> hasher = new PasswordHasher<DAL.Entities.CommonUser>();
+                var hashedPassword = hasher.HashPassword(new DAL.Entities.CommonUser(), "123");
+
+                var newCommonUser = new CommonUser
+                {
+                    FullName = "Super Admin",
+                    PhoneNumber = "1234567890",
+                    PrimaryMail = "m@m.com",
+                    IsPrimaryMailVerified = true,
+                    CreatedAt = DateTime.UtcNow,
+                    CreatedBy = 0,
+                    IsDeleted = false,
+                    IsActive = true,
+                    Password = hashedPassword,
+                    CompanyName = "BTravelMate",
+                    RoleId = roleAdminId,
+                };
+
+                context.CommonUsers.Add(newCommonUser);
                 context.SaveChanges();
             }
 
