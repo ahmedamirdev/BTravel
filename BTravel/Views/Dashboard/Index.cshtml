@@ -37,80 +37,88 @@
 
 		<div class="row">
 			<div class="col-sm-6 col-md-3">
-				<div class="card card-stats card-round">
-					<div class="card-body">
-						<div class="row align-items-center">
-							<div class="col-icon">
-								<div class="icon-big text-center icon-primary bubble-shadow-small">
-									<i class="fas fa-users"></i>
+				<a href="~/Users/All">
+					<div class="card card-stats card-round">
+						<div class="card-body">
+							<div class="row align-items-center">
+								<div class="col-icon">
+									<div class="icon-big text-center icon-primary bubble-shadow-small">
+										<i class="fas fa-users"></i>
+									</div>
 								</div>
-							</div>
-							<div class="col col-stats ms-3 ms-sm-0">
-								<div class="numbers">
-									<p class="card-category fw-bold">Total Customers</p>
-									<h4 class="card-title fw-extrabold">@Model.TotalNumOfCustomers</h4>
+								<div class="col col-stats ms-3 ms-sm-0">
+									<div class="numbers">
+										<p class="card-category fw-bold">Total Customers</p>
+										<h4 class="card-title fw-extrabold">@Model.TotalNumOfCustomers</h4>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</a>
 			</div>
 			<div class="col-sm-6 col-md-3">
-				<div class="card card-stats card-round">
-					<div class="card-body">
-						<div class="row align-items-center">
-							<div class="col-icon">
-								<div class="icon-big text-center icon-info bubble-shadow-small">
-									<i class="fas fa-exclamation"></i>
+				<a href="~/Contracts/All">
+					<div class="card card-stats card-round">
+						<div class="card-body">
+							<div class="row align-items-center">
+								<div class="col-icon">
+									<div class="icon-big text-center icon-info bubble-shadow-small">
+										<i class="fas fa-exclamation"></i>
+									</div>
 								</div>
-							</div>
-							<div class="col col-stats ms-3 ms-sm-0">
-								<div class="numbers">
-									<p class="card-category fw-bold">Pending Contracts</p>
-									<h4 class="card-title fw-extrabold">@Model.PendingContracts</h4>
+								<div class="col col-stats ms-3 ms-sm-0">
+									<div class="numbers">
+										<p class="card-category fw-bold">Pending Contracts</p>
+										<h4 class="card-title fw-extrabold">@Model.PendingContracts</h4>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</a>
 			</div>
 			<div class="col-sm-6 col-md-3">
-				<div class="card card-stats card-round">
-					<div class="card-body">
-						<div class="row align-items-center">
-							<div class="col-icon">
-								<div class="icon-big text-center icon-success bubble-shadow-small">
-									<i class="fas fa-check"></i>
+				<a href="~/Contracts/All">
+					<div class="card card-stats card-round">
+						<div class="card-body">
+							<div class="row align-items-center">
+								<div class="col-icon">
+									<div class="icon-big text-center icon-success bubble-shadow-small">
+										<i class="fas fa-check"></i>
+									</div>
 								</div>
-							</div>
-							<div class="col col-stats ms-3 ms-sm-0">
-								<div class="numbers">
-									<p class="card-category fw-bold">Signed Contracts</p>
-									<h4 class="card-title fw-extrabold">@Model.SignedContracts</h4>
+								<div class="col col-stats ms-3 ms-sm-0">
+									<div class="numbers">
+										<p class="card-category fw-bold">Signed Contracts</p>
+										<h4 class="card-title fw-extrabold">@Model.SignedContracts</h4>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</a>
 			</div>
 			<div class="col-sm-6 col-md-3">
-				<div class="card card-stats card-round">
-					<div class="card-body">
-						<div class="row align-items-center">
-							<div class="col-icon">
-								<div class="icon-big text-center icon-warning bubble-shadow-small">
-									<i class="fas fa-user-clock"></i>
+				<a href="~/Contracts/All">
+					<div class="card card-stats card-round">
+						<div class="card-body">
+							<div class="row align-items-center">
+								<div class="col-icon">
+									<div class="icon-big text-center icon-warning bubble-shadow-small">
+										<i class="fas fa-user-clock"></i>
+									</div>
 								</div>
-							</div>
-							<div class="col col-stats ms-3 ms-sm-0">
-								<div class="numbers">
-									<p class="card-category fw-bold">Opened Contracts</p>
-									<h4 class="card-title fw-extrabold">@Model.OpenedContracts</h4>
+								<div class="col col-stats ms-3 ms-sm-0">
+									<div class="numbers">
+										<p class="card-category fw-bold">Opened Contracts</p>
+										<h4 class="card-title fw-extrabold">@Model.OpenedContracts</h4>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</a>
 			</div>
 		</div>
 
@@ -176,7 +184,7 @@
 			<div class="col-md-4">
 				<div class="card card-primary bg-primary-gradient">
 					<div class="card-body skew-shadow">
-						<h1 class="fw-bolder">@Model.TotalSalesAllTime <span class="fs-5">EGP</span></h1>
+						<h1 class="fw-bolder">@Model.TotalSalesAllTime <span class="fs-5">EUR</span></h1>
 						<h5 class="op-8">Total Sales</h5>
 						<div class="pull-left mt-3">
 							<label>From <span class="fw-bold">@Model.FirstContractCreatedAt.ToString("MMMM yyyy")</span>  - Till now</label>
@@ -185,7 +193,7 @@
 				</div>
 				<div class="card card-success bg-success-gradient">
 					<div class="card-body skew-shadow">
-						<h1 class="fw-bolder">@Model.TotalSalesLastWeek <span class="fs-5">EGP</span></h1>
+						<h1 class="fw-bolder">@Model.TotalSalesLastWeek <span class="fs-5">EUR</span></h1>
 						<h5 class="op-8">Last Week Sales</h5>
 						<div class="pull-left mt-3">
 							<label>From <span class="fw-bold">@Model.LastWeekStartAt.ToString("dddd dd MMMM")</span> - Till now</label>
@@ -217,7 +225,7 @@
 												<span class="badge badge-info fw-bolder">Customer</span>
 											}
 										}
-										
+
 									</div>
 								}
 							}

@@ -95,19 +95,18 @@
 								<div class="form-group">
 									<label class="text-black-50 fw-extrabold">Rate / Night</label>
 									<div class="input-icon">
-										<span class="badge badge-primary fw-extrabold fs-5">@Model.RatePerNight <small>EGP</small></span>
+										<span class="badge badge-primary fw-extrabold fs-5">@Model.RatePerNight <small>EUR</small></span>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-2 col-lg-2">
 								<div class="form-group">
-									<label class="text-black-50 fw-extrabold">Tax Perc.(%)</label>
+									<label class="text-black-50 fw-extrabold">Service Perc.(%)</label>
 									<div class="input-icon">
-										<span class="badge badge-primary fw-extrabold fs-5">@Model.TaxPerc</span>
+										<span class="badge badge-primary fw-extrabold fs-5">@Model.TaxPerc <small>%</small></span>
 									</div>
 								</div>
 							</div>
-
 						</div>
 						<div class="row">
 							<div class="col-md-8 col-lg-8">
@@ -122,7 +121,7 @@
 								<div class="form-group">
 									<label class="text-black-50 fw-extrabold">SubTotal</label>
 									<div class="input-icon">
-										<span class="badge badge-success fw-extrabold fs-4">@Model.SubTotal <small>EGP</small></span>
+										<span class="badge badge-success fw-extrabold fs-4">@Model.SubTotal <small>EUR</small></span>
 									</div>
 								</div>
 							</div>
@@ -130,7 +129,7 @@
 								<div class="form-group">
 									<label class="text-black-50 fw-extrabold">Total</label>
 									<div class="input-icon">
-										<span class="badge badge-success fw-extrabold fs-4">@Model.Total <small>EGP</small></span>
+										<span class="badge badge-success fw-extrabold fs-4">@Model.Total <small>EUR</small></span>
 									</div>
 								</div>
 							</div>
@@ -159,7 +158,7 @@
 					</div>
 					<div class="card-body">
 						<div class="row">
-							<div class="col-md-3 col-lg-3 text-wrap">
+							<div class="col-md-4 col-lg-4 text-wrap">
 								<div class="form-group">
 									<label class="text-black-50 fw-extrabold">Full Name</label>
 									<div class="input-icon">
@@ -167,7 +166,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-3 col-lg-3 text-wrap">
+							<div class="col-md-4 col-lg-4 text-wrap">
 								<div class="form-group">
 									<label class="text-black-50 fw-extrabold">Company Name</label>
 									<div class="input-icon">
@@ -175,25 +174,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-3 col-lg-3 text-wrap">
-								<div class="form-group">
-									<label class="text-black-50 fw-extrabold">Billing Address</label>
-									<div class="input-icon">
-										<label class="fw-bold fs-5 text-wrap">@Model.CommonUser.BillingAddress</label>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3 col-lg-3 text-wrap">
-								<div class="form-group">
-									<label class="text-black-50 fw-extrabold">Postal Code</label>
-									<div class="input-icon">
-										<label class="fw-bold fs-5 text-wrap">@Model.CommonUser.PostalCode</label>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4 col-lg-4">
+							<div class="col-md-4 col-lg-4 text-wrap">
 								<div class="form-group">
 									<label class="text-black-50 fw-extrabold">Email</label>
 									<div class="input-icon">
@@ -201,11 +182,21 @@
 									</div>
 								</div>
 							</div>
+						</div>
+						<div class="row">
 							<div class="col-md-4 col-lg-4">
 								<div class="form-group">
 									<label class="text-black-50 fw-extrabold">Phone No.</label>
 									<div class="input-icon">
 										<label class="fw-bold fs-5">@Model.CommonUser.PhoneNumber</label>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4 col-lg-4">
+								<div class="form-group">
+									<label class="text-black-50 fw-extrabold">Viewed At</label>
+									<div class="input-icon">
+										<label class="fw-bold fs-5">@Model.ViewedAt</label>
 									</div>
 								</div>
 							</div>
@@ -218,61 +209,52 @@
 								</div>
 							</div>
 						</div>
-						@* <div class="row">
-							<div class="col-md-3 col-lg-3">
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header">
+						<div class="card-title">Credit Card Details</div>
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-4 col-lg-4 text-wrap">
 								<div class="form-group">
-									<label class="text-black-50 fw-extrabold" >Name on Credit Card</label>
+									<label class="text-black-50 fw-extrabold">Billing Address</label>
 									<div class="input-icon">
-										<label class="fw-bold fs-5">@Model.CommonUser.NameOnCreditCard</label>
+										<label class="fw-bold fs-5 text-wrap">@Model.BillingAddress</label>
 									</div>
 								</div>
 							</div>
-							<div class="col-md-3 col-lg-3">
+							<div class="col-md-4 col-lg-4 text-wrap">
 								<div class="form-group">
-									<label class="text-black-50 fw-extrabold" >Credit Card No.</label>
+									<label class="text-black-50 fw-extrabold">Postal Code</label>
 									<div class="input-icon">
-										<label class="fw-bold fs-5">@Model.CommonUser.CardNumber</label>
+										<label class="fw-bold fs-5 text-wrap">@Model.PostalCode</label>
 									</div>
 								</div>
 							</div>
-							<div class="col-md-3 col-lg-3">
-								<div class="form-group">
-									<label class="text-black-50 fw-extrabold" >Exp. Date</label>
-									<div class="input-icon">
-										<label class="fw-bold fs-5">@Model.CommonUser.CardExpDate</label>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3 col-lg-3">
-								<div class="form-group">
-									<label class="text-black-50 fw-extrabold" >CVC. Code</label>
-									<div class="input-icon">
-										<label class="fw-bold fs-5">@Model.CommonUser.CardCVC</label>
-									</div>
-								</div>
-							</div>
-						</div> *@
+						</div>
 						<div class="row mt-3">
-							<div class="col-md-4">
+							<div class="col-md-5">
 								<div class="card card-secondary bg-secondary-gradient ms-2">
 									<div class="card-body skew-shadow">
 										<img src="~/DashBoardAssets/img/visa.svg" height="12.5" alt="Visa Logo" />
 										<div class="row">
 											<div class="col-8 pe-0">
-												<h3 class="py-4 mb-0">@Model.CommonUser.CardNumber</h3>
+												<h3 class="py-4 mb-0">@Model.CardNumber</h3>
 											</div>
 											<div class="col-4 ps-0 text-end pt-2">
 												<div class="text-small text-uppercase fw-bold op-8">
 													CVC
 												</div>
 												<h5 class="fw-bold mb-0">
-													@Model.CommonUser.CardCVC
+													@Model.CardCVC
 												</h5>
 											</div>
 										</div>
 										<div class="row">
 											<div class="col-8 pe-0">
-												<h5 class="fw-bold mb-1">@Model.CommonUser.NameOnCreditCard</h5>
+												<h5 class="fw-bold mb-1">@Model.NameOnCreditCard</h5>
 												<div class="text-small text-uppercase fw-bold op-8">
 													Card Holder
 												</div>
@@ -280,14 +262,14 @@
 											<div class="col-4 ps-0 text-end">
 												@{
 													DateTime expDate;
-													var isParsed = DateTime.TryParse(Model.CommonUser.CardExpDate, out expDate);
+													var isParsed = DateTime.TryParse(Model.CardExpDate, out expDate);
 													if (isParsed)
 													{
 														<h5 class="fw-bold mb-1">@expDate.ToString("MM-yy")</h5>
 													}
 													else
 													{
-														<h5 class="fw-bold mb-1">@Model.CommonUser.CardExpDate</h5>
+														<h5 class="fw-bold mb-1">@Model.CardExpDate</h5>
 													}
 												}
 												<div class="text-small text-uppercase fw-bold op-8">
@@ -318,6 +300,8 @@
 												<th scope="col" class="text-start">Check Out</th>
 												<th scope="col" class="text-start">No. Of Nights</th>
 												<th scope="col" class="text-start">Amenities</th>
+												<th scope="col" class="text-start">Comments</th>
+												<th scope="col" class="text-start">Deadline</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -331,6 +315,8 @@
 														<td class="text-start">@item.CheckOut.ToShortDateString()</td>
 														<td class="text-start">@item.NumOfNights</td>
 														<td class="text-start">@item.RoomAmenities</td>
+														<td class="text-start">@item.Comment</td>
+														<td class="text-start">@item.Deadline.ToShortDateString()</td>
 													</tr>
 												}
 											}

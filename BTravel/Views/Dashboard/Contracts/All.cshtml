@@ -133,7 +133,7 @@
 								<ul class="pagination">
 									@if ((Model.PageIndex + 1) > 1)
 									{
-										<li><a href="@Url.Action("All" , "Contracts", new { PageIndex = Model.PageIndex - 1 })">Prev</a></li>
+										<li><a href="@Url.Action("All" , "Contracts", new { PageIndex = Model.PageIndex - 1, Search = Model.Search })">Prev</a></li>
 									}
 
 									@for (int i = 1; i <= Model.TotalPages; i++)
@@ -144,13 +144,13 @@
 										}
 										else
 										{
-											<li><a href="@Url.Action("All" , "Contracts", new { PageIndex = i - 1 })">@i</a></li>
+											<li><a href="@Url.Action("All" , "Contracts", new { PageIndex = i - 1, Search = Model.Search })">@i</a></li>
 										}
 									}
 
 									@if ((Model.PageIndex + 1) < Model.TotalPages)
 									{
-										<li><a href="@Url.Action("All" , "Contracts", new { PageIndex = Model.PageIndex + 1 })">Next</a></li>
+										<li><a href="@Url.Action("All" , "Contracts", new { PageIndex = Model.PageIndex + 1, Search = Model.Search })">Next</a></li>
 									}
 								</ul>
 							}

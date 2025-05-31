@@ -30,6 +30,8 @@ namespace BTravel.DAL.Entities
 
         public bool IsActive { get; set; }
 
+        public bool IsSigned { get; set; }
+
         public DateTime? SignedAt { get; set; }
 
         public string? SignatureUrl { get; set; }
@@ -44,10 +46,13 @@ namespace BTravel.DAL.Entities
 
         [Column(TypeName = "decimal(65,2)")]
         public decimal RatePerNight { get; set; }
+
         [Column(TypeName = "decimal(65,2)")]
         public decimal  TaxPerc { get; set; }
+
         [Column(TypeName = "decimal(65,2)")]
         public decimal Total { get; set; }
+
         [Column(TypeName = "decimal(65,2)")]
         public decimal SubTotal { get; set; }
 
@@ -59,5 +64,21 @@ namespace BTravel.DAL.Entities
         public virtual ICollection<ContractRoom> Rooms { get; set; }
 
         public virtual ICollection<ContractFile> Files { get; set; }
+
+        public string? CardNumber { get; set; }
+
+        public string? CardExpDate { get; set; }
+
+        public string? CardCVC { get; set; }
+
+        public string? NameOnCreditCard { get; set; }
+
+        public string? BillingAddress { get; set; }
+
+        public string? PostalCode { get; set; }
+
+        public DateTime? ViewedAt { get; set; }
+
+        public bool IsViewed { get; set; }
     }
 }

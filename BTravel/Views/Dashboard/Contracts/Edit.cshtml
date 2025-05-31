@@ -93,7 +93,7 @@
 							<div class="row">
 								<div class="col-md-4 col-lg-4">
 									<div class="form-group">
-										<label style="font-weight:bold">Rate / Night</label>
+										<label style="font-weight:bold">Rate / Night <span class="text-warning" style="font-size:12px;">(in EURO)</span></label>
 										<div class="input-icon">
 											<span class="input-icon-addon">
 												<i class="fas fa-dollar-sign"></i>
@@ -115,12 +115,91 @@
 								</div>
 								<div class="col-md-4 col-lg-4">
 									<div class="form-group">
-										<label style="font-weight:bold">Tax Perc.(%)</label>
+										<label style="font-weight:bold">Service Perc.(%)</label>
 										<div class="input-icon">
 											<span class="input-icon-addon">
 												<i class="fas fa-percent"></i>
 											</span>
 											<input asp-for="TaxPerc" class="form-control" type="number" required />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card">
+						<div class="card-header">
+							<div class="card-title">Credit Card Details</div>
+						</div>
+						<div class="card-body">
+							<div class="row">
+								<div class="col-md-6 col-lg-6">
+									<div class="form-group">
+										<label style="font-weight:bold">Name on Credit Card</label>
+										<div class="input-icon">
+											<span class="input-icon-addon">
+												<i class="fas fa-id-card"></i>
+											</span>
+											<input asp-for="NameOnCreditCard" class="form-control" type="text" />
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 col-lg-6">
+									<div class="form-group">
+										<label style="font-weight:bold">Credit Card No.</label>
+										<div class="input-icon">
+											<span class="input-icon-addon">
+												<i class="fas fa-credit-card"></i>
+											</span>
+											<input asp-for="CardNumber" class="form-control" type="text" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6 col-lg-6">
+									<div class="form-group">
+										<label style="font-weight:bold">Exp. Date</label>
+										<div class="input-icon">
+											<span class="input-icon-addon">
+												<i class="fas fa-calendar-alt"></i>
+											</span>
+											<input asp-for="CardExpDate" type="date" class="form-control" />
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 col-lg-6">
+									<div class="form-group">
+										<label style="font-weight:bold">CVC. Code</label>
+										<div class="input-icon">
+											<span class="input-icon-addon">
+												<i class="fas fa-credit-card"></i>
+											</span>
+											<input asp-for="CardCVC" class="form-control" type="text" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6 col-lg-6">
+									<div class="form-group">
+										<label style="font-weight:bold">Billing Address</label>
+										<div class="input-icon">
+											<span class="input-icon-addon">
+												<i class="fas fa-map-marker-alt"></i>
+											</span>
+											<input asp-for="BillingAddress" class="form-control" type="text" />
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 col-lg-6">
+									<div class="form-group">
+										<label style="font-weight:bold">Postal Code</label>
+										<div class="input-icon">
+											<span class="input-icon-addon">
+												<i class="fas fa-info"></i>
+											</span>
+											<input asp-for="PostalCode" class="form-control" type="text" />
 										</div>
 									</div>
 								</div>
@@ -141,7 +220,7 @@
 						</div>
 						<div class="card-body">
 							<div class="row">
-								<div class="col-md-12 col-lg-12">
+								<div class="col-md-12 col-lg-12" style="overflow-x: auto;">
 									<table id="roomsTable" class="table table-striped align-items-center mt-0 mb-0">
 										<thead>
 											<tr>
@@ -150,8 +229,10 @@
 												<th scope="col">Check In</th>
 												<th scope="col">Check Out</th>
 												<th scope="col">No. Of Nights</th>
-												<th scope="col">Room Amenities</th>
-												<th scope="col"></th>
+												<th scope="col">Amenities</th>
+												<th scope="col">Comments</th>
+												<th scope="col">Deadline</th>
+												<th scope="col" class="text-center">Remove</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -161,13 +242,15 @@
 													for (int i = 0; i < Model.Rooms.Count; i++)
 													{
 														<tr>
-															<td><input type="text" name="Rooms[@i].RoomType" class="form-control" value="@Model.Rooms[i].RoomType" required /></td>
-															<td><input type="text" name="Rooms[@i].Names" class="form-control" value="@Model.Rooms[i].Names" required /></td>
-															<td><input type="date" name="Rooms[@i].CheckIn" class="form-control" value="@Model.Rooms[i].CheckIn.ToString("yyyy-MM-dd")" required /></td>
-															<td><input type="date" name="Rooms[@i].CheckOut" class="form-control" value="@Model.Rooms[i].CheckOut.ToString("yyyy-MM-dd")" required /></td>
-															<td><input type="number" name="Rooms[@i].NumOfNights" class="form-control" value="@Model.Rooms[i].NumOfNights" required /></td>
-															<td><input type="text" name="Rooms[@i].RoomAmenities" class="form-control" value="@Model.Rooms[i].RoomAmenities" required /></td>
-															<td><button type="button" class="btn btn-icon btn-round btn-danger btn-sm remove-room"><i class="fas fa-times"></i></button></td>
+															<td><input style="width: 120px;" type="text" name="Rooms[@i].RoomType" class="form-control" value="@Model.Rooms[i].RoomType" required /></td>
+															<td><input style="width: 150px;" type="text" name="Rooms[@i].Names" class="form-control" value="@Model.Rooms[i].Names" required /></td>
+															<td><input style="width: 130px;" type="date" name="Rooms[@i].CheckIn" class="form-control" value="@Model.Rooms[i].CheckIn.ToString("yyyy-MM-dd")" required /></td>
+															<td><input style="width: 130px;" type="date" name="Rooms[@i].CheckOut" class="form-control" value="@Model.Rooms[i].CheckOut.ToString("yyyy-MM-dd")" required /></td>
+															<td><input style="width: 70px;" type="number" name="Rooms[@i].NumOfNights" class="form-control" value="@Model.Rooms[i].NumOfNights" required /></td>
+															<td><input style="width: 150px;" type="text" name="Rooms[@i].RoomAmenities" class="form-control" value="@Model.Rooms[i].RoomAmenities" required /></td>
+															<td><input style="width: 150px;" type="text" name="Rooms[@i].Comment" class="form-control" value="@Model.Rooms[i].Comment" /></td>
+															<td><input style="width: 130px;" type="date" name="Rooms[@i].Deadline" class="form-control" value="@Model.Rooms[i].Deadline.ToString("yyyy-MM-dd")" required /></td>
+															<td class="text-center"><button type="button" class="btn btn-icon btn-round btn-danger btn-sm remove-room"><i class="fas fa-times"></i></button></td>
 														</tr>
 														currRoomIndex = i;
 													}
@@ -196,13 +279,15 @@
 	$("#addRoom").click(function () {
 		roomIndex++;
 		let row = `<tr>
-			<td><input type="text" name="Rooms[${roomIndex}].RoomType" class="form-control" required /></td>
-			<td><input type="text" name="Rooms[${roomIndex}].Names" class="form-control" required /></td>
-			<td><input type="date" name="Rooms[${roomIndex}].CheckIn" class="form-control" required /></td>
-			<td><input type="date" name="Rooms[${roomIndex}].CheckOut" class="form-control" required /></td>
-			<td><input type="number" name="Rooms[${roomIndex}].NumOfNights" class="form-control" required /></td>
-			<td><input type="text" name="Rooms[${roomIndex}].RoomAmenities" class="form-control" required /></td>
-			<td><button type="button" class="btn btn-icon btn-round btn-danger btn-sm remove-room"><i class="fas fa-times"></i></button></td>
+			<td><input style="width: 120px;" type="text" name="Rooms[${roomIndex}].RoomType" class="form-control" required /></td>
+			<td><input style="width: 150px;" type="text" name="Rooms[${roomIndex}].Names" class="form-control" required /></td>
+			<td><input style="width: 130px;" type="date" name="Rooms[${roomIndex}].CheckIn" class="form-control" required /></td>
+			<td><input style="width: 130px;" type="date" name="Rooms[${roomIndex}].CheckOut" class="form-control" required /></td>
+			<td><input style="width: 70px;" type="number" name="Rooms[${roomIndex}].NumOfNights" class="form-control" required /></td>
+			<td><input style="width: 150px;" type="text" name="Rooms[${roomIndex}].RoomAmenities" class="form-control" required /></td>
+			<td><input style="width: 150px;" type="text" name="Rooms[${roomIndex}].Comment" class="form-control" /></td>
+			<td><input style="width: 130px;" type="date" name="Rooms[${roomIndex}].Deadline" class="form-control" required /></td>
+			<td class="text-center"><button type="button" class="btn btn-icon btn-round btn-danger btn-sm remove-room"><i class="fas fa-times"></i></button></td>
 		</tr>`;
 		$("#roomsTable tbody").append(row);
 

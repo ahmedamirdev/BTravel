@@ -1,0 +1,151 @@
+﻿@using BTravel.CommonDefinitions.DTOs.Contract;
+@using BTravel.CommonDefinitions.Enums
+@using BTravel.CommonDefinitions.Responses
+@using BTravel.DAL.Entities;
+@model BaseResponse<IEnumerable<ContractDTO>>;
+
+@{
+	var successMessage = TempData["SuccessMessage"] as string;
+	var errorMessage = TempData["ErrorMessage"] as string;
+}
+
+<!-- CSS Files -->
+<link rel="stylesheet" href="~/PortalAssets/css/MyBadges.css" />
+<link rel="stylesheet" href="~/PortalAssets/css/MyTables.css" />
+<link rel="stylesheet" href="~/PortalAssets/css/MyPagination.css" />
+<link rel="stylesheet" href="~/PortalAssets/css/MyCards.css" />
+
+<!-- Page Header -->
+<div class="container-fluid bg-primary pt-5 mb-5 hero-header">
+	<div class="container pt-5">
+		<div class="row justify-content-center pt-3">
+			<div class="col-lg-10 text-center">
+				<h1 class="display-3 text-white animated slideInDown fs-1">My Contracts</h1>
+				<nav aria-label="breadcrumb">
+					<ol class="breadcrumb justify-content-center">
+						<li class="breadcrumb-item text-white">Home</li>
+						<li class="breadcrumb-item text-white active" aria-current="page">My Contracts</li>
+					</ol>
+				</nav>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="table-responsive">
+				@{
+					if (Model.Data == null || Model.Data.Count() <= 0)
+					{
+						<h4 class="fw-bold mb-3">No data found</h4>
+					}
+				}
+				<table id="basic-datatables" class="table table-hover align-items-center mb-0">
+					<thead class="thead-light">
+						<tr>
+							<th scope="col">#ID</th>
+							<th scope="col" class="text-start">Hotel</th>
+							<th scope="col" class="text-start" style="width:5%">No. Of Rooms</th>
+							<th scope="col" class="text-start" style="width:5%">No. Of Nights</th>
+							<th scope="col" class="text-end">SubTotal <span style="font-size: 12px;">(EUR)</span></th>
+							<th scope="col" class="text-end">Total <span style="font-size: 12px;">(EUR)</span></th>
+							<th scope="col" class="text-end">Status</th>
+							<th scope="col" class="text-center">Created At</th>
+							<th scope="col" class="text-center">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						@{
+							foreach (var item in Model.Data)
+							{
+								<tr>
+									<th scope="row">
+										<a target="_blank" href="~/Home/CDetails/@item.ContractId">#@item.ContractId</a>
+									</th>
+									<td class="text-start fw-bold" style="color: #1d1d2e">@item.HotelName</td>
+									<td class="text-start">@item.NoOfRooms</td>
+									<td class="text-start">@item.NoOfNights</td>
+									<td class="text-end fw-bold" style="color: #1d1d2e">@item.SubTotal</td>
+									<td class="text-end fw-bold" style="color: #1d1d2e">@item.Total</td>
+									<td class="text-end">
+										@{
+											if (item.StatusId == (int)EContractStatus.Pending)
+											{
+												<span class="badge badge-info fw-bolder" style="font-size:12px">Pending</span>
+											}
+											else if (item.StatusId == (int)EContractStatus.Opened)
+											{
+												<span class="badge badge-warning fw-bolder" style="font-size:12px">Opened</span>
+											}
+											else if (item.StatusId == (int)EContractStatus.Sigend)
+											{
+												<span class="badge badge-success fw-bolder" style="font-size:12px">Signed</span>
+											}
+										}
+									</td>
+									<td class="text-center">@item.CreatedAt.ToString("dd/MM/yyyy")</td>
+									<td class="text-center">
+										<a target="_blank" href="~/Home/CDetails/@item.ContractId" class="me-1" title="View">
+											<i class="fas fa-eye" style="font-size:20px; color:darkorange"></i>
+										</a>
+										@if (item.IsSigned == false)
+										{
+											<a target="_blank" href="~/Home/CSign/@item.ContractId" class="text-success" title="Sign">
+												<i class="fas fa-pen" style="font-size:18px"></i>
+											</a>
+										}
+									</td>
+								</tr>
+							}
+						}
+					</tbody>
+				</table>
+			</div>
+			<div class="row mt-2">
+				<div class="col-md-6 text-start">
+					<p>Showing @Model.From to @Model.To of @Model.TotalCount entries</p>
+				</div>
+				<div class="col-md-6 text-end">
+					@if (Model.TotalPages > 1)
+					{
+						<div class="col-md-12 text-end">
+							<ul class="pagination pg-primary justify-content-end">
+								@if ((Model.PageIndex + 1) > 1)
+								{
+									<li class="page-item">
+										<a href="@Url.Action("Contracts" , "Home", new { PageIndex = Model.PageIndex - 1 })" class="page-link">
+											@* <span aria-hidden="true">&laquo;</span> *@
+											<span>Previous</span>
+										</a>
+									</li>
+								}
+								@for (int i = 1; i <= Model.TotalPages; i++)
+								{
+									if (i == (Model.PageIndex + 1))
+									{
+										<li class="page-item active"><a class="page-link">@i</a></li>
+									}
+									else
+									{
+										<li class="page-item"><a class="page-link" href="@Url.Action("Contracts" , "Home", new { PageIndex = i - 1 })">@i</a></li>
+									}
+								}
+								@if ((Model.PageIndex + 1) < Model.TotalPages)
+								{
+									<li class="page-item">
+										<a href="@Url.Action("Contracts" , "Home", new { PageIndex = Model.PageIndex + 1 })" class="page-link">
+											@* <span aria-hidden="true">&raquo;</span> *@
+											<span>Next</span>
+										</a>
+									</li>
+								}
+							</ul>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

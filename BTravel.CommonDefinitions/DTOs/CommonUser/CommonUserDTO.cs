@@ -16,12 +16,7 @@ namespace BTravel.CommonDefinitions.DTOs.CommonUser
         public DateTime CreatedAt { get; set; }
         public string? ImageUrl { get; set; }
         public string? CompanyName { get; set; }
-        public string? CardNumber { get; set; }
-        public string? CardExpDate { get; set; }
-        public string? CardCVC { get; set; }
-        public string? NameOnCreditCard { get; set; }
-        public string? BillingAddress { get; set; }
-        public string? PostalCode { get; set; }
+        
         public string? DefaultSignatureUrl { get; set; }
         public bool IsActive { get; set; }
 

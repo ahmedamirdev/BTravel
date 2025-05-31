@@ -34,6 +34,9 @@ namespace BTravel.BL.Services.ContractRoom.Commands
             newContractRoom.CheckOut = model.CheckOut;
             newContractRoom.NumOfNights = model.NumOfNights;
             newContractRoom.RoomAmenities = model.RoomAmenities;
+            newContractRoom.Comment = model.Comment;
+            newContractRoom.Deadline = model.Deadline;
+
             newContractRoom.ContractId = model.ContractId;
 
             newContractRoom.CreatedAt = DateTime.UtcNow;

@@ -73,14 +73,6 @@ namespace BTravel.BL.Services.CommonUser.Commands
             currCommonUser.RoleId = model.RoleId;
             currCommonUser.CompanyName = model.CompanyName;
 
-            currCommonUser.NameOnCreditCard = AESEncryptionHelper.Encrypt(model.NameOnCreditCard);
-            currCommonUser.CardNumber = AESEncryptionHelper.Encrypt(model.CardNumber);
-            currCommonUser.CardCVC = AESEncryptionHelper.Encrypt(model.CardCVC);
-            currCommonUser.CardExpDate = AESEncryptionHelper.Encrypt(model.CardExpDate);
-
-            currCommonUser.BillingAddress = model.BillingAddress;
-            currCommonUser.PostalCode = model.PostalCode;
-
             currCommonUser.LastModifiedAt = DateTime.UtcNow;
             currCommonUser.LastModifiedBy = _request.UserID;
 

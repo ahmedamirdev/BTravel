@@ -29,7 +29,8 @@ namespace BTravel.BL.Services.Security.Encryption
         /// </summary>
         public static string Encrypt(string plaintext)
         {
-            if (string.IsNullOrEmpty(plaintext)) throw new ArgumentNullException(nameof(plaintext));
+            if (string.IsNullOrWhiteSpace(plaintext))
+                return plaintext;
 
             using (Aes aes = Aes.Create())
             {
@@ -53,7 +54,8 @@ namespace BTravel.BL.Services.Security.Encryption
         /// </summary>
         public static string Decrypt(string ciphertext)
         {
-            if (string.IsNullOrEmpty(ciphertext)) throw new ArgumentNullException(nameof(ciphertext));
+            if (string.IsNullOrWhiteSpace(ciphertext))
+                return ciphertext;
 
             using (Aes aes = Aes.Create())
             {

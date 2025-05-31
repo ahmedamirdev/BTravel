@@ -112,79 +112,7 @@
 										</div>
 									</div>
 								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Name on Credit Card</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-id-card"></i>
-											</span>
-											<input asp-for="NameOnCreditCard" class="form-control" type="text" required />
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Credit Card No.</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-credit-card"></i>
-											</span>
-											<input asp-for="CardNumber" class="form-control" type="text" required />
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Exp. Date</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-calendar-alt"></i>
-											</span>
-											<input asp-for="CardExpDate" type="date" class="form-control" required />
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">CVC. Code</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-credit-card"></i>
-											</span>
-											<input asp-for="CardCVC" class="form-control" type="text" required />
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Billing Address</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-map-marker-alt"></i>
-											</span>
-											<input asp-for="BillingAddress" class="form-control" type="text" />
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group">
-										<label style="font-weight:bold">Postal Code</label>
-										<div class="input-icon">
-											<span class="input-icon-addon">
-												<i class="fas fa-info"></i>
-											</span>
-											<input asp-for="PostalCode" class="form-control" type="text" />
-										</div>
-									</div>
-								</div>
-							</div>
+							</div>					
 							<div class="row">
 								<div class="col-md-6 col-lg-6">
 									<div class="form-group">
@@ -193,7 +121,7 @@
 											<span class="input-icon-addon">
 												<i class="fas fa-user"></i>
 											</span>
-											<select asp-for="RoleId" class="form-select form-control">
+											<select asp-for="RoleId" class="form-select form-control" required>
 												<option value="1">Admin (Full Access)</option>
 												<option value="2">Customer</option>
 											</select>

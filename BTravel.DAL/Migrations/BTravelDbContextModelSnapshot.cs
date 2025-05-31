@@ -71,18 +71,6 @@ namespace BTravel.DAL.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("CommonUserId"));
 
-                    b.Property<string>("BillingAddress")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("CardCVC")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("CardExpDate")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("CardNumber")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("CompanyName")
                         .HasColumnType("longtext");
 
@@ -126,18 +114,12 @@ namespace BTravel.DAL.Migrations
                     b.Property<int?>("LastModifiedBy")
                         .HasColumnType("int");
 
-                    b.Property<string>("NameOnCreditCard")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("PostalCode")
                         .HasColumnType("longtext");
 
                     b.Property<string>("PrimaryMail")
@@ -165,6 +147,18 @@ namespace BTravel.DAL.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ContractId"));
 
+                    b.Property<string>("BillingAddress")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CardCVC")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CardExpDate")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CardNumber")
+                        .HasColumnType("longtext");
+
                     b.Property<int>("CommonUserId")
                         .HasColumnType("int");
 
@@ -190,17 +184,29 @@ namespace BTravel.DAL.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit(1)");
 
+                    b.Property<bool>("IsSigned")
+                        .HasColumnType("bit(1)");
+
+                    b.Property<bool>("IsViewed")
+                        .HasColumnType("bit(1)");
+
                     b.Property<DateTime>("LastModifiedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("LastModifiedBy")
                         .HasColumnType("int");
 
+                    b.Property<string>("NameOnCreditCard")
+                        .HasColumnType("longtext");
+
                     b.Property<int>("NoOfNights")
                         .HasColumnType("int");
 
                     b.Property<int>("NoOfRooms")
                         .HasColumnType("int");
+
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("longtext");
 
                     b.Property<decimal>("RatePerNight")
                         .HasColumnType("decimal(65,2)");
@@ -222,6 +228,9 @@ namespace BTravel.DAL.Migrations
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(65,2)");
+
+                    b.Property<DateTime?>("ViewedAt")
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("ContractId");
 
@@ -294,6 +303,9 @@ namespace BTravel.DAL.Migrations
                     b.Property<DateTime>("CheckOut")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("Comment")
+                        .HasColumnType("longtext");
+
                     b.Property<int>("ContractId")
                         .HasColumnType("int");
 
@@ -302,6 +314,9 @@ namespace BTravel.DAL.Migrations
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("Deadline")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("DeletedAt")
                         .HasColumnType("datetime(6)");

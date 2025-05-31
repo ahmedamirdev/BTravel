@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using BTravel.BL.Helpers;
 using BTravel.BL.Services.Security.Encryption;
+using BTravel.CommonDefinitions;
 using BTravel.CommonDefinitions.DTOs.CommonUser;
 using BTravel.CommonDefinitions.Requests;
 using BTravel.CommonDefinitions.Responses;
@@ -37,18 +40,11 @@ namespace BTravel.BL.Services.CommonUser.Queries
                             PhoneNumber = c.PhoneNumber,
                             PrimaryMail = c.PrimaryMail,
                             IsPrimaryMailVerified = c.IsPrimaryMailVerified,
-                            CreatedAt = c.CreatedAt.AddHours(2),
-                            ImageUrl = c.ImageUrl,
+                            CreatedAt = c.CreatedAt.ConvertUtcToCairoTime(),
+                            ImageUrl = Constants.BaseUrl + c.ImageUrl,
                             CompanyName = c.CompanyName,
 
-                            CardNumber = AESEncryptionHelper.Decrypt(c.CardNumber),
-                            CardExpDate = AESEncryptionHelper.Decrypt(c.CardExpDate),
-                            CardCVC = AESEncryptionHelper.Decrypt(c.CardCVC),
-                            NameOnCreditCard = AESEncryptionHelper.Decrypt(c.NameOnCreditCard),
-
-                            BillingAddress = c.BillingAddress,
-                            PostalCode = c.PostalCode,
-                            DefaultSignatureUrl = c.DefaultSignatureUrl,
+                            DefaultSignatureUrl = Constants.BaseUrl + c.DefaultSignatureUrl,
 
                             RoleId = c.RoleId,
                             RoleName = c.Role.Name,

@@ -27,6 +27,7 @@ namespace BTravel.Controllers
             _context = context;
         }
 
+        [AuthorizePerRole("View_Dashboard")]
         public IActionResult Index()
         {
             var dto = new DashboardDTO();

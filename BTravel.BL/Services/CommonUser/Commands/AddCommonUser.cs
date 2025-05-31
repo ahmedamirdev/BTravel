@@ -78,12 +78,6 @@ namespace BTravel.BL.Services.CommonUser.Commands
             newCommonUser.RoleId = model.RoleId;
 
             newCommonUser.CompanyName = model.CompanyName;
-            newCommonUser.NameOnCreditCard = AESEncryptionHelper.Encrypt(model.NameOnCreditCard);
-            newCommonUser.CardNumber = AESEncryptionHelper.Encrypt(model.CardNumber);
-            newCommonUser.CardCVC = AESEncryptionHelper.Encrypt(model.CardCVC);
-            newCommonUser.CardExpDate = AESEncryptionHelper.Encrypt(model.CardExpDate);
-            newCommonUser.BillingAddress = model.BillingAddress;
-            newCommonUser.PostalCode = model.PostalCode;
 
             _request.Context.CommonUsers.Add(newCommonUser);
             _request.Context.SaveChanges();

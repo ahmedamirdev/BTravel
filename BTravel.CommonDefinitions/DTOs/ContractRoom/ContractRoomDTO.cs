@@ -17,6 +17,9 @@ namespace BTravel.CommonDefinitions.DTOs.ContractRoom
         public int NumOfNights { get; set; }
         public string RoomAmenities { get; set; }
 
+        public string? Comment { get; set; }
+        public DateTime Deadline { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public int CreatedBy { get; set; }
 

@@ -16,6 +16,13 @@ namespace BTravel.CommonDefinitions.DTOs.Contract
         public decimal RatePerNight { get; set; }
         public decimal TaxPerc { get; set; }
 
+        public string? CardNumber { get; set; }
+        public string? CardExpDate { get; set; }
+        public string? CardCVC { get; set; }
+        public string? NameOnCreditCard { get; set; }
+        public string? BillingAddress { get; set; }
+        public string? PostalCode { get; set; }
+
         public int CommonUserId { get; set; }
 
         public List<ContractRoomAddDTO> Rooms { get; set; }

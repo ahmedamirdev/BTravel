@@ -1,4 +1,5 @@
 using System.Text;
+using System.Threading.Tasks;
 using BTravel.Controllers;
 using BTravel.DAL;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -10,7 +11,7 @@ namespace BTravel
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             //***************************************** Create the WebApplication *****************************************//
             var builder = WebApplication.CreateBuilder(args);
@@ -75,6 +76,8 @@ namespace BTravel
             //***************************************** Build the WebApplication *****************************************//
             var app = builder.Build();
 
+
+
             app.UseSession();
 
             // Configure the HTTP request pipeline.
@@ -95,12 +98,12 @@ namespace BTravel
 
             app.UseRouting();
 
-            
+
             app.UseAuthentication();
 
             app.UseAuthorization();
 
-           // app.UseEndpoints(e => e.MapControllers());
+            // app.UseEndpoints(e => e.MapControllers());
 
             //*** Add Custom Middleware
             //app.UseMiddleware<MyCustomMiddleware>();
@@ -108,6 +111,17 @@ namespace BTravel
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            try
+            {
+                using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
+                {
+                    var context = serviceScope.ServiceProvider.GetRequiredService<BTravelDbContext>();
+                    context.Database.Migrate();
+                    DatabaseSeeder.SeedRolesAndServices(context);
+                }
+            }
+            catch { }
 
             app.Run();
         }

@@ -47,5 +47,9 @@ namespace BTravel.DAL.Entities
 
         [ForeignKey("ContractId")]
         public virtual Contract Contract { get; set; }
+
+        public string? Comment { get; set; }
+
+        public DateTime Deadline { get; set; }
     }
 }

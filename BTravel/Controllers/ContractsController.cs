@@ -26,12 +26,14 @@ namespace BTravel.Controllers
             _context = context;
         }
 
+        [AuthorizePerRole("Add_Contract")]
         public IActionResult Add()
         {
             return View("~/Views/Dashboard/Contracts/Add.cshtml");
         }
 
         [HttpPost]
+        [AuthorizePerRole("Add_Contract")]
         public IActionResult Add(ContractAddDTO model)
         {
             var request = new BaseRequest
@@ -56,12 +58,14 @@ namespace BTravel.Controllers
             }
         }
 
+        [AuthorizePerRole("Add_Contract")]
         public IActionResult Add2()
         {
             return View("~/Views/Dashboard/Contracts/Add2.cshtml");
         }
 
         [HttpPost]
+        [AuthorizePerRole("Add_Contract")]
         public IActionResult Add2(ContractAddDTO model)
         {
             var request = new BaseRequest
@@ -86,7 +90,8 @@ namespace BTravel.Controllers
             }
         }
 
-        public IActionResult All(int PageIndex = 0)
+        [AuthorizePerRole("View_Contract_Dashboard")]
+        public IActionResult All(int PageIndex = 0, string Search = "")
         {
             var request = new BaseRequest
             {
@@ -97,12 +102,13 @@ namespace BTravel.Controllers
             };
 
             var query = new GetAllContracts(request);
-            var response = query.GetAll(string.Empty);
+            var response = query.GetAll(Search);
 
             return View("~/Views/Dashboard/Contracts/All.cshtml", response);
         }
 
         [HttpPost]
+        [AuthorizePerRole("UploadFile_Dashboard")]
         public async Task<IActionResult> UploadFile(int ContractId, IFormFile xfile)
         {
             var request = new BaseRequest
@@ -128,6 +134,7 @@ namespace BTravel.Controllers
         }
 
         [HttpPost]
+        [AuthorizePerRole("Delete_Contract")]
         public IActionResult Delete(int ContractId)
         {
             var request = new BaseRequest
@@ -152,6 +159,7 @@ namespace BTravel.Controllers
             }
         }
 
+        [AuthorizePerRole("View_Contract_Dashboard")]
         public IActionResult Details(int Id)
         {
             var request = new BaseRequest
@@ -177,22 +185,7 @@ namespace BTravel.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search(string text)
-        {
-            var request = new BaseRequest
-            {
-                Context = _context,
-                RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID")),
-                UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID")),
-            };
-
-            var query = new GetAllContracts(request);
-            var response = query.GetAll(text);
-
-            return View("~/Views/Dashboard/Contracts/All.cshtml", response);
-        }
-
-        [HttpGet]
+        [AuthorizePerRole("Edit_Contract_Dashboard")]
         public IActionResult Edit(int Id)
         {
             var request = new BaseRequest
@@ -218,6 +211,7 @@ namespace BTravel.Controllers
         }
 
         [HttpPost]
+        [AuthorizePerRole("Edit_Contract_Dashboard")]
         public IActionResult Edit(ContractEditDTO model)
         {
             var request = new BaseRequest
@@ -243,6 +237,7 @@ namespace BTravel.Controllers
         }
 
         [HttpPost]
+        [AuthorizePerRole("DeleteFile_Dashboard")]
         public IActionResult DeleteFile(int FileId)
         {
             var request = new BaseRequest

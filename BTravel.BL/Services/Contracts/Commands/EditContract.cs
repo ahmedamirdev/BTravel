@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BTravel.BL.Services.CommonUser.Commands;
 using BTravel.BL.Services.ContractRoom.Commands;
+using BTravel.BL.Services.Security.Encryption;
 using BTravel.CommonDefinitions.DTOs.Contract;
 using BTravel.CommonDefinitions.Enums;
 using BTravel.CommonDefinitions.Requests;
@@ -50,11 +51,11 @@ namespace BTravel.BL.Services.Contracts.Commands
                 response.Message = "Invalid ContractId";
                 return response;
             }
-            if (currContract.StatusId == (int)EContractStatus.Sigend)
-            {
-                response.Message = "Contract has been signed and can not be updated";
-                return response;
-            }
+            //if (currContract.StatusId == (int)EContractStatus.Sigend)
+            //{
+            //    response.Message = "Contract has been signed and can not be updated";
+            //    return response;
+            //}
 
             // currContract.StatusId = (int)EContractStatus.Pending; //*** Ask Mahmoud ??
             currContract.HotelName = model.HotelName;
@@ -65,6 +66,16 @@ namespace BTravel.BL.Services.Contracts.Commands
 
             currContract.SubTotal = model.RatePerNight * model.NoOfNights;
             currContract.Total = ((currContract.SubTotal * model.TaxPerc) / 100) + currContract.SubTotal;
+
+            currContract.NameOnCreditCard = AESEncryptionHelper.Encrypt(model.NameOnCreditCard);
+            currContract.CardNumber = AESEncryptionHelper.Encrypt(model.CardNumber);
+            currContract.CardCVC = AESEncryptionHelper.Encrypt(model.CardCVC);
+            currContract.CardExpDate = AESEncryptionHelper.Encrypt(model.CardExpDate);
+            currContract.BillingAddress = model.BillingAddress;
+            currContract.PostalCode = model.PostalCode;
+
+            currContract.LastModifiedAt = DateTime.UtcNow;
+            currContract.LastModifiedBy = _request.UserID;
 
             _request.Context.SaveChanges();
 

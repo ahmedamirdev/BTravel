@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BTravel.BL.Helpers;
 using BTravel.BL.Services.Security.Encryption;
 using BTravel.CommonDefinitions;
 using BTravel.CommonDefinitions.DTOs.Contract;
 using BTravel.CommonDefinitions.DTOs.ContractRoom;
+using BTravel.CommonDefinitions.Enums;
 using BTravel.CommonDefinitions.Requests;
 using BTravel.CommonDefinitions.Responses;
+using Microsoft.EntityFrameworkCore;
 
 namespace BTravel.BL.Services.Contracts.Queries
 {
@@ -26,28 +29,26 @@ namespace BTravel.BL.Services.Contracts.Queries
             var response = new BaseResponse<IEnumerable<ContractDTO>>();
             response.Success = false;
             response.StatusCode = System.Net.HttpStatusCode.BadRequest;
-
-            if (string.IsNullOrWhiteSpace(search))
-                search = "";
             
-            search = search.ToLower();
-
-            var query = _request.Context.Contracts.Where(c => !c.IsDeleted)
-                        .Where(x => x.HotelName.ToLower().Contains(search) 
-                            || x.CommonUser.FullName.ToLower().Contains(search)
-                            || x.CommonUser.PrimaryMail.ToLower().Contains(search)
-                            || x.ContractId.ToString().Contains(search))
+            var query = _request.Context.Contracts
+                        .Include(c => c.CommonUser)
+                        .Include(c => c.Rooms)
+                        .Include(c => c.Files)
+                        .Where(c => !c.IsDeleted)
                         .OrderByDescending(f => f.ContractId)
                         .Select(c => new ContractDTO
                         {
                             ContractId = c.ContractId,
-                            CreatedAt = c.CreatedAt.AddHours(2),
+                            CreatedAt = c.CreatedAt.ConvertUtcToCairoTime(),
                             CreatedBy = c.CreatedBy,
-                            LastModifiedAt = c.LastModifiedAt.AddHours(2),
+                            LastModifiedAt = c.LastModifiedAt.ConvertUtcToCairoTime(),
                             LastModifiedBy = c.LastModifiedBy,
-                            SignedAt = c.SignedAt,
-                            SignatureUrl = c.SignatureUrl,
+                            IsSigned = c.IsSigned,
+                            SignedAt = c.SignedAt.HasValue ? c.SignedAt.Value.ConvertUtcToCairoTime() : null,
+                            SignatureUrl = Constants.BaseUrl + c.SignatureUrl,
                             StatusId = c.StatusId,
+                            IsViewed = c.IsViewed,
+                            ViewedAt = c.ViewedAt.HasValue ? c.ViewedAt.Value.ConvertUtcToCairoTime() : null,
 
                             HotelName = c.HotelName,
                             NoOfRooms = c.NoOfRooms,
@@ -57,6 +58,14 @@ namespace BTravel.BL.Services.Contracts.Queries
                             SubTotal = c.SubTotal,
                             Total = c.Total,
 
+                            CardNumber = AESEncryptionHelper.Decrypt(c.CardNumber),
+                            NameOnCreditCard = AESEncryptionHelper.Decrypt(c.NameOnCreditCard),
+                            CardCVC = AESEncryptionHelper.Decrypt(c.CardCVC),
+                            CardExpDate = AESEncryptionHelper.Decrypt(c.CardExpDate),
+
+                            BillingAddress = c.BillingAddress,
+                            PostalCode = c.PostalCode,
+
                             CommonUser = new CommonDefinitions.DTOs.CommonUser.CommonUserDTO
                             {
                                 CommonUserId = c.CommonUserId,
@@ -64,18 +73,11 @@ namespace BTravel.BL.Services.Contracts.Queries
                                 PhoneNumber = c.CommonUser.PhoneNumber,
                                 PrimaryMail = c.CommonUser.PrimaryMail,
                                 IsPrimaryMailVerified = c.CommonUser.IsPrimaryMailVerified,
-                                CreatedAt = c.CommonUser.CreatedAt.AddHours(2),
-                                ImageUrl = c.CommonUser.ImageUrl,
+                                CreatedAt = c.CommonUser.CreatedAt.ConvertUtcToCairoTime(),
+                                ImageUrl = Constants.BaseUrl + c.CommonUser.ImageUrl,
                                 CompanyName = c.CommonUser.CompanyName,
 
-                                CardNumber = AESEncryptionHelper.Decrypt(c.CommonUser.CardNumber),
-                                NameOnCreditCard = AESEncryptionHelper.Decrypt(c.CommonUser.NameOnCreditCard),
-                                CardCVC = AESEncryptionHelper.Decrypt(c.CommonUser.CardCVC),
-                                CardExpDate = AESEncryptionHelper.Decrypt(c.CommonUser.CardExpDate),
-
-                                BillingAddress = c.CommonUser.BillingAddress,
-                                PostalCode = c.CommonUser.PostalCode,
-                                DefaultSignatureUrl = c.CommonUser.DefaultSignatureUrl,
+                                DefaultSignatureUrl = Constants.BaseUrl + c.CommonUser.DefaultSignatureUrl,
 
                                 RoleId = c.CommonUser.RoleId,
                                 RoleName = c.CommonUser.Role.Name,
@@ -91,7 +93,9 @@ namespace BTravel.BL.Services.Contracts.Queries
                                         CheckOut = r.CheckOut,
                                         NumOfNights = r.NumOfNights,
                                         RoomAmenities = r.RoomAmenities,
-                                        CreatedAt = r.CreatedAt.AddHours(2),
+                                        Comment = r.Comment,
+                                        Deadline = r.Deadline,
+                                        CreatedAt = r.CreatedAt.ConvertUtcToCairoTime(),
                                         CreatedBy = r.CreatedBy,
                                         ContractId = r.ContractId,
                                     }),
@@ -99,9 +103,12 @@ namespace BTravel.BL.Services.Contracts.Queries
 
             //query = ApplyFilter(query, model.Filter);
 
-            //query = ApplySearch(query, search);
+            query = ApplySearch(query, search);
+
+            response.Search = search;
 
             response.TotalCount = query.Count();
+
             response.PageIndex = _request.PageIndex;
             response.PageSize = _request.PageSize == 0 ? Constants.defaultPageSize : _request.PageSize;
             response.TotalPages = (int)Math.Ceiling(response.TotalCount / (double)response.PageSize);
@@ -142,7 +149,25 @@ namespace BTravel.BL.Services.Contracts.Queries
             {
                 search = search.ToLower();
 
-                query = query.Where(x => x.HotelName.ToLower().Contains(search));
+                if (search == "pending")
+                {
+                    query = query.Where(x => x.StatusId == (int)EContractStatus.Pending);
+                }
+                else if (search == "opened")
+                {
+                    query = query.Where(x => x.StatusId == (int)EContractStatus.Opened);
+                }
+                else if (search == "signed")
+                {
+                    query = query.Where(x => x.StatusId == (int)EContractStatus.Sigend);
+                }
+                else
+                {
+                    query = query.Where(x => x.HotelName.ToLower().Contains(search)
+                                          || x.CommonUser.FullName.ToLower().Contains(search)
+                                          || x.CommonUser.PrimaryMail.ToLower().Contains(search)
+                                          || x.ContractId.ToString().Contains(search));
+                }
             }
 
             return query;

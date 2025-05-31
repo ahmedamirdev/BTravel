@@ -37,14 +37,6 @@ namespace BTravel.BL.Services.CommonUser.Queries
                             PrimaryMail = c.PrimaryMail,
                             CompanyName = c.CompanyName,
 
-                            CardNumber = AESEncryptionHelper.Decrypt(c.CardNumber),
-                            CardExpDate = AESEncryptionHelper.Decrypt(c.CardExpDate),
-                            CardCVC = AESEncryptionHelper.Decrypt(c.CardCVC),
-                            NameOnCreditCard = AESEncryptionHelper.Decrypt(c.NameOnCreditCard),
-
-                            BillingAddress = c.BillingAddress,
-                            PostalCode = c.PostalCode,
-
                             RoleId = c.RoleId,
                         }).FirstOrDefault();
 

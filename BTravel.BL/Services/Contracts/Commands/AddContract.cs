@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BTravel.BL.Services.CommonUser.Commands;
 using BTravel.BL.Services.ContractRoom.Commands;
+using BTravel.BL.Services.Security.Encryption;
 using BTravel.CommonDefinitions.DTOs.CommonUser;
 using BTravel.CommonDefinitions.DTOs.Contract;
 using BTravel.CommonDefinitions.Enums;
@@ -79,6 +80,8 @@ namespace BTravel.BL.Services.Contracts.Commands
             newContract.CreatedBy = _request.UserID;
             newContract.IsDeleted = false;
             newContract.IsActive = true;
+            newContract.IsViewed = false;
+            newContract.IsSigned = false;
             newContract.HotelName = model.HotelName;
             newContract.NoOfRooms = model.NoOfRooms;
             newContract.CommonUserId = currCommonUser.CommonUserId;
@@ -89,6 +92,13 @@ namespace BTravel.BL.Services.Contracts.Commands
 
             newContract.SubTotal = model.RatePerNight * model.NoOfNights;
             newContract.Total = ((newContract.SubTotal * model.TaxPerc) / 100) + newContract.SubTotal;
+
+            newContract.NameOnCreditCard = AESEncryptionHelper.Encrypt(model.NameOnCreditCard);
+            newContract.CardNumber = AESEncryptionHelper.Encrypt(model.CardNumber);
+            newContract.CardCVC = AESEncryptionHelper.Encrypt(model.CardCVC);
+            newContract.CardExpDate = AESEncryptionHelper.Encrypt(model.CardExpDate);
+            newContract.BillingAddress = model.BillingAddress;
+            newContract.PostalCode = model.PostalCode;
 
             _request.Context.Contracts.Add(newContract);
             _request.Context.SaveChanges();

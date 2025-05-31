@@ -7,10 +7,12 @@ using BTravel.CommonDefinitions.DTOs.CommonUser;
 using BTravel.CommonDefinitions.DTOs.Contract;
 using BTravel.CommonDefinitions.Requests;
 using BTravel.DAL;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BTravel.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly BTravelDbContext _context;
@@ -20,12 +22,14 @@ namespace BTravel.Controllers
             _context = context;
         }
 
+        [AuthorizePerRole("Add_CommonUser")]
         public IActionResult Add()
         {
             return View("~/Views/Dashboard/Users/Add.cshtml");
         }
 
         [HttpPost]
+        [AuthorizePerRole("Add_CommonUser")]
         public IActionResult Add(CommonUserAddDTO model)
         {
             var request = new BaseRequest
@@ -50,6 +54,7 @@ namespace BTravel.Controllers
             }
         }
 
+        [AuthorizePerRole("View_CommonUser")]
         public IActionResult All(int PageIndex = 0)
         {
             var request = new BaseRequest
@@ -67,6 +72,7 @@ namespace BTravel.Controllers
         }
 
         [HttpGet]
+        [AuthorizePerRole("View_CommonUser")]
         public IActionResult Search(string text)
         {
             var request = new BaseRequest
@@ -83,6 +89,7 @@ namespace BTravel.Controllers
         }
 
         [HttpPost]
+        [AuthorizePerRole("Delete_CommonUser")]
         public IActionResult Delete(int CommonUserId)
         {
             var request = new BaseRequest
@@ -107,6 +114,7 @@ namespace BTravel.Controllers
             }
         }
 
+        [AuthorizePerRole("View_CommonUser")]
         public IActionResult Details(int Id)
         {
             var request = new BaseRequest
@@ -132,6 +140,7 @@ namespace BTravel.Controllers
         }
 
         [HttpGet]
+        [AuthorizePerRole("Edit_CommonUser")]
         public IActionResult Edit(int Id)
         {
             var request = new BaseRequest
@@ -157,6 +166,7 @@ namespace BTravel.Controllers
         }
 
         [HttpPost]
+        [AuthorizePerRole("Edit_CommonUser")]
         public IActionResult Edit(CommonUserAddDTO model)
         {
             var request = new BaseRequest

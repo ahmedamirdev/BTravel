@@ -126,7 +126,7 @@
 			<div class="sidebar-logo">
 				<!-- Logo Header -->
 				<div class="logo-header" data-background-color="dark">
-					<a href="index.html" class="logo">
+					<a href="~/Dashboard/Index" class="logo">
 						<img src="~/DashBoardAssets/img/LogoGreen.png" class="navbar-brand" style="max-width:120px;" />
 					</a>
 					<div class="nav-toggle">
@@ -173,7 +173,7 @@
 									<li>
 										<a href="~/Contracts/Add">
 											<i class="fas fa-plus"></i>
-											<span>Add Contract (New Customer)</span>
+											<span>Add Contract <span style="font-size:11px;">(New Customer)</span></span>
 										</a>
 									</li>
 									<li>
@@ -250,7 +250,7 @@
 									</div>
 									<span class="profile-username">
 										<span class="op-7">Hi,</span>
-										<span class="fw-bold">@User.Identity.Name</span>
+										<span class="fw-bold">@User.Identity.Name.Split(' ')[0]</span>
 									</span>
 								</a>
 								<ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -269,7 +269,7 @@
 			<!-- End Navbar -->
 		</div>
 
-			@RenderBody()
+			@RenderBody();
 
 		<footer class="footer text-center">
 			<div class="copyright">
@@ -404,7 +404,7 @@
 		function goToSearch() {
 			const searchValue = document.getElementById('txtSearch').value.trim();
 			//if (searchValue) { uncomment if you want to not search if the search text is empty
-				const url = `/Contracts/Search?text=${encodeURIComponent(searchValue)}`;
+				const url = `/Contracts/All?Search=${encodeURIComponent(searchValue)}`;
 				window.location.href = url;
 			//}
 		}
@@ -412,7 +412,7 @@
 		// Function to read the 'Search' query parameter and set the value in the input field
 		function setSearchValueFromUrl() {
 			const urlParams = new URLSearchParams(window.location.search);
-			const searchQuery = urlParams.get('text');
+			const searchQuery = urlParams.get('Search');
 			if (searchQuery) {
 				// Set the value of the search input field
 				document.getElementById('txtSearch').value = decodeURIComponent(searchQuery);

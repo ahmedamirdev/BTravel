@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BTravel.BL.Helpers;
 using BTravel.BL.Services.Security.Encryption;
 using BTravel.CommonDefinitions;
 using BTravel.CommonDefinitions.DTOs.Contract;
@@ -31,13 +32,16 @@ namespace BTravel.BL.Services.Contracts.Queries
                         .Select(c => new ContractDTO
                         {
                             ContractId = c.ContractId,
-                            CreatedAt = c.CreatedAt.AddHours(2),
+                            CreatedAt = c.CreatedAt.ConvertUtcToCairoTime(),
                             CreatedBy = c.CreatedBy,
-                            LastModifiedAt = c.LastModifiedAt.AddHours(2),
+                            LastModifiedAt = c.LastModifiedAt.ConvertUtcToCairoTime(),
                             LastModifiedBy = c.LastModifiedBy,
-                            SignedAt = c.SignedAt,
-                            SignatureUrl = c.SignatureUrl,
+                            IsSigned = c.IsSigned,
+                            SignedAt = c.SignedAt.HasValue ? c.SignedAt.Value.ConvertUtcToCairoTime() : null,
+                            SignatureUrl = Constants.BaseUrl + c.SignatureUrl,
                             StatusId = c.StatusId,
+                            IsViewed = c.IsViewed,
+                            ViewedAt = c.ViewedAt.HasValue ? c.ViewedAt.Value.ConvertUtcToCairoTime() : null,
 
                             HotelName = c.HotelName,
                             NoOfRooms = c.NoOfRooms,
@@ -47,6 +51,14 @@ namespace BTravel.BL.Services.Contracts.Queries
                             SubTotal = c.SubTotal,
                             Total = c.Total,
 
+                            CardNumber = AESEncryptionHelper.Decrypt(c.CardNumber),
+                            NameOnCreditCard = AESEncryptionHelper.Decrypt(c.NameOnCreditCard),
+                            CardCVC = AESEncryptionHelper.Decrypt(c.CardCVC),
+                            CardExpDate = AESEncryptionHelper.Decrypt(c.CardExpDate),
+
+                            BillingAddress = c.BillingAddress,
+                            PostalCode = c.PostalCode,
+
                             CommonUser = new CommonDefinitions.DTOs.CommonUser.CommonUserDTO
                             {
                                 CommonUserId = c.CommonUserId,
@@ -54,18 +66,11 @@ namespace BTravel.BL.Services.Contracts.Queries
                                 PhoneNumber = c.CommonUser.PhoneNumber,
                                 PrimaryMail = c.CommonUser.PrimaryMail,
                                 IsPrimaryMailVerified = c.CommonUser.IsPrimaryMailVerified,
-                                CreatedAt = c.CommonUser.CreatedAt.AddHours(2),
-                                ImageUrl = c.CommonUser.ImageUrl,
+                                CreatedAt = c.CommonUser.CreatedAt.ConvertUtcToCairoTime(),
+                                ImageUrl = Constants.BaseUrl + c.CommonUser.ImageUrl,
                                 CompanyName = c.CommonUser.CompanyName,
 
-                                CardNumber = AESEncryptionHelper.Decrypt(c.CommonUser.CardNumber),
-                                NameOnCreditCard = AESEncryptionHelper.Decrypt(c.CommonUser.NameOnCreditCard),
-                                CardCVC = AESEncryptionHelper.Decrypt(c.CommonUser.CardCVC),
-                                CardExpDate = AESEncryptionHelper.Decrypt(c.CommonUser.CardExpDate),
-
-                                BillingAddress = c.CommonUser.BillingAddress,
-                                PostalCode = c.CommonUser.PostalCode,
-                                DefaultSignatureUrl = c.CommonUser.DefaultSignatureUrl,
+                                DefaultSignatureUrl = Constants.BaseUrl + c.CommonUser.DefaultSignatureUrl,
 
                                 RoleId = c.CommonUser.RoleId,
                                 RoleName = c.CommonUser.Role.Name,
@@ -81,7 +86,9 @@ namespace BTravel.BL.Services.Contracts.Queries
                                         CheckOut = r.CheckOut,
                                         NumOfNights = r.NumOfNights,
                                         RoomAmenities = r.RoomAmenities,
-                                        CreatedAt = r.CreatedAt.AddHours(2),
+                                        Comment = r.Comment,
+                                        Deadline = r.Deadline,
+                                        CreatedAt = r.CreatedAt.ConvertUtcToCairoTime(),
                                         CreatedBy = r.CreatedBy,
                                         ContractId = r.ContractId,
                                     }),
@@ -92,7 +99,7 @@ namespace BTravel.BL.Services.Contracts.Queries
                                         FileId = r.ContractFileID,
                                         FileUrl = Constants.BaseUrl + r.FileUrl,
                                         FileName = r.FileName,
-                                        CreatedAt = r.CreatedAt.AddHours(2),
+                                        CreatedAt = r.CreatedAt.ConvertUtcToCairoTime(),
                                     }),
                         }).FirstOrDefault();
 

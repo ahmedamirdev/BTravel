@@ -17,75 +17,201 @@ using System.Xml.Linq;
 using BTravel.CommonDefinitions.Requests;
 using BTravel.DAL;
 using BTravel.CommonDefinitions.DTOs.Auth;
+using BTravel.BL.Services.Contracts.Queries;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting.Server;
+
+using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Diagnostics.Contracts;
+using BTravel.BL.Services.Contracts.Commands;
+using BTravel.CommonDefinitions.DTOs.Contract;
 
 namespace BTravel.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly BTravelDbContext _dbContext;
+        private readonly BTravelDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger, BTravelDbContext dbcontext)
+        public HomeController(ILogger<HomeController> logger, BTravelDbContext context)
         {
             _logger = logger;
-            _dbContext = dbcontext;
+            _context = context;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
-            //if (User.Identity.IsAuthenticated)
-            //{
-
-
-            //    int RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID"));
-            //    int UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID"));
-
-            //    var x = User.Claims.First(c => c.Type == "RoleID");
-            //    var x2 = User.Claims.First(c => c.Type == "RoleID").Value;
-
-            //    var x3 = User.Claims.First(c => c.Type == "UserID");
-            //    var x4 = User.Claims.First(c => c.Type == "UserID").Value;
-
-
-            //    var y = User.Identity.IsAuthenticated;
-            //    var z = User.Identity.AuthenticationType;
-            //}
-
             return View();
         }
 
-        public IActionResult Test()
+        [AllowAnonymous]
+        public IActionResult About()
         {
             return View();
         }
 
-        [Authorize]
-        //[AuthorizePerRole("View_Avatar")]
-        public IActionResult MyHomeView()
+        [AllowAnonymous]
+        public IActionResult Services()
         {
-            int RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID"));
-            int UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID"));
-
-
-
-            //string originalText = "123-456-789 ENG&1";
-            //Console.WriteLine("Original Text: " + originalText);
-
-            //string encryptedText = AESEncryptionHelper.Encrypt(originalText);
-            //Console.WriteLine("Encrypted Text: " + encryptedText);
-
-            //string decryptedText = AESEncryptionHelper.Decrypt(encryptedText);
-            //Console.WriteLine("Decrypted Text: " + decryptedText);
-
-
-            //string mailBody = $"Hello Ahmed,";
-            //mailBody += $"<br><br> Your email has been verified successfully.";
-            //mailBody += $"<br><br> Thanks for using BTravelMATE.";
-
-            //MailSender.SendMail("ahmed_amirr@hotmail.com", $"Test Email Verified Successfully", mailBody);
-
-
             return View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult Packages()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> Logout()
+        {
+            //await HttpContext.SignOutAsync();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
+        }
+
+        [AuthorizePerRole("View_Contract_Portal")]
+        public IActionResult Contracts(int PageIndex = 0, string Search = "")
+        {
+            var request = new BaseRequest
+            {
+                Context = _context,
+                RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID")),
+                UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID")),
+                PageIndex = PageIndex,
+            };
+
+            var query = new GetAllContractsByCustomerId(request);
+            var response = query.GetAll(Search, request.UserID);
+
+            return View("~/Views/Home/Contracts.cshtml", response);
+        }
+
+        [AuthorizePerRole("View_Contract_Portal")]
+        public IActionResult CDetails(int Id)
+        {
+            var request = new BaseRequest
+            {
+                Context = _context,
+                RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID")),
+                UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID")),
+            };
+
+            var query = new GetContractByIdForCustomer(request);
+            var response = query.GetById(Id);
+
+            if (response.Success)
+            {
+                //TempData["SuccessMessage"] = response.Message;
+                return View("~/Views/Home/CDetails.cshtml", response.Data);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = response.Message;
+                return RedirectToAction("Contracts", "Home");
+            }
+        }
+
+        [AuthorizePerRole("Sign_Contract_Portal")]
+        public IActionResult CSign(int Id)
+        {
+            var request = new BaseRequest
+            {
+                Context = _context,
+                RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID")),
+                UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID")),
+            };
+
+            var query = new GetContractByIdForSign(request);
+            var response = query.GetById(Id);
+
+            if (response.Success)
+            {
+                //TempData["SuccessMessage"] = response.Message;
+                return View("~/Views/Home/CSign.cshtml", response.Data);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = response.Message;
+                return RedirectToAction("Contracts", "Home");
+            }
+        }
+
+        [HttpPost]
+        [AuthorizePerRole("Sign_Contract_Portal")]
+        public IActionResult SignContract(ContractDTO model)
+        {
+            #region Create Signature Image
+
+            if (string.IsNullOrWhiteSpace(model.signatureData))
+            {
+                TempData["ErrorMessage"] = "Signature is empty";
+                return RedirectToAction("CSign", "Home", new { Id = model.ContractId });
+            }
+
+            // Remove base64 header
+            var base64Data = model.signatureData.Split(',')[1];
+            var imageBytes = Convert.FromBase64String(base64Data);
+
+            // Create a MemoryStream from the byte array
+            using (var stream = new MemoryStream(imageBytes))
+            {
+                // Create a form file from the stream
+                IFormFile formFile = new FormFile(stream, 0, stream.Length, "signature", "signature.png")
+                {
+                    Headers = new HeaderDictionary(),
+                    ContentType = "image/png"
+                };
+
+                var file = formFile.OpenReadStream();
+                var fileName = formFile.FileName;
+                if (file.Length > 0)
+                {
+                    var newFileName = Guid.NewGuid().ToString() + "-" + fileName;
+                    var physicalPath = Directory.GetCurrentDirectory() + "/wwwroot/" + "Content/" + newFileName;
+                    string dirPath = Path.GetDirectoryName(physicalPath);
+
+                    if (!Directory.Exists(dirPath))
+                        Directory.CreateDirectory(dirPath);
+
+                    var virtualPath = "Content/" + newFileName;
+
+                    using (var streamFile = new FileStream(physicalPath, FileMode.Create))
+                    {
+                        file.CopyTo(streamFile);
+                    }
+
+                    model.SignatureUrl = virtualPath;
+                }
+            }
+
+            #endregion
+
+            var request = new BaseRequest
+            {
+                Context = _context,
+                RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID")),
+                UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID")),
+            };
+
+            var query = new SignContract(request);
+            var response = query.Sign(model);
+
+            if (response.Success)
+            {
+                TempData["SuccessMessage"] = response.Message;
+                return RedirectToAction("CDetails", "Home", new { Id = model.ContractId });
+            }
+            else
+            {
+                TempData["ErrorMessage"] = response.Message;
+                return RedirectToAction("CSign", "Home", new { Id = model.ContractId });
+            }
         }
     }
 }

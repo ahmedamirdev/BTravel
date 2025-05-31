@@ -18,6 +18,8 @@ namespace BTravel.CommonDefinitions.Responses
         public int TotalPages { get; set; }
         public int From => (PageIndex * PageSize) + 1;
         public int To => Math.Min((PageIndex + 1) * PageSize, TotalCount);
+
+        public string Search { get; set; }
     } 
 
     public class BaseResponse<T>
@@ -31,6 +33,8 @@ namespace BTravel.CommonDefinitions.Responses
         public int TotalPages { get; set; }
         public int From => (PageIndex * PageSize) + 1; 
         public int To => Math.Min((PageIndex + 1) * PageSize, TotalCount);
+
+        public string Search { get; set; }
 
         public T Data { get; set; }
     }

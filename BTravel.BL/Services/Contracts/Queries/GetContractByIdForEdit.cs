@@ -37,6 +37,14 @@ namespace BTravel.BL.Services.Contracts.Queries
                             RatePerNight = c.RatePerNight,
                             TaxPerc = c.TaxPerc,
 
+                            CardNumber = AESEncryptionHelper.Decrypt(c.CardNumber),
+                            NameOnCreditCard = AESEncryptionHelper.Decrypt(c.NameOnCreditCard),
+                            CardCVC = AESEncryptionHelper.Decrypt(c.CardCVC),
+                            CardExpDate = AESEncryptionHelper.Decrypt(c.CardExpDate),
+
+                            BillingAddress = c.BillingAddress,
+                            PostalCode = c.PostalCode,
+
                             Rooms = c.Rooms.Where(r => !r.IsDeleted)
                                     .Select(r => new ContractRoomAddDTO
                                     {
@@ -46,6 +54,8 @@ namespace BTravel.BL.Services.Contracts.Queries
                                         CheckOut = r.CheckOut,
                                         NumOfNights = r.NumOfNights,
                                         RoomAmenities = r.RoomAmenities,
+                                        Comment = r.Comment,
+                                        Deadline = r.Deadline,
                                         ContractId = r.ContractId,
                                     }).ToList(),
                         }).FirstOrDefault();

@@ -45,18 +45,6 @@ namespace BTravel.DAL.Entities
 
         public string? CompanyName { get; set; }
 
-        public string? CardNumber { get; set; }
-
-        public string? CardExpDate { get; set; }
-
-        public string? CardCVC { get; set; }
-
-        public string? NameOnCreditCard { get; set; }
-
-        public string? BillingAddress { get; set; }
-
-        public string? PostalCode { get; set; }
-
         public string? DefaultSignatureUrl { get; set; }
 
         public virtual ICollection<Contract> Contracts { get; set; }
@@ -65,6 +53,7 @@ namespace BTravel.DAL.Entities
 
         [ForeignKey("RoleId")]
         public virtual Role Role { get; set; }
+
         public DateTime? LastLoginAt { get; set; }
     }
 }
