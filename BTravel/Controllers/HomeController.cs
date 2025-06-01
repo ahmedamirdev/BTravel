@@ -28,6 +28,7 @@ using System.IO;
 using System.Diagnostics.Contracts;
 using BTravel.BL.Services.Contracts.Commands;
 using BTravel.CommonDefinitions.DTOs.Contract;
+using Rotativa.AspNetCore;
 
 namespace BTravel.Controllers
 {
@@ -211,6 +212,35 @@ namespace BTravel.Controllers
             {
                 TempData["ErrorMessage"] = response.Message;
                 return RedirectToAction("CSign", "Home", new { Id = model.ContractId });
+            }
+        }
+
+        [AuthorizePerRole("Download_Contract_Portal")]
+        public IActionResult DownloadContract(int Id)
+        {
+            var request = new BaseRequest
+            {
+                Context = _context,
+                RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID")),
+                UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID")),
+            };
+
+            var query = new GetContractByIdForCustomer(request);
+            var response = query.GetById(Id);
+
+            if (response.Success)
+            {
+                return new ViewAsPdf("ContractPDF", response.Data)
+                {
+                    FileName = $"Contract_{response.Data.ContractId}.pdf",
+                    PageSize = Rotativa.AspNetCore.Options.Size.A4,
+                    PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
+                };
+            }
+            else
+            {
+                TempData["ErrorMessage"] = response.Message;
+                return RedirectToAction("Contracts", "Home");
             }
         }
     }

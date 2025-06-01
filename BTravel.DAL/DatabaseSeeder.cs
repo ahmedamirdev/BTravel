@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BTravel.DAL.Entities;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Identity;
 
 namespace BTravel.DAL
@@ -69,6 +68,7 @@ namespace BTravel.DAL
                     new() { CreatedAt = DateTime.UtcNow, IsDeleted = false, IsActive = true, Name = "View_Dashboard", ViewName="View Dashboard", Description="View Dashboard", ClassName="Dashboard" },
                     new() { CreatedAt = DateTime.UtcNow, IsDeleted = false, IsActive = true, Name = "View_Contract_Portal", ViewName="View Contract", Description="View Contract", ClassName="Portal" },
                     new() { CreatedAt = DateTime.UtcNow, IsDeleted = false, IsActive = true, Name = "Sign_Contract_Portal", ViewName="Sign Contract", Description="Sign Contract", ClassName="Portal" },
+                    new() { CreatedAt = DateTime.UtcNow, IsDeleted = false, IsActive = true, Name = "Download_Contract_Portal", ViewName="Download Contract", Description="Download Contract", ClassName="Portal" },
                 };
 
                 context.AppServices.AddRange(appServices);

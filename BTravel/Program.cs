@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Rotativa.AspNetCore;
 
 namespace BTravel
 {
@@ -76,7 +77,7 @@ namespace BTravel
             //***************************************** Build the WebApplication *****************************************//
             var app = builder.Build();
 
-
+            RotativaConfiguration.Setup(app.Environment.WebRootPath, "Rotativa");
 
             app.UseSession();
 

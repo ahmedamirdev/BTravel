@@ -41,7 +41,17 @@
 		<div class="col-md-12">
 			<div class="card">
 				<div class="card-header">
-					<div class="card-title">Hotel Details</div>
+					<div class="card-title">
+						Hotel Details
+						@{
+							if (Model.IsSigned)
+							{
+								<a href="~/Home/DownloadContract/@Model.ContractId" class="btn btn-secondary btn-sm ms-2 fs-6 fw-bolder text-white">
+									<i class="fas fa-arrow-down fa-sm"></i>&nbsp;&nbsp;Download Contract
+								</a>
+							}
+						}
+					</div>
 				</div>
 				<div class="card-body">
 					<div class="row">
@@ -251,8 +261,8 @@
 								upon or to be agreed upon itinerary, bookings, and room accommodation reservations. The customer must provide complete and accurate
 								information, and authorizes BTravelMate to collect payment for all relevant charges, including room charges, BTravelMate services, costs, fees,
 								and taxes. BTravelMate is authorized to charge the credit card listed multiple times if necessary to satisfy the entire balance due. The customer
-								certifies that they are the authorized signer of the credit card listed. All price per night rates are exclusive of any VAT, taxes, hotel surcharges, and
-								other applicable service fees. BTravelMate provides competitive room rates and service pricing due to its ability to reserve, hold, and pre-pay for
+								certifies that they are the authorized signer of the credit card listed.
+								BTravelMate provides competitive room rates and service pricing due to its ability to reserve, hold, and pre-pay for
 								rooms for its clients at the time of reservation.
 							</p>
 						</div>

@@ -67,12 +67,14 @@ namespace BTravel.BL.Services.Security.Auth
 
                     if (RoleID == (long)ERole.Admin)
                         canAccess = true;
+                    else
+                    {
+                        var service = freshDbContext.AppServices.FirstOrDefault(c => !c.IsDeleted && c.Name.ToLower() == _serviceName.ToLower());
+                        if (service == null)
+                            canAccess = false;
 
-                    var service = freshDbContext.AppServices.FirstOrDefault(c => !c.IsDeleted && c.Name.ToLower() == _serviceName.ToLower());
-                    if (service == null)
-                        canAccess = false;
-
-                    canAccess = freshDbContext.RoleAppServices.Any(c => c.RoleId == RoleID && c.AppServiceId == service.AppServiceId && c.IsActive && !c.IsDeleted);
+                        canAccess = freshDbContext.RoleAppServices.Any(c => c.RoleId == RoleID && c.AppServiceId == service.AppServiceId && c.IsActive && !c.IsDeleted);
+                    }
                 }
 
                 if (canAccess == false)
