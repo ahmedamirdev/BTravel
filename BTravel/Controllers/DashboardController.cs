@@ -30,6 +30,8 @@ namespace BTravel.Controllers
         [AuthorizePerRole("View_Dashboard")]
         public IActionResult Index()
         {
+            int x = int.Parse("ggg");
+
             var dto = new DashboardDTO();
 
             dto.TotalNumOfCustomers = _context.CommonUsers.Where(u => !u.IsDeleted).Count();

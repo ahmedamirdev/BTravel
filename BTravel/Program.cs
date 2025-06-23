@@ -2,10 +2,13 @@ using System.Text;
 using System.Threading.Tasks;
 using BTravel.Controllers;
 using BTravel.DAL;
+using BTravel.Services.Extensions;
+using BTravel.Services.Logging;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using NLog;
 using Rotativa.AspNetCore;
 
 namespace BTravel
@@ -16,6 +19,10 @@ namespace BTravel
         {
             //***************************************** Create the WebApplication *****************************************//
             var builder = WebApplication.CreateBuilder(args);
+
+            //*** Add Logger Configuration --- nlog library
+            LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
+            builder.Services.AddSingleton<ILoggerService, LoggerService>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -77,6 +84,10 @@ namespace BTravel
             //***************************************** Build the WebApplication *****************************************//
             var app = builder.Build();
 
+            //*** Register exception handler HERE in the early stage of the pipeline flow ..........
+            var logger = app.Services.GetRequiredService<ILoggerService>();
+            app.ConfigureExceptionHandler(logger);
+
             RotativaConfiguration.Setup(app.Environment.WebRootPath, "Rotativa");
 
             app.UseSession();
@@ -84,7 +95,7 @@ namespace BTravel
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Home/Error");
+                //app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
