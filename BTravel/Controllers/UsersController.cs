@@ -190,5 +190,11 @@ namespace BTravel.Controllers
                 return View("~/Views/Dashboard/Users/Edit.cshtml", model);
             }
         }
+
+        //[AuthorizePerRole("Change_Password")]
+        public IActionResult ChangePassword()
+        {
+            return View("~/Views/Dashboard/Users/ChangePassword.cshtml");
+        }
     }
 }

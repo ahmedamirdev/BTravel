@@ -86,7 +86,7 @@ namespace BTravel
 
             //*** Register exception handler HERE in the early stage of the pipeline flow ..........
             var logger = app.Services.GetRequiredService<ILoggerService>();
-            app.ConfigureExceptionHandler(logger);
+            //app.ConfigureExceptionHandler(logger);
 
             RotativaConfiguration.Setup(app.Environment.WebRootPath, "Rotativa");
 

@@ -8,9 +8,9 @@ namespace BTravel.CommonDefinitions
 {
     public class Constants
     {
-        public const string BaseUrl = "https://localhost:7248/";
-        // Testing Server : https://localhost:7248/
-        // Production Server : https://prod-api.finds.live/
+        public const string BaseUrl = "http://admin.btravelmate.com/";
+        // Testing Server : https://test.btravelmate.com/
+        // Production Server : https://btravelmate.com/
 
         public const int defaultPageSize = 10;
 

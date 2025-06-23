@@ -30,7 +30,7 @@ namespace BTravel.Controllers
         [AuthorizePerRole("View_Dashboard")]
         public IActionResult Index()
         {
-            int x = int.Parse("ggg");
+            //int x = int.Parse("ggg");
 
             var dto = new DashboardDTO();
 
