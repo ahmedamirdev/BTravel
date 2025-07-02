@@ -48,7 +48,7 @@
 								</div>
 								<div class="col col-stats ms-3 ms-sm-0">
 									<div class="numbers">
-										<p class="card-category fw-bold">Total Customers</p>
+										<p class="card-category fw-bold">Total Users</p>
 										<h4 class="card-title fw-extrabold">@Model.TotalNumOfCustomers</h4>
 									</div>
 								</div>
@@ -69,7 +69,7 @@
 								</div>
 								<div class="col col-stats ms-3 ms-sm-0">
 									<div class="numbers">
-										<p class="card-category fw-bold">Pending Contracts</p>
+										<p class="card-category fw-bold">Pending Bookings</p>
 										<h4 class="card-title fw-extrabold">@Model.PendingContracts</h4>
 									</div>
 								</div>
@@ -90,7 +90,7 @@
 								</div>
 								<div class="col col-stats ms-3 ms-sm-0">
 									<div class="numbers">
-										<p class="card-category fw-bold">Signed Contracts</p>
+										<p class="card-category fw-bold">Signed Bookings</p>
 										<h4 class="card-title fw-extrabold">@Model.SignedContracts</h4>
 									</div>
 								</div>
@@ -111,7 +111,7 @@
 								</div>
 								<div class="col col-stats ms-3 ms-sm-0">
 									<div class="numbers">
-										<p class="card-category fw-bold">Opened Contracts</p>
+										<p class="card-category fw-bold">Opened Bookings</p>
 										<h4 class="card-title fw-extrabold">@Model.OpenedContracts</h4>
 									</div>
 								</div>
@@ -127,7 +127,7 @@
 				<div class="card card-round">
 					<div class="card-header">
 						<div class="card-head-row">
-							<div class="card-title">Latest Contracts</div>
+							<div class="card-title">Latest Bookings</div>
 						</div>
 					</div>
 					<div class="card-body p-0">
@@ -136,7 +136,7 @@
 								<thead class="thead-light">
 									<tr>
 										<th scope="col">#ID</th>
-										<th scope="col" class="text-start">Hotel</th>
+										<th scope="col" class="text-start">Company</th>
 										<th scope="col" class="text-start">Customer</th>
 										<th scope="col" class="text-end">Total</th>
 										<th scope="col" class="text-end">Status</th>
@@ -151,7 +151,7 @@
 												<th scope="row">
 													<a target="_blank" href="~/Contracts/Details/@item.ContractId">#@item.ContractId</a>
 												</th>
-												<td class="text-start">@item.HotelName</td>
+												<td class="text-start">@item.CommonUser.CompanyName</td>
 												<td class="text-start">@item.CommonUser.FullName</td>
 												<td class="text-end fw-extrabold">@item.Total</td>
 												<td class="text-end">
@@ -202,7 +202,7 @@
 				</div>
 				<div class="card card-round">
 					<div class="card-body">
-						<div class="card-title fw-mediumbold">Latest Customers</div>
+						<div class="card-title fw-mediumbold">Latest Users</div>
 						<div class="card-list">
 							@{
 								foreach (var item in Model.LatestUsers)

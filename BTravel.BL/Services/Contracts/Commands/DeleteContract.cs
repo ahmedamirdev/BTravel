@@ -28,13 +28,13 @@ namespace BTravel.BL.Services.Contracts.Commands
             var currContract = _request.Context.Contracts.FirstOrDefault(u => u.ContractId == Id && !u.IsDeleted);
             if (currContract == null)
             {
-                response.Message = "Invalid ContractId";
+                response.Message = "Invalid BookingId";
                 return response;
             }
 
             if (_request.RoleID != (int)ERole.Admin)
             {
-                response.Message = "Admin only can delete the contract";
+                response.Message = "Admin only can delete the booking";
                 return response;
             }
 
@@ -48,7 +48,7 @@ namespace BTravel.BL.Services.Contracts.Commands
 
             response.Success = true;
             response.Data = true;
-            response.Message = $"Contract #{currContract.ContractId} deleted successfully";
+            response.Message = $"Booking #{currContract.ContractId} deleted successfully";
             response.StatusCode = System.Net.HttpStatusCode.OK;
 
             return response;

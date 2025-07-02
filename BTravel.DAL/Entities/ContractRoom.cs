@@ -50,6 +50,6 @@ namespace BTravel.DAL.Entities
 
         public string? Comment { get; set; }
 
-        public DateTime Deadline { get; set; }
+        public DateTime? Deadline { get; set; }
     }
 }

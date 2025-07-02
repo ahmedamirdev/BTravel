@@ -33,7 +33,7 @@
 <div class="container">
 	<div class="page-inner">
 		<div class="page-header">
-			<h4 class="fw-bold mb-3">Contracts List</h4>
+			<h4 class="fw-bold mb-3">Bookings Forms</h4>
 			<ul class="breadcrumbs mb-3">
 				<li class="nav-home">
 					<a href="~/Dashboard/Index">
@@ -44,7 +44,7 @@
 					<i class="icon-arrow-right"></i>
 				</li>
 				<li class="nav-item">
-					<a href="~/Contracts/All">Contracts</a>
+					<a href="~/Contracts/All">Bookings</a>
 				</li>
 				<li class="separator">
 					<i class="icon-arrow-right"></i>
@@ -168,7 +168,7 @@
 		<div class="modal-content">
 			<form id="uploadForm" method="post" enctype="multipart/form-data" asp-action="UploadFile" asp-controller="Contracts">
 				<div class="modal-header">
-					<h5 class="modal-title" id="uploadModalLabel">Upload File for Contract <span id="modalUploadContractId" class="fw-bolder"></span></h5>
+					<h5 class="modal-title" id="uploadModalLabel">Upload File for Booking <span id="modalUploadContractId" class="fw-bolder"></span></h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 
@@ -192,13 +192,13 @@
 		<div class="modal-content">
 			<form id="deleteContract" method="post" asp-action="Delete" asp-controller="Contracts">
 				<div class="modal-header">
-					<h5 class="modal-title" id="deleteModalLabel">Delete Contract <span id="modalDeleteContractId" class="fw-bolder"></span></h5>
+					<h5 class="modal-title" id="deleteModalLabel">Delete Booking <span id="modalDeleteContractId" class="fw-bolder"></span></h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 
 				<div class="modal-body">
 					<input type="hidden" name="ContractId" id="DeleteContractId" />
-					<h5>Are you sure you want to delete contract ?</h5>
+					<h5>Are you sure you want to delete Booking ?</h5>
 					<small class="text-danger">** All data will be lost</small>
 				</div>
 

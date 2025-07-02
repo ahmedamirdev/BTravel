@@ -20,11 +20,11 @@
 	<div class="container pt-5">
 		<div class="row justify-content-center pt-3">
 			<div class="col-lg-10 text-center">
-				<h1 class="display-3 text-white animated slideInDown fs-1">My Contracts</h1>
+				<h1 class="display-3 text-white animated slideInDown fs-1">Bookings & Trips</h1>
 				<nav aria-label="breadcrumb">
 					<ol class="breadcrumb justify-content-center">
 						<li class="breadcrumb-item text-white">Home</li>
-						<li class="breadcrumb-item text-white active" aria-current="page">My Contracts</li>
+						<li class="breadcrumb-item text-white active" aria-current="page">My Bookings</li>
 					</ol>
 				</nav>
 			</div>
@@ -50,7 +50,6 @@
 							<th scope="col" class="text-start" style="width:5%">No. Of Rooms</th>
 							<th scope="col" class="text-start" style="width:5%">No. Of Nights</th>
 							<th scope="col" class="text-end">SubTotal <span style="font-size: 12px;">(EUR)</span></th>
-							<th scope="col" class="text-end">Total <span style="font-size: 12px;">(EUR)</span></th>
 							<th scope="col" class="text-end">Status</th>
 							<th scope="col" class="text-center">Created At</th>
 							<th scope="col" class="text-center">Actions</th>
@@ -68,7 +67,6 @@
 									<td class="text-start">@item.NoOfRooms</td>
 									<td class="text-start">@item.NoOfNights</td>
 									<td class="text-end fw-bold" style="color: #1d1d2e">@item.SubTotal</td>
-									<td class="text-end fw-bold" style="color: #1d1d2e">@item.Total</td>
 									<td class="text-end">
 										@{
 											if (item.StatusId == (int)EContractStatus.Pending)

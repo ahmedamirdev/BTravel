@@ -191,10 +191,42 @@ namespace BTravel.Controllers
             }
         }
 
-        //[AuthorizePerRole("Change_Password")]
+        [HttpGet]
         public IActionResult ChangePassword()
         {
-            return View("~/Views/Dashboard/Users/ChangePassword.cshtml");
+            var UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID"));
+
+            var model = new ChangePasswordDTO
+            {
+                CommonUserId = UserID,
+            };
+
+            return View("~/Views/Dashboard/Users/ChangePassword.cshtml", model);
+        }
+
+        [HttpPost]
+        public IActionResult ChangePassword(ChangePasswordDTO model)
+        {
+            var request = new BaseRequest
+            {
+                Context = _context,
+                RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID")),
+                UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID")),
+            };
+
+            var query = new ChangePassword(request);
+            var response = query.Change(model);
+
+            if (response.Success)
+            {
+                TempData["SuccessMessage"] = response.Message;
+                return RedirectToAction("Details", "Users", new { Id = model.CommonUserId });
+            }
+            else
+            {
+                TempData["ErrorMessage"] = response.Message;
+                return View("~/Views/Dashboard/Users/ChangePassword.cshtml", model);
+            }
         }
     }
 }

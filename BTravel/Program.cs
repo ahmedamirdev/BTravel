@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NLog;
+using PdfSharp.Fonts;
 using Rotativa.AspNetCore;
 
 namespace BTravel
@@ -79,6 +80,9 @@ namespace BTravel
             builder.Services.AddMvc().AddSessionStateTempDataProvider();
 
             builder.Services.AddControllers();
+
+            GlobalFontSettings.FontResolver = new CustomFontResolver();
+            builder.Services.AddScoped<IViewRenderService, ViewRenderService>();
 
 
             //***************************************** Build the WebApplication *****************************************//

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BTravel.BL.Services.ContractRoom.Commands;
+using BTravel.BL.Services.Contracts.Queries;
+using BTravel.BL.Services.Mail;
 using BTravel.BL.Services.Security.Encryption;
 using BTravel.CommonDefinitions.DTOs.Contract;
 using BTravel.CommonDefinitions.Enums;
@@ -38,7 +40,7 @@ namespace BTravel.BL.Services.Contracts.Commands
             }
             if (model.ContractId <= 0)
             {
-                response.Message = "Invalid ContractId";
+                response.Message = "Invalid BookingId";
                 return response;
             }
             if (string.IsNullOrWhiteSpace(model.NameOnCreditCard))
@@ -77,27 +79,39 @@ namespace BTravel.BL.Services.Contracts.Commands
                 return response;
             }
 
+            DateTime cardExp = DateTime.Now;
+            var isParsed = DateTime.TryParse(model.CardExpDate, out cardExp);
+            if (isParsed)
+            {
+                if (cardExp.Day <= DateTime.UtcNow.Day)
+                {
+                    response.Message = "Card Exp. date is older than today";
+                    return response;
+                }
+            }
+
             #endregion
 
             var currContract = _request.Context.Contracts.FirstOrDefault(c => !c.IsDeleted && c.ContractId == model.ContractId);
             if (currContract == null)
             {
-                response.Message = "Invalid ContractId";
+                response.Message = "Invalid BookingId";
                 return response;
             }
             if (currContract.CommonUserId != _request.UserID)
             {
-                response.Message = "You must be a contract owner to sign contract";
+                response.Message = "You must be a booking owner to sign booking";
                 return response;
             }
             if (currContract.StatusId == (int)EContractStatus.Sigend || currContract.IsSigned == true)
             {
-                response.Message = "Contract is already signed";
+                response.Message = "Booking is already signed";
                 return response;
             }
 
-            //*** Update Contract
 
+
+            //*** Update Contract
             if (currContract.IsViewed == false)
             {
                 currContract.ViewedAt = DateTime.UtcNow;
@@ -121,9 +135,13 @@ namespace BTravel.BL.Services.Contracts.Commands
 
             _request.Context.SaveChanges();
 
+            //*** Send email to customer
+            var contractDTO = new GetContractById(_request).GetById(currContract.ContractId).Data;
+            MailHelper.Send_ContractSigned(contractDTO);
+
             response.Success = true;
             response.StatusCode = System.Net.HttpStatusCode.OK;
-            response.Message = $"Contract #{currContract.ContractId} has been successfully signed";
+            response.Message = $"Booking #{currContract.ContractId} has been successfully signed";
 
             return response;
         }

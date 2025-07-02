@@ -30,48 +30,54 @@ namespace BTravel.Controllers
         [AuthorizePerRole("View_Dashboard")]
         public IActionResult Index()
         {
-            //int x = int.Parse("ggg");
-
             var dto = new DashboardDTO();
 
             dto.TotalNumOfCustomers = _context.CommonUsers.Where(u => !u.IsDeleted).Count();
 
-            dto.PendingContracts = _context.Contracts.Where(c => !c.IsDeleted && c.StatusId == (int)EContractStatus.Pending).Count();
+            dto.LatestContracts = new List<ContractDTO>();
 
-            dto.OpenedContracts = _context.Contracts.Where(c => !c.IsDeleted && c.StatusId == (int)EContractStatus.Opened).Count();
+            if (_context.Contracts.Any())
+            {
+                dto.PendingContracts = _context.Contracts.Where(c => !c.IsDeleted && c.StatusId == (int)EContractStatus.Pending).Count();
 
-            dto.SignedContracts = _context.Contracts.Where(c => !c.IsDeleted && c.StatusId == (int)EContractStatus.Sigend).Count();
+                dto.OpenedContracts = _context.Contracts.Where(c => !c.IsDeleted && c.StatusId == (int)EContractStatus.Opened).Count();
 
-            dto.TotalSalesAllTime = _context.Contracts.Where(c => !c.IsDeleted).Sum(c => c.Total);
+                dto.SignedContracts = _context.Contracts.Where(c => !c.IsDeleted && c.StatusId == (int)EContractStatus.Sigend).Count();
 
-            dto.FirstContractCreatedAt = _context.Contracts.Where(c => !c.IsDeleted).Min(c => c.CreatedAt);
+                dto.TotalSalesAllTime = _context.Contracts.Where(c => !c.IsDeleted).Sum(c => c.Total);
 
-            // Define the date range = get sales for last 7 days
-            var endDate = DateTime.UtcNow;
-            var startDate = endDate.AddDays(-7);
+                dto.FirstContractCreatedAt = _context.Contracts.Where(c => !c.IsDeleted).Min(c => c.CreatedAt);
 
-            dto.LastWeekStartAt = startDate;
+                // Define the date range = get sales for last 7 days
+                var endDate = DateTime.UtcNow;
+                var startDate = endDate.AddDays(-7);
 
-            dto.TotalSalesLastWeek = _context.Contracts.Where(c => !c.IsDeleted)
-                                                        .Where(c => c.CreatedAt >= startDate && c.CreatedAt <= endDate)
-                                                        .Sum(c => c.Total);
+                dto.LastWeekStartAt = startDate;
 
-            dto.LatestContracts = _context.Contracts.Where(c => !c.IsDeleted)
-                                                    .OrderByDescending(c => c.CreatedAt)
-                                                    .Select(c => new ContractDTO
-                                                    {
-                                                        ContractId = c.ContractId,
-                                                        CreatedAt = c.CreatedAt.AddHours(2),
-                                                        StatusId = c.StatusId,
-                                                        HotelName = c.HotelName,
-                                                        Total = c.Total,
+                dto.TotalSalesLastWeek = _context.Contracts.Where(c => !c.IsDeleted)
+                                                            .Where(c => c.CreatedAt >= startDate && c.CreatedAt <= endDate)
+                                                            .Sum(c => c.Total);
 
-                                                        CommonUser = new CommonDefinitions.DTOs.CommonUser.CommonUserDTO
+                dto.LatestContracts = _context.Contracts.Where(c => !c.IsDeleted)
+                                                        .OrderByDescending(c => c.CreatedAt)
+                                                        .Select(c => new ContractDTO
                                                         {
-                                                            CommonUserId = c.CommonUserId,
-                                                            FullName = c.CommonUser.FullName,
-                                                        }
-                                                    }).Take(10).ToList();
+                                                            ContractId = c.ContractId,
+                                                            CreatedAt = c.CreatedAt.AddHours(2),
+                                                            StatusId = c.StatusId,
+                                                            HotelName = c.HotelName,
+                                                            Total = c.Total,
+
+                                                            CommonUser = new CommonDefinitions.DTOs.CommonUser.CommonUserDTO
+                                                            {
+                                                                CommonUserId = c.CommonUserId,
+                                                                FullName = c.CommonUser.FullName,
+                                                                CompanyName = c.CommonUser.CompanyName,
+                                                            }
+                                                        }).Take(10).ToList();
+            }
+
+
 
             dto.LatestUsers = _context.CommonUsers.Where(c => !c.IsDeleted)
                                                   .OrderByDescending(f => f.CreatedAt)

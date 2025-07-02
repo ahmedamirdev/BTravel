@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BTravel.BL.Helpers;
 using BTravel.BL.Services.CommonUser.Commands;
 using BTravel.BL.Services.ContractRoom.Commands;
+using BTravel.BL.Services.Contracts.Queries;
+using BTravel.BL.Services.Mail;
 using BTravel.BL.Services.Security.Encryption;
 using BTravel.CommonDefinitions.DTOs.CommonUser;
 using BTravel.CommonDefinitions.DTOs.Contract;
@@ -42,6 +45,7 @@ namespace BTravel.BL.Services.Contracts.Commands
                 return response;
             }
 
+            bool isNewUser = false;
             DAL.Entities.CommonUser currCommonUser = null;
             //*** Check CommonUserId
             if (model.CommonUserId > 0)
@@ -61,7 +65,7 @@ namespace BTravel.BL.Services.Contracts.Commands
                     return response;
                 }
                 // Add new user
-                model.CommonUserAddDTO.Password = "123";
+                model.CommonUserAddDTO.Password = RandomGenerator.GenerateSixNumbers();
                 model.CommonUserAddDTO.RoleId = (int)ERole.Client;
 
                 var addUserResponse = new AddCommonUser(_request).Add(model.CommonUserAddDTO);
@@ -72,8 +76,43 @@ namespace BTravel.BL.Services.Contracts.Commands
                 }
 
                 currCommonUser = _request.Context.CommonUsers.FirstOrDefault(u => u.CommonUserId == addUserResponse.Data);
+                isNewUser = true;
+            }
+            if (model.Rooms != null)
+            {
+                if (model.Rooms.Count > 0)
+                {
+                    for (int i = 0; i < model.Rooms.Count; i++)
+                    {
+                        if (model.Rooms[i].CheckIn.Day < DateTime.UtcNow.Day || model.Rooms[i].CheckOut.Day < DateTime.UtcNow.Day)
+                        {
+                            response.Message = "CheckIn or CheckOut date is older than today";
+                            return response;
+                        }
+                        if (model.Rooms[i].CheckIn.Day > model.Rooms[i].CheckOut.Day)
+                        {
+                            response.Message = "CheckIn date is older than CheckOut date";
+                            return response;
+                        }
+                    }
+                }
             }
 
+            if (!string.IsNullOrWhiteSpace(model.CardExpDate))
+            {
+                DateTime cardExp = DateTime.Now;
+                var isParsed = DateTime.TryParse(model.CardExpDate, out cardExp);
+                if (isParsed)
+                {
+                    if (cardExp.Day <= DateTime.UtcNow.Day)
+                    {
+                        response.Message = "Card Exp. date is older than today";
+                        return response;
+                    }
+                }
+            }
+
+            //*** Add new contract data
             DAL.Entities.Contract newContract = new DAL.Entities.Contract();
             newContract.StatusId = (int)EContractStatus.Pending;
             newContract.CreatedAt = DateTime.UtcNow;
@@ -91,7 +130,8 @@ namespace BTravel.BL.Services.Contracts.Commands
             newContract.TaxPerc = model.TaxPerc;
 
             newContract.SubTotal = model.RatePerNight * model.NoOfNights;
-            newContract.Total = ((newContract.SubTotal * model.TaxPerc) / 100) + newContract.SubTotal;
+            //newContract.Total = ((newContract.SubTotal * model.TaxPerc) / 100) + newContract.SubTotal; //*** old calculation as a percentage
+            newContract.Total = newContract.SubTotal + model.TaxPerc; //*** new calculation as a decimal number
 
             newContract.NameOnCreditCard = AESEncryptionHelper.Encrypt(model.NameOnCreditCard);
             newContract.CardNumber = AESEncryptionHelper.Encrypt(model.CardNumber);
@@ -103,6 +143,7 @@ namespace BTravel.BL.Services.Contracts.Commands
             _request.Context.Contracts.Add(newContract);
             _request.Context.SaveChanges();
 
+            //*** Add rooms data
             if (model.Rooms != null)
             {
                 if (model.Rooms.Count > 0)
@@ -116,9 +157,16 @@ namespace BTravel.BL.Services.Contracts.Commands
                 }
             }
 
+            //*** Send email to customer
+            var contractDTO = new GetContractById(_request).GetById(newContract.ContractId).Data;
+            if (isNewUser)
+                MailHelper.Send_NewContractNewCustomer(contractDTO, model.CommonUserAddDTO.Password);
+            else
+                MailHelper.Send_NewContractExistingCustomer(contractDTO);
+
             response.Success = true;
             response.StatusCode = System.Net.HttpStatusCode.OK;
-            response.Message = $"New Contract #{newContract.ContractId} has been successfully added";
+            response.Message = $"New Booking #{newContract.ContractId} has been successfully added";
 
             return response;
         }

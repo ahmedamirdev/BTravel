@@ -43,7 +43,7 @@ namespace BTravel.BL.Services.Contracts.Queries
             }
             if (currContract.StatusId == (int)EContractStatus.Sigend || currContract.IsSigned == true)
             {
-                response.Message = "Contract is already signed";
+                response.Message = "Booking is already signed";
                 return response;
             }
 

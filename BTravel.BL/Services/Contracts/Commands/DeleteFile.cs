@@ -27,7 +27,7 @@ namespace BTravel.BL.Services.Contracts.Commands
             var currFile = _request.Context.ContractFiles.FirstOrDefault(u => u.ContractFileID == Id && !u.IsDeleted);
             if (currFile == null)
             {
-                response.Message = "Invalid ContractFileID";
+                response.Message = "Invalid BookingFileID";
                 return response;
             }
 

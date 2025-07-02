@@ -8,14 +8,17 @@ namespace BTravel.CommonDefinitions
 {
     public class Constants
     {
-        public const string BaseUrl = "http://admin.btravelmate.com/";
+        public const string AppName = "BTravelMate";
+
+        //public const string BaseUrl = "https://admin.btravelmate.com/";
+        public const string BaseUrl = "https://localhost:7248/";
         // Testing Server : https://test.btravelmate.com/
         // Production Server : https://btravelmate.com/
 
         public const int defaultPageSize = 10;
 
 
-        public static string[] allowedFileExtensions = {
+        public static readonly string[] allowedFileExtensions = {
                                                         // Image Extensions
                                                         ".jpg",
                                                         ".jpeg",
@@ -54,7 +57,7 @@ namespace BTravel.CommonDefinitions
                                                         ".pdf",
                                                        };
 
-        public static string[] allowedImageExtensions = {
+        public static readonly string[] allowedImageExtensions = {
                                                         // Image Extensions
                                                         ".jpg",
                                                         ".jpeg",
@@ -67,7 +70,7 @@ namespace BTravel.CommonDefinitions
                                                         ".heif",
                                                        };
 
-        public static string[] allowedVedioExtensions = {
+        public static readonly string[] allowedVedioExtensions = {
                                                         // Video Extensions
                                                         ".mp4",
                                                         ".mpeg-4",

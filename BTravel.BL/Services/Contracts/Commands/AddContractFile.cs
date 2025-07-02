@@ -34,7 +34,7 @@ namespace BTravel.BL.Services.Contracts.Commands
             }
             if (ContractId == 0)
             {
-                response.Message = "ContractId is empty";
+                response.Message = "BookingId is empty";
                 return response;
             }
             //*** Check attached file
@@ -48,7 +48,7 @@ namespace BTravel.BL.Services.Contracts.Commands
             var isContractExist = _request.Context.Contracts.Any(u => u.ContractId == ContractId && !u.IsDeleted);
             if (!isContractExist)
             {
-                response.Message = "ContractId is invalid";
+                response.Message = "BookingId is invalid";
                 return response;
             }
 
@@ -93,7 +93,7 @@ namespace BTravel.BL.Services.Contracts.Commands
 
             response.Data = insertedFileId;
             response.Success = true;
-            response.Message = $"New File for Contract #{ContractId} added successfully";
+            response.Message = $"New File for Booking #{ContractId} added successfully";
             response.StatusCode = System.Net.HttpStatusCode.OK;
 
             return response;

@@ -33,7 +33,7 @@
 <div class="container">
 	<div class="page-inner">
 		<div class="page-header">
-			<h4 class="fw-bold mb-3">Contract <span class="badge badge-info fw-extrabold fs-4">#@Model.ContractId</span></h4>
+			<h4 class="fw-bold mb-3">Booking <span class="badge badge-info fw-extrabold fs-4">#@Model.ContractId</span></h4>
 			<ul class="breadcrumbs mb-3">
 				<li class="nav-home">
 					<a href="~/Dashboard/Index">
@@ -44,13 +44,13 @@
 					<i class="icon-arrow-right"></i>
 				</li>
 				<li class="nav-item">
-					<a href="~/Contracts/All">Contracts</a>
+					<a href="~/Contracts/All">Bookings</a>
 				</li>
 				<li class="separator">
 					<i class="icon-arrow-right"></i>
 				</li>
 				<li class="nav-item">
-					<a href="#">Contract Details</a>
+					<a href="#">Booking Details</a>
 				</li>
 			</ul>
 		</div>
@@ -101,9 +101,9 @@
 							</div>
 							<div class="col-md-2 col-lg-2">
 								<div class="form-group">
-									<label class="text-black-50 fw-extrabold">Service Perc.(%)</label>
+									<label class="text-black-50 fw-extrabold">Service Fees</label>
 									<div class="input-icon">
-										<span class="badge badge-primary fw-extrabold fs-5">@Model.TaxPerc <small>%</small></span>
+										<span class="badge badge-primary fw-extrabold fs-5">@Model.TaxPerc <small>EUR</small></span>
 									</div>
 								</div>
 							</div>
@@ -316,7 +316,7 @@
 														<td class="text-start">@item.NumOfNights</td>
 														<td class="text-start">@item.RoomAmenities</td>
 														<td class="text-start">@item.Comment</td>
-														<td class="text-start">@item.Deadline.ToShortDateString()</td>
+														<td class="text-start">@(item.Deadline.HasValue ? item.Deadline.Value.ToShortDateString() : null)</td>
 													</tr>
 												}
 											}
@@ -414,7 +414,7 @@
 		<div class="modal-content">
 			<form id="uploadForm" method="post" enctype="multipart/form-data" asp-action="UploadFile" asp-controller="Contracts">
 				<div class="modal-header">
-					<h5 class="modal-title" id="uploadModalLabel">Upload File for Contract <span id="modalUploadContractId" class="fw-bolder"></span></h5>
+					<h5 class="modal-title" id="uploadModalLabel">Upload File for Booking <span id="modalUploadContractId" class="fw-bolder"></span></h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 

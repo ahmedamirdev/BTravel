@@ -24,11 +24,11 @@
 	<div class="container pt-5">
 		<div class="row justify-content-center pt-3">
 			<div class="col-lg-10 text-center">
-				<h1 class="display-3 text-white animated slideInDown fs-1">Contract <span class="badge badge-primary fw-bold fs-3" style="margin-top:-8px">#@Model.ContractId</span></h1>
+				<h1 class="display-3 text-white animated slideInDown fs-1">Booking <span class="badge badge-primary fw-bold fs-3" style="margin-top:-8px">#@Model.ContractId</span></h1>
 				<nav aria-label="breadcrumb">
 					<ol class="breadcrumb justify-content-center">
 						<li class="breadcrumb-item text-white">Home</li>
-						<li class="breadcrumb-item text-white active" aria-current="page">Contract Details</li>
+						<li class="breadcrumb-item text-white active" aria-current="page">Booking Details</li>
 					</ol>
 				</nav>
 			</div>
@@ -44,18 +44,18 @@
 					<div class="card-title">
 						Hotel Details
 						@{
-							if (Model.IsSigned)
-							{
-								<a href="~/Home/DownloadContract/@Model.ContractId" class="btn btn-secondary btn-sm ms-2 fs-6 fw-bolder text-white">
-									<i class="fas fa-arrow-down fa-sm"></i>&nbsp;&nbsp;Download Contract
-								</a>
-							}
+							// if (Model.IsSigned)
+							// {
+							// 	<a href="~/Home/DownloadContract/@Model.ContractId" class="btn btn-secondary btn-sm ms-2 fs-6 fw-bolder text-white">
+							// 		<i class="fas fa-arrow-down fa-sm"></i>&nbsp;&nbsp;Download Contract
+							// 	</a>
+							// }
 						}
 					</div>
 				</div>
 				<div class="card-body">
 					<div class="row">
-						<div class="col-md-4 col-lg-4 text-wrap">
+						<div class="col-md-6 col-lg-6 text-wrap">
 							<div class="form-group">
 								<label style="font-weight:bold; color: #646464">Hotel Name</label>
 								<div class="input-icon mt-1">
@@ -87,17 +87,9 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-md-2 col-lg-2">
-							<div class="form-group">
-								<label style="font-weight:bold; color: #646464">Service Perc.(%)</label>
-								<div class="input-icon mt-1">
-									<span class="badge badge-primary fw-bolder fs-5">@Model.TaxPerc <small style="font-size:12px;">%</small></span>
-								</div>
-							</div>
-						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-8 col-lg-8">
+						<div class="col-md-10 col-lg-10">
 							<div class="form-group">
 								<label style="font-weight:bold; color: #646464">Created At</label>
 								<div class="input-icon mt-1">
@@ -110,14 +102,6 @@
 								<label style="font-weight:bold; color: #646464">SubTotal</label>
 								<div class="input-icon mt-1">
 									<span class="badge badge-success fw-bolder fs-4">@Model.SubTotal <small style="font-size:12px;">EUR</small></span>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-2 col-lg-2">
-							<div class="form-group">
-								<label style="font-weight:bold; color: #646464">Total</label>
-								<div class="input-icon mt-1">
-									<span class="badge badge-success fw-bolder fs-4">@Model.Total <small style="font-size:12px;">EUR</small></span>
 								</div>
 							</div>
 						</div>

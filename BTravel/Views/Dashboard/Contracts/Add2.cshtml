@@ -5,6 +5,7 @@
 @{
 	var successMessage = TempData["SuccessMessage"] as string;
 	var errorMessage = TempData["ErrorMessage"] as string;
+	int currRoomIndex = 0;
 }
 @if (!string.IsNullOrEmpty(successMessage))
 {
@@ -32,7 +33,7 @@
 <div class="container">
 	<div class="page-inner">
 		<div class="page-header">
-			<h4 class="fw-bold mb-3">Add New Contract</h4>
+			<h4 class="fw-bold mb-3">Add new Booking</h4>
 			<ul class="breadcrumbs mb-3">
 				<li class="nav-home">
 					<a href="~/Dashboard/Index">
@@ -43,13 +44,13 @@
 					<i class="icon-arrow-right"></i>
 				</li>
 				<li class="nav-item">
-					<a href="~/Contracts/All">Contracts</a>
+					<a href="~/Contracts/All">Bookings</a>
 				</li>
 				<li class="separator">
 					<i class="icon-arrow-right"></i>
 				</li>
 				<li class="nav-item">
-					<a href="#">Add New Contract</a>
+					<a href="#">Add new Booking</a>
 				</li>
 			</ul>
 		</div>
@@ -80,7 +81,7 @@
 											<span class="input-icon-addon">
 												<i class="fas fa-bed"></i>
 											</span>
-											<input asp-for="NoOfRooms" class="form-control" type="number" required />
+											<input asp-for="NoOfRooms" class="form-control" type="number" min="1" required />
 										</div>
 									</div>
 								</div>
@@ -93,7 +94,7 @@
 											<span class="input-icon-addon">
 												<i class="fas fa-dollar-sign"></i>
 											</span>
-											<input asp-for="RatePerNight" class="form-control" type="number" required />
+											<input asp-for="RatePerNight" class="form-control" type="number" min="0" required />
 										</div>
 									</div>
 								</div>
@@ -104,18 +105,18 @@
 											<span class="input-icon-addon">
 												<i class="fas fa-moon"></i>
 											</span>
-											<input asp-for="NoOfNights" class="form-control" type="number" required />
+											<input asp-for="NoOfNights" class="form-control" type="number" min="1" required />
 										</div>
 									</div>
 								</div>
 								<div class="col-md-4 col-lg-4">
 									<div class="form-group">
-										<label style="font-weight:bold">Service Perc.(%)</label>
+										<label style="font-weight:bold">Service Fees</label>
 										<div class="input-icon">
 											<span class="input-icon-addon">
-												<i class="fas fa-percent"></i>
+												<i class="fas fa-dollar-sign"></i>
 											</span>
-											<input asp-for="TaxPerc" class="form-control" type="number" required />
+											<input asp-for="TaxPerc" class="form-control" type="number" min="0" required />
 										</div>
 									</div>
 								</div>
@@ -181,7 +182,7 @@
 											<span class="input-icon-addon">
 												<i class="fas fa-calendar-alt"></i>
 											</span>
-											<input asp-for="CardExpDate" type="date" class="form-control" />
+											<input asp-for="CardExpDate" type="date" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
 										</div>
 									</div>
 								</div>
@@ -253,13 +254,39 @@
 											</tr>
 										</thead>
 										<tbody>
+											@{
+												if (Model != null)
+												{
+													if (Model.Rooms != null)
+													{
+														for (int i = 0; i < Model.Rooms.Count; i++)
+														{
+															<tr>
+																<td><input style="width: 120px;" type="text" name="Rooms[@i].RoomType" class="form-control" value="@Model.Rooms[i].RoomType" required /></td>
+																<td><input style="width: 150px;" type="text" name="Rooms[@i].Names" class="form-control" value="@Model.Rooms[i].Names" required /></td>
+																<td><input style="width: 130px;" type="date" name="Rooms[@i].CheckIn" class="form-control" value="@Model.Rooms[i].CheckIn.ToString("yyyy-MM-dd")" min="@DateTime.Now.ToString("yyyy-MM-dd")" required /></td>
+																<td><input style="width: 130px;" type="date" name="Rooms[@i].CheckOut" class="form-control" value="@Model.Rooms[i].CheckOut.ToString("yyyy-MM-dd")" min="@DateTime.Now.ToString("yyyy-MM-dd")" required /></td>
+																<td><input style="width: 70px;" type="number" name="Rooms[@i].NumOfNights" class="form-control" value="@Model.Rooms[i].NumOfNights" min="1" required /></td>
+																<td><input style="width: 150px;" type="text" name="Rooms[@i].RoomAmenities" class="form-control" value="@Model.Rooms[i].RoomAmenities" required /></td>
+																<td><input style="width: 150px;" type="text" name="Rooms[@i].Comment" class="form-control" value="@Model.Rooms[i].Comment" /></td>
+																<td>
+																	<input style="width: 130px;" type="date" name="Rooms[@i].Deadline" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")"
+																		   value="@(Model.Rooms[i].Deadline.HasValue ? Model.Rooms[i].Deadline.Value.ToString("yyyy-MM-dd") : null)" />
+																</td>
+																<td class="text-center"><button type="button" class="btn btn-icon btn-round btn-danger btn-sm remove-room"><i class="fas fa-times"></i></button></td>
+															</tr>
+															currRoomIndex = i;
+														}
+													}
+												}
+											}
 										</tbody>
 									</table>
 								</div>
 							</div>
 						</div>
 						<div class="card-action">
-							<button class="btn btn-success" type="submit" style="font-weight:bold">Save Contract</button>
+							<button class="btn btn-success" type="submit" style="font-weight:bold">Save Booking</button>
 							<button class="btn btn-danger" type="reset" style="font-weight:bold">Reset Form</button>
 						</div>
 					</div>
@@ -272,18 +299,18 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-	let roomIndex = 0;
+	let roomIndex = @currRoomIndex;
 
 	$("#addRoom").click(function () {
 		let row = `<tr>
 			<td><input style="width: 120px;" type="text" name="Rooms[${roomIndex}].RoomType" class="form-control" required /></td>
 			<td><input style="width: 150px;" type="text" name="Rooms[${roomIndex}].Names" class="form-control" required /></td>
-			<td><input style="width: 130px;" type="date" name="Rooms[${roomIndex}].CheckIn" class="form-control" required /></td>
-			<td><input style="width: 130px;" type="date" name="Rooms[${roomIndex}].CheckOut" class="form-control" required /></td>
-			<td><input style="width: 70px;" type="number" name="Rooms[${roomIndex}].NumOfNights" class="form-control" required /></td>
+			<td><input style="width: 130px;" type="date" name="Rooms[${roomIndex}].CheckIn" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" required /></td>
+			<td><input style="width: 130px;" type="date" name="Rooms[${roomIndex}].CheckOut" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" required /></td>
+			<td><input style="width: 70px;" type="number" name="Rooms[${roomIndex}].NumOfNights" class="form-control" min="1" required /></td>
 			<td><input style="width: 150px;" type="text" name="Rooms[${roomIndex}].RoomAmenities" class="form-control" required /></td>
 			<td><input style="width: 150px;" type="text" name="Rooms[${roomIndex}].Comment" class="form-control" /></td>
-			<td><input style="width: 130px;" type="date" name="Rooms[${roomIndex}].Deadline" class="form-control" required /></td>
+			<td><input style="width: 130px;" type="date" name="Rooms[${roomIndex}].Deadline" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" /></td>
 			<td class="text-center"><button type="button" class="btn btn-icon btn-round btn-danger btn-sm remove-room"><i class="fas fa-times"></i></button></td>
 		</tr>`;
 		$("#roomsTable tbody").append(row);
@@ -292,7 +319,20 @@
 
 	$(document).on("click", ".remove-room", function () {
 		$(this).closest("tr").remove();
+		reindexRooms();
 	});
+
+	function reindexRooms() {
+		$("#roomsTable tbody tr").each(function (index) {
+			$(this).find("input, select, textarea").each(function () {
+				let name = $(this).attr("name");
+				if (name) {
+					let newName = name.replace(/Rooms\[\d+\]/, `Rooms[${index}]`);
+					$(this).attr("name", newName);
+				}
+			});
+		});
+	}
 </script>
 
 <script>

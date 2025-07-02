@@ -4,14 +4,15 @@ using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using BTravel.CommonDefinitions;
 
 namespace BTravel.BL.Services.Mail
 {
     public static class MailSender
     {
-        private static string _fromEmail = "sportlink.egy@gmail.com";
-        private static string _password = "zuwatungloiiawfs";
-        private static string _host = "smtp.gmail.com";
+        private static string _fromEmail = "no-reply@btravelmate.com";
+        private static string _password = "Reply@123";
+        private static string _host = "hgws10.win.hostgator.com";
         private static bool _enableSSl = true;
         private static bool _useDefaultCredentials = false;
         private static int _port = 587;
@@ -22,7 +23,7 @@ namespace BTravel.BL.Services.Mail
             {
                 MailMessage message = new MailMessage();
                 SmtpClient smtpClient = new SmtpClient();
-                MailAddress fromAddress = new MailAddress(_fromEmail, "BTravelMATE");
+                MailAddress fromAddress = new MailAddress(_fromEmail, Constants.AppName);
 
                 message.From = fromAddress;
                 var toList = to.Split(new char[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -34,6 +35,7 @@ namespace BTravel.BL.Services.Mail
                 message.IsBodyHtml = isBodyHTML;
                 message.Body = body;
 
+                
                 smtpClient.Host = _host;
                 smtpClient.Port = _port;
                 smtpClient.EnableSsl = _enableSSl;

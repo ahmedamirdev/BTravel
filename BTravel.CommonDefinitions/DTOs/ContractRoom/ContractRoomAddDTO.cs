@@ -18,6 +18,6 @@ namespace BTravel.CommonDefinitions.DTOs.ContractRoom
         public string RoomAmenities { get; set; }
 
         public string? Comment { get; set; }
-        public DateTime Deadline { get; set; }
+        public DateTime? Deadline { get; set; }
     }
 }

@@ -36,16 +36,15 @@ namespace BTravel.BL.Services.CommonUser.Commands
 
             if (user == null)
             {
-                response.Message = "Invalid User ID";
+                response.Message = "Invalid UserID";
                 return response;
-
             }
 
             PasswordHasher<DAL.Entities.CommonUser> hasher = new PasswordHasher<DAL.Entities.CommonUser>();
             var compareHash = hasher.VerifyHashedPassword(user, user.Password, model.OldPassword);
             if (compareHash == PasswordVerificationResult.Failed)
             {
-                response.Message = "Invalid Old Password";
+                response.Message = "Old Password is incorrect";
                 return response;
             }
 
@@ -53,10 +52,10 @@ namespace BTravel.BL.Services.CommonUser.Commands
             {
                 response.Message = "New Password does not match Confirm New Password";
                 return response;
-
             }
 
             user.Password = hasher.HashPassword(user, model.NewPassword);
+
             _request.Context.SaveChanges();
 
             response.Success = true;
@@ -64,10 +63,7 @@ namespace BTravel.BL.Services.CommonUser.Commands
 
             response.Message = "Password Changed Successfully";
 
-
             return response;
-
         }
-
     }
 }
