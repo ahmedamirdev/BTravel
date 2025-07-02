@@ -13,9 +13,9 @@ namespace BTravel.BL.Services.Mail
         private static string _fromEmail = "no-reply@btravelmate.com";
         private static string _password = "Reply@123";
         private static string _host = "hgws10.win.hostgator.com";
-        private static bool _enableSSl = true;
+        private static bool _enableSSl = false;
         private static bool _useDefaultCredentials = false;
-        private static int _port = 587;
+        private static int _port = 25; // 587/465 for SSL and 25 for notSSL
 
         public static void SendMail(string to, string subject, string body, bool isBodyHTML = true)
         {
