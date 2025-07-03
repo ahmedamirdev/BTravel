@@ -16,9 +16,9 @@ namespace BTravel.BL.Services.Mail
         {
             string body = $"Dear, {model.CommonUser.FullName.Split(' ')[0]},";
             body += $"<br><br> Thank you for choosing {Constants.AppName}!";
-            body += $"<br> You invited to fill out and sign the {Constants.AppName}. Hotel Booking Form document. " +
+            body += $"<br> You invited to fill out and sign the {Constants.AppName} Hotel Booking Form document. " +
                     $"You will receive a confirmation email once you complete and sign your hotel booking form.";
-            body += $"<br> Please log in to your account to review and sign the form:";
+            body += $"<br> Please log in to your account and click on 'My Bookings' to review and sign the form.";
 
             body += $"<br><br> Booking Details :";
             body += $"<br> Hotel : {model.HotelName}";
