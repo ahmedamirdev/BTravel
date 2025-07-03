@@ -84,6 +84,34 @@ namespace BTravel.Controllers
 
 
         [AllowAnonymous]
+        public IActionResult FAQ()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult TermsAndCondetion()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult ContactUs()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult PrivacyPolicy()
+        {
+            return View();
+        }
+
+
+
+
+
+        [AllowAnonymous]
         public async Task<IActionResult> Logout()
         {
             //await HttpContext.SignOutAsync();
