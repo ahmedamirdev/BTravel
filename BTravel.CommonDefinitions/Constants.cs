@@ -10,9 +10,9 @@ namespace BTravel.CommonDefinitions
     {
         public const string AppName = "BTravelMate";
 
-        //public const string BaseUrl = "https://admin.btravelmate.com/";
-        public const string BaseUrl = "https://localhost:7248/";
-        // Testing Server : https://test.btravelmate.com/
+        public const string BaseUrl = "https://admin.btravelmate.com/";
+        //public const string BaseUrl = "https://localhost:7248/";
+        // Testing Server : https://admin.btravelmate.com/
         // Production Server : https://btravelmate.com/
 
         public const int defaultPageSize = 10;
