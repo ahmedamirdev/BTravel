@@ -63,6 +63,7 @@ namespace BTravel.Controllers
             }
         }
 
+
         [HttpPost]
         [AuthorizePerRole("View_Contract_Portal")]
         public IActionResult UpdateRoom(ContractRoomDTO model)
@@ -90,6 +91,7 @@ namespace BTravel.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [AuthorizePerRole("View_Contract_Portal")]
         public IActionResult UpdateRoom2([FromBody] ContractRoomDTO model)
         {
@@ -114,6 +116,7 @@ namespace BTravel.Controllers
                 return Json(new { success = false, message = response.Message });
             }
         }
+
 
         [AuthorizePerRole("Sign_Contract_Portal")]
         public IActionResult Sign(int Id)
@@ -284,8 +287,5 @@ namespace BTravel.Controllers
                 return RedirectToAction("All", "Bookings");
             }
         }
-
-
-
     }
 }

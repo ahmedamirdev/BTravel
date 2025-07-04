@@ -37,24 +37,14 @@
 	<link rel="stylesheet" href="~/dashBoardAssets/css/plugins.min.css" />
 	<link rel="stylesheet" href="~/dashBoardAssets/css/kaiadmin.min.css" />
 
-	<!-- CSS Just for demo purpose, don't include it in your project -->
-	@* <link rel="stylesheet" href="~/dashBoardAssets/css/demo.css" /> *@
-
-
-
-
-
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	@* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> *@
 
 	<!-- Select2 CSS & JS -->
 	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-
-	<!-- SweetAlert2 CSS -->
+	<!-- SweetAlert2 CSS & JS -->
 	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.20/dist/sweetalert2.min.css" rel="stylesheet">
-
-	<!-- SweetAlert2 JS -->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.20/dist/sweetalert2.min.js"></script>
 
 	<style>
@@ -122,14 +112,11 @@
 </head>
 <body>
 	<div class="wrapper">
-		<!-- Sidebar -->
 		<div class="sidebar" data-background-color="dark">
 			<div class="sidebar-logo">
-				<!-- Logo Header -->
 				<div class="logo-header" data-background-color="dark">
 					<a href="~/Dashboard/Index" class="logo">
-						<img src="~/PortalAssets/img/B.png" style="max-width:100px;" alt="Logo">
-						@* <img src="~/DashBoardAssets/img/LogoGreen.png" class="navbar-brand" style="max-width:120px;" /> *@
+						<img src="~/PortalAssets/img/B.png" class="navbar-brand" style="max-width:100px;" alt="Logo">
 					</a>
 					<div class="nav-toggle">
 						<button class="btn btn-toggle toggle-sidebar">
@@ -143,88 +130,88 @@
 						<i class="gg-more-vertical-alt"></i>
 					</button>
 				</div>
-				<!-- End Logo Header -->
 			</div>
 			<div class="sidebar-wrapper scrollbar scrollbar-inner">
 				<div class="sidebar-content">
 					<ul class="nav nav-secondary">
-
-						<li class="nav-item">
+						<li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "Dashboard" && ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")">
 							<a href="~/Dashboard/Index">
 								<i class="fas fa-home"></i>
 								<p>Dashboard</p>
-								@* <span class="badge badge-success">4</span> *@
 							</a>
 						</li>
 
+						<!-- Booking Forms -->
 						<li class="nav-section">
 							<span class="sidebar-mini-icon">
 								<i class="fa fa-ellipsis-h"></i>
 							</span>
-							<h4 class="text-section">Components</h4>
+							<h4 class="text-section">Booking Forms</h4>
 						</li>
-
-						<li class="nav-item">
-							<a data-bs-toggle="collapse" href="#Contracts">
-								<i class="far fa-file-alt"></i>
+						<li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "Contracts" && ViewContext.RouteData.Values["action"].ToString() == "Add" ? "active" : "")">
+							<a href="~/Contracts/Add">
+								<i class="fas fa-plus"></i>
+								<p>Add new Booking <br /><span style="font-size:11px;">(New Customer)</span></p>
+							</a>
+						</li>
+						<li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "Contracts" && ViewContext.RouteData.Values["action"].ToString() == "Add2" ? "active" : "")">
+							<a href="~/Contracts/Add2">
+								<i class="fas fa-plus"></i>
+								<p>Add new Booking</p>
+							</a>
+						</li>
+						<li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "Contracts" && (ViewContext.RouteData.Values["action"].ToString() == "All" || ViewContext.RouteData.Values["action"].ToString() == "Details" || ViewContext.RouteData.Values["action"].ToString() == "Edit") ? "active" : "")">
+							<a href="~/Contracts/All">
+								<i class="fas fa-file-alt"></i>
 								<p>Booking Forms</p>
-								<span class="caret"></span>
 							</a>
-							<div class="collapse" id="Contracts">
-								<ul class="nav nav-collapse">
-									<li>
-										<a href="~/Contracts/Add">
-											<i class="fas fa-plus"></i>
-											<span>Add new Booking <br /><span style="font-size:11px;">(New Customer)</span></span>
-										</a>
-									</li>
-									<li>
-										<a href="~/Contracts/Add2">
-											<i class="fas fa-plus"></i>
-											<span>Add new Booking</span>
-										</a>
-									</li>
-									<li>
-										<a href="~/Contracts/All">
-											<i class="far fa-file-alt"></i>
-											<span>Booking Forms</span>
-										</a>
-									</li>
-								</ul>
-							</div>
 						</li>
 
-						<li class="nav-item">
-							<a data-bs-toggle="collapse" href="#Customers">
-								<i class="fas fa-user"></i>
-								<p>Users</p>
-								<span class="caret"></span>
+						<!-- Users -->
+						<li class="nav-section">
+							<span class="sidebar-mini-icon">
+								<i class="fa fa-ellipsis-h"></i>
+							</span>
+							<h4 class="text-section">Users</h4>
+						</li>
+						<li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "Users" && ViewContext.RouteData.Values["action"].ToString() == "Add" ? "active" : "")">
+							<a href="~/Users/Add">
+								<i class="fas fa-user-plus"></i>
+								<p>Add new User</p>
 							</a>
-							<div class="collapse" id="Customers">
-								<ul class="nav nav-collapse">
-									<li>
-										<a href="~/Users/Add">
-											<i class="fas fa-user-plus"></i>
-											<span>Add new User</span>
-										</a>
-									</li>
-									<li>
-										<a href="~/Users/All">
-											<i class="fas fa-user-friends"></i>
-											<span>Users List</span>
-										</a>
-									</li>
-								</ul>
-							</div>
+						</li>
+						<li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "Users" && (ViewContext.RouteData.Values["action"].ToString() == "All" || ViewContext.RouteData.Values["action"].ToString() == "Details" || ViewContext.RouteData.Values["action"].ToString() == "Edit") ? "active" : "")">
+							<a href="~/Users/All">
+								<i class="fas fa-user-friends"></i>
+								<p>Users List</p>
+							</a>
 						</li>
 					</ul>
 				</div>
 			</div>
 		</div>
-		<!-- End Sidebar -->
-
 		<div class="main-panel">
 			<div class="main-header">
+				<div class="main-header-logo">
+					<!-- Logo Header Hidden -->
+					<div class="logo-header" data-background-color="dark">
+						<a href="index.html" class="logo">
+							<img src="assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
+						</a>
+						<div class="nav-toggle">
+							<button class="btn btn-toggle toggle-sidebar">
+								<i class="gg-menu-right"></i>
+							</button>
+							<button class="btn btn-toggle sidenav-toggler">
+								<i class="gg-menu-left"></i>
+							</button>
+						</div>
+						<button class="topbar-toggler more">
+							<i class="gg-more-vertical-alt"></i>
+						</button>
+					</div>
+					<!-- End Logo Header Hidden -->
+				</div>
 				<!-- Navbar Header -->
 				<nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
 					<div class="container-fluid">
@@ -242,13 +229,22 @@
 							</div>
 						</nav>
 						<ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+							<li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
+								<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" aria-haspopup="true">
+									<i class="fa fa-search"></i>
+								</a>
+								<ul class="dropdown-menu dropdown-search animated fadeIn">
+									<form class="navbar-left navbar-form nav-search">
+										<div class="input-group">
+											<input id="txtSearch2" type="text" placeholder="Search for Bookings ..." class="form-control" />
+										</div>
+									</form>
+								</ul>
+							</li>
 							<li class="nav-item topbar-user dropdown hidden-caret">
-								<a class="dropdown-toggle profile-pic"
-								   data-bs-toggle="dropdown"
-								   href="#"
-								   aria-expanded="false">
+								<a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
 									<div class="avatar-sm">
-										<img src="/DashBoardAssets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
+										<img src="~/DashBoardAssets/img/defaultUser4.jpg" alt="..." class="avatar-img rounded-circle" />
 									</div>
 									<span class="profile-username">
 										<span class="op-7">Hi,</span>
@@ -271,7 +267,7 @@
 			<!-- End Navbar -->
 		</div>
 
-			@RenderBody();
+		@RenderBody();
 
 		<footer class="footer text-center">
 			<div class="copyright">
@@ -281,7 +277,6 @@
 		</footer>
 
 	</div>
-
 
 	<!--   Core JS Files   -->
 	<script src="~/dashBoardAssets/js/core/jquery-3.7.1.min.js"></script>
@@ -316,43 +311,7 @@
 	<!-- Kaiadmin JS -->
 	<script src="~/dashBoardAssets/js/kaiadmin.min.js"></script>
 
-	<!-- Kaiadmin DEMO methods, don't include it in your project! -->
-	<script src="~/dashBoardAssets/js/setting-demo.js"></script>
-	<script src="~/dashBoardAssets/js/demo.js"></script>
-	<script>
-		$("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
-		  type: "line",
-		  height: "70",
-		  width: "100%",
-		  lineWidth: "2",
-		  lineColor: "#177dff",
-		  fillColor: "rgba(23, 125, 255, 0.14)",
-		});
-
-		$("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
-		  type: "line",
-		  height: "70",
-		  width: "100%",
-		  lineWidth: "2",
-		  lineColor: "#f3545d",
-		  fillColor: "rgba(243, 84, 93, .14)",
-		});
-
-		$("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
-		  type: "line",
-		  height: "70",
-		  width: "100%",
-		  lineWidth: "2",
-		  lineColor: "#ffa534",
-		  fillColor: "rgba(255, 165, 52, .14)",
-		});
-
-
-
-
-	</script>
-
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	@* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> *@
 
 	<!-- Select2 CSS & JS -->
 	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -360,49 +319,23 @@
 
 
 	<script>
-		document.addEventListener("DOMContentLoaded", function () {
-			const currentPath = window.location.pathname.toLowerCase();
-			console.log("Current path:", currentPath);
 
-			const sidebarLinks = document.querySelectorAll(".nav a[href]");
-
-			sidebarLinks.forEach(link => {
-				const rawHref = link.getAttribute("href");
-				let href = rawHref.replace("~", "").toLowerCase();
-				console.log("Comparing with href:", href);
-
-				// Normalize hrefs (remove trailing slashes for comparison)
-				const normalize = path => path.replace(/\/+$/, "");
-
-				// Special handling for dashboard link
-				const isDashboardMatch =
-					normalize(currentPath) === "" || // "/"
-					normalize(currentPath) === "/dashboard" ||
-					normalize(currentPath) === "/dashboard/index";
-
-				const isMatch =
-					(isDashboardMatch && normalize(href) === "/dashboard/index") ||
-					normalize(currentPath) === normalize(href);
-
-				if (isMatch) {
-					link.classList.add("active");
-
-					const parentCollapse = link.closest(".collapse");
-					if (parentCollapse) {
-						parentCollapse.classList.add("show");
-
-						const parentNavItem = parentCollapse.closest(".nav-item");
-						if (parentNavItem) {
-							parentNavItem.classList.add("active");
-						}
-					}
-				}
-			});
+		// Listen for keydown event on the input
+		document.getElementById("txtSearch").addEventListener("keydown", function (event) {
+			if (event.key === "Enter") {
+				event.preventDefault(); // prevent form submission if inside a form
+				goToSearch();
+			}
 		});
-	</script>
 
+		// Listen for keydown event on the input
+		document.getElementById("txtSearch2").addEventListener("keydown", function (event) {
+			if (event.key === "Enter") {
+				event.preventDefault(); // prevent form submission if inside a form
+				goToSearch();
+			}
+		});
 
-	<script>
 		function goToSearch() {
 			const searchValue = document.getElementById('txtSearch').value.trim();
 			//if (searchValue) { uncomment if you want to not search if the search text is empty

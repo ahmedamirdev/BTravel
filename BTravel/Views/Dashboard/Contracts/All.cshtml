@@ -41,11 +41,12 @@
 
 	.no-wrap {
 		white-space: nowrap;
-		display: flex;
+		/* display: flex; */
 		align-items: center;
-		justify-content: flex-end; /* since you had text-end */
+		/* justify-content: flex-end; */ /* since you had text-end */
 		gap: 6px; /* spacing between buttons if you want */
 	}
+
 </style>
 
 
@@ -128,7 +129,7 @@
 											<br />
 											@item.CreatedAt.ToString("h:mm tt")
 										</td>
-										<td class="text-end no-wrap">
+										<td class="text-end no-wrap align-middle">
 											<button style="cursor:pointer; margin-right:2px;" class="icon-btn" data-bs-toggle="modal" data-bs-target="#uploadModal" title="Upload File" onclick="setUploadFileContractId(@item.ContractId)">
 												<i class="fas fa-upload text-success" style="font-size:21px;"></i>
 											</button>

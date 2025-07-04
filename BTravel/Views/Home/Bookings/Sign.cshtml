@@ -85,7 +85,6 @@
 	<div class="row">
 		<div class="col-md-12">
 			<form id="signatureForm" asp-action="SignContract" asp-controller="Bookings" method="post" novalidate>
-				<input name="__RequestVerificationToken" type="hidden" value="TOKEN_VALUE" />
 				<input hidden asp-for="ContractId" class="form-control" type="text" required />
 				<div class="card">
 					<div class="card-header">
