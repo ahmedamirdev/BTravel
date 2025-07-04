@@ -83,10 +83,26 @@ namespace BTravel.BL.Services.Contracts.Commands
             var isParsed = DateTime.TryParse(model.CardExpDate, out cardExp);
             if (isParsed)
             {
-                if (cardExp.Day <= DateTime.UtcNow.Day)
+                if (cardExp.ToUniversalTime() <= DateTime.UtcNow)
                 {
                     response.Message = "Card Exp. date is older than today";
                     return response;
+                }
+            }
+
+            if (model.RoomsList != null)
+            {
+                if (model.RoomsList.Count > 0)
+                {
+                    for (int i = 0; i < model.RoomsList.Count; i++)
+                    {
+                        if (string.IsNullOrWhiteSpace(model.RoomsList[i].Names))
+                        {
+                            response.Message = "Room(s) Names is empty, you must complete all rooms data before sign.";
+                            response.ErrorType = EErrorType.InCompleteRoomsData_ForSign;
+                            return response;
+                        }
+                    }
                 }
             }
 

@@ -113,7 +113,7 @@
 								<div class="form-group">
 									<label class="text-black-50 fw-extrabold">Created At</label>
 									<div class="input-icon">
-										<label class="fw-bold fs-5">@Model.CreatedAt</label>
+										<label class="fw-bold fs-5">@Model.CreatedAt.ToString("dd/MM/yyyy hh:mm tt")</label>
 									</div>
 								</div>
 							</div>
@@ -196,7 +196,14 @@
 								<div class="form-group">
 									<label class="text-black-50 fw-extrabold">Viewed At</label>
 									<div class="input-icon">
-										<label class="fw-bold fs-5">@Model.ViewedAt</label>
+										<label class="fw-bold fs-5">
+											@{
+												if (Model.ViewedAt.HasValue)
+												{
+													@Model.ViewedAt.Value.ToString("dd/MM/yyyy hh:mm tt")
+												}
+											}
+										</label>
 									</div>
 								</div>
 							</div>
@@ -204,7 +211,14 @@
 								<div class="form-group">
 									<label class="text-black-50 fw-extrabold">Signed At</label>
 									<div class="input-icon">
-										<label class="fw-bold fs-5">@Model.SignedAt</label>
+										<label class="fw-bold fs-5">
+											@{
+												if (Model.SignedAt.HasValue)
+												{
+													@Model.SignedAt.Value.ToString("dd/MM/yyyy hh:mm tt")
+												}
+											}
+										</label>
 									</div>
 								</div>
 							</div>
@@ -316,7 +330,7 @@
 														<td class="text-start">@item.NumOfNights</td>
 														<td class="text-start">@item.RoomAmenities</td>
 														<td class="text-start">@item.Comment</td>
-														<td class="text-start">@(item.Deadline.HasValue ? item.Deadline.Value.ToShortDateString() : null)</td>
+														<td class="text-start">@(item.Deadline.HasValue? item.Deadline.Value.ToShortDateString() : null)</td>
 													</tr>
 												}
 											}

@@ -99,22 +99,22 @@ namespace BTravel.BL.Services.Contracts.Queries
                                 RoleName = c.CommonUser.Role.Name,
                             },
 
-                            Rooms = c.Rooms.Where(r => !r.IsDeleted)
-                                    .Select(r => new ContractRoomDTO
-                                    {
-                                        ContractRoomId = r.ContractRoomId,
-                                        RoomType = r.RoomType,
-                                        Names = r.Names,
-                                        CheckIn = r.CheckIn,
-                                        CheckOut = r.CheckOut,
-                                        NumOfNights = r.NumOfNights,
-                                        RoomAmenities = r.RoomAmenities,
-                                        Comment = r.Comment,
-                                        Deadline = r.Deadline,
-                                        CreatedAt = r.CreatedAt.ConvertUtcToCairoTime(),
-                                        CreatedBy = r.CreatedBy,
-                                        ContractId = r.ContractId,
-                                    }),
+                            RoomsList = c.Rooms.Where(r => !r.IsDeleted)
+                                        .Select(r => new ContractRoomDTO
+                                        {
+                                            ContractRoomId = r.ContractRoomId,
+                                            RoomType = r.RoomType,
+                                            Names = r.Names,
+                                            CheckIn = r.CheckIn,
+                                            CheckOut = r.CheckOut,
+                                            NumOfNights = r.NumOfNights,
+                                            RoomAmenities = r.RoomAmenities,
+                                            Comment = r.Comment,
+                                            Deadline = r.Deadline,
+                                            CreatedAt = r.CreatedAt.ConvertUtcToCairoTime(),
+                                            CreatedBy = r.CreatedBy,
+                                            ContractId = r.ContractId,
+                                        }).ToList(),
 
                             Files = c.Files.Where(f => !f.IsDeleted)
                                     .Select(r => new ContractFileDTO

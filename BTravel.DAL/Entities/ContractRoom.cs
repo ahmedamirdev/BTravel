@@ -17,7 +17,7 @@ namespace BTravel.DAL.Entities
 
         public string RoomType { get; set; }
 
-        public string Names { get; set; }
+        public string? Names { get; set; }
 
         public DateTime CheckIn { get; set; }
 

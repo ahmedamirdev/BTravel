@@ -7,10 +7,10 @@
 			<div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
 				<h1 class="display-3 text-white mb-3 animated slideInDown">Embark on a memorable journey with us</h1>
 				<p class="fs-4 text-white mb-4 animated slideInDown">where every detail is tailored to perfection. Enjoy your trip with the assurance that we've taken care of everything for you.</p>
-				<div class="position-relative w-75 mx-auto animated slideInDown">
+				@* <div class="position-relative w-75 mx-auto animated slideInDown">
 					<input class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5" type="text" placeholder="Eg: Thailand">
 					<button type="button" class="btn btn-primary rounded-pill py-2 px-4 position-absolute top-0 end-0 me-2" style="margin-top: 7px;">Search</button>
-				</div>
+				</div> *@
 			</div>
 		</div>
 	</div>
@@ -50,7 +50,7 @@
 						<p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>24/7 Service</p>
 					</div>
 				</div>
-				<a class="btn btn-primary py-3 px-5 mt-2" href="">Read More</a>
+				<a class="btn btn-primary py-3 px-5 mt-2" href="~/Home/About">Read More</a>
 			</div>
 		</div>
 	</div>
@@ -203,7 +203,7 @@
 						<small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>2 Person</small>
 					</div>
 					<div class="text-center p-4">
-						<h3 class="mb-0">$149.00</h3>
+						@* <h3 class="mb-0">$149.00</h3> *@
 						<div class="mb-3">
 							<small class="fa fa-star text-primary"></small>
 							<small class="fa fa-star text-primary"></small>
@@ -213,7 +213,7 @@
 						</div>
 						<p>Explore our curated selection of awesome packages designed to elevate your travel experience.</p>
 						<div class="d-flex justify-content-center mb-2">
-							<a href="#" class="btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Contact us</a>
+							<a href="~/Home/ContactUs/" class="btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Contact us</a>
 						</div>
 					</div>
 				</div>
@@ -229,7 +229,7 @@
 						<small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>2 Person</small>
 					</div>
 					<div class="text-center p-4">
-						<h3 class="mb-0">$139.00</h3>
+						@* <h3 class="mb-0">$139.00</h3> *@
 						<div class="mb-3">
 							<small class="fa fa-star text-primary"></small>
 							<small class="fa fa-star text-primary"></small>
@@ -239,7 +239,7 @@
 						</div>
 						<p>From luxurious getaways to adventurous escapades, our packages are crafted to cater to diverse tastes and preferences.</p>
 						<div class="d-flex justify-content-center mb-2">
-							<a href="#" class="btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Contact us</a>
+							<a href="~/Home/ContactUs/" class="btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Contact us</a>
 						</div>
 					</div>
 				</div>
@@ -255,7 +255,7 @@
 						<small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>2 Person</small>
 					</div>
 					<div class="text-center p-4">
-						<h3 class="mb-0">$189.00</h3>
+						@* <h3 class="mb-0">$189.00</h3> *@
 						<div class="mb-3">
 							<small class="fa fa-star text-primary"></small>
 							<small class="fa fa-star text-primary"></small>
@@ -265,7 +265,7 @@
 						</div>
 						<p>Immerse yourself in unparalleled convenience and unforgettable moments with our thoughtfully tailored and truly awesome travel packages.</p>
 						<div class="d-flex justify-content-center mb-2">
-							<a href="#" class="btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Contact us</a>
+							<a href="~/Home/ContactUs/" class="btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Contact us</a>
 						</div>
 					</div>
 				</div>
@@ -274,67 +274,8 @@
 	</div>
 </div>
 <!-- Package End -->
-<!-- Booking Start -->
-<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-	<div class="container">
-		<div class="booking p-5">
-			<div class="row g-5 align-items-center">
-				<div class="col-md-6 text-white">
-					<h6 class="text-white text-uppercase">Booking</h6>
-					<h1 class="text-white mb-4">Online Booking</h1>
-					<p class="mb-4">"Feel free to leave your travel requirements by dropping us a message or contact our dedicated team at reservation@btravelmate.com or through a phone call at +44 121 318 8658. We're here to take care of your reservation needs."</p>
-					<a class="btn btn-outline-light py-3 px-5 mt-2" href="">Read More</a>
-				</div>
-				<div class="col-md-6">
-					<h1 class="text-white mb-4">Book Now</h1>
-					<form>
-						<div class="row g-3">
-							<div class="col-md-6">
-								<div class="form-floating">
-									<input type="text" class="form-control bg-transparent" id="name" placeholder="Your Name">
-									<label for="name">Your Name</label>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-floating">
-									<input type="email" class="form-control bg-transparent" id="email" placeholder="Your Email">
-									<label for="email">Your Email</label>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-floating date" id="date3" data-target-input="nearest">
-									<input type="text" class="form-control bg-transparent datetimepicker-input" id="datetime" placeholder="Date & Time" data-target="#date3" data-toggle="datetimepicker" />
-									<label for="datetime">Date & Time</label>
-								</div>
-								<div class="form-floating date" id="date3" data-target-input="nearest">
-									<input type="text" class="form-control bg-transparent datetimepicker-input" id="datetime" placeholder="Date & Time" data-target="#date3" data-toggle="datetimepicker" />
-									<label for="datetime">Date & Time</label>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-floating">
-									<input type="text" class="form-control bg-transparent" id="Destination" placeholder="Your Destination">
-									<label for="name">Destination</label>
-									<label for="select1">Destination</label>
-								</div>
-							</div>
-							<div class="col-12">
-								<div class="form-floating">
-									<textarea class="form-control bg-transparent" placeholder="Special Request" id="message" style="height: 100px"></textarea>
-									<label for="message">Special Request</label>
-								</div>
-							</div>
-							<div class="col-12">
-								<button class="btn btn-outline-light w-100 py-3" type="submit">Book Now</button>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- Booking Start -->
+
+
 <!-- Process Start -->
 <div class="container-xxl py-5">
 	<div class="container">
@@ -357,12 +298,12 @@
 			<div class="col-lg-4 col-sm-6 text-center pt-4 wow fadeInUp" data-wow-delay="0.3s">
 				<div class="position-relative border border-primary pt-5 pb-4 px-4">
 					<div class="d-inline-flex align-items-center justify-content-center bg-primary rounded-circle position-absolute top-0 start-50 translate-middle shadow" style="width: 100px; height: 100px;">
-						<i class="fa fa-dollar-sign fa-3x text-white"></i>
+						<i class="fa fa-euro-sign fa-3x text-white"></i>
 					</div>
 					<h5 class="mt-4">Secure Your Reservation</h5>
 					<hr class="w-25 mx-auto bg-primary mb-1">
 					<hr class="w-50 mx-auto bg-primary mt-0">
-					<p class="mb-0">Secure your reservation by filling out our online booking form, complete with your unique pin code for added security</p>
+					<p class="mb-0">Secure your reservation by filling out our online booking form, complete with your account for added security</p>
 				</div>
 			</div>
 			<div class="col-lg-4 col-sm-6 text-center pt-4 wow fadeInUp" data-wow-delay="0.5s">

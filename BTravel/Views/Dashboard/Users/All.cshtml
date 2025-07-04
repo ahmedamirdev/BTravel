@@ -30,6 +30,25 @@
 	</script>
 }
 
+<style>
+	.icon-btn {
+		background: none;
+		border: none;
+		padding: 0;
+		margin: 0;
+		cursor: pointer;
+		outline: none;
+	}
+
+	.no-wrap {
+		white-space: nowrap;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end; /* since you had text-end */
+		gap: 6px; /* spacing between buttons if you want */
+	}
+</style>
+
 
 <div class="container">
 	<div class="page-inner">
@@ -100,15 +119,12 @@
 												}
 											}
 										</td>
-										<td class="text-end">
-											<!-- Edit button -->
-											<a target="_blank" href="~/Users/Edit/@item.CommonUserId" class="btn btn-icon btn-round btn-info btn-sm" title="Edit">
-												<i class="fas fa-pen fa-xs"></i>
+										<td class="text-end no-wrap">
+											<a style="margin-right:2px;" target="_blank" href="~/Users/Edit/@item.CommonUserId" title="Edit">
+												<i class="fas fa-pen text-success" style="font-size:18px;"></i>
 											</a>
-
-											<!-- Delete button -->
-											<button class="btn btn-icon btn-round btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Delete" onclick="setDeleteUserId(@item.CommonUserId)">
-												<i class="fas fa-times"></i>
+											<button style="cursor:pointer" class="icon-btn" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Delete" onclick="setDeleteUserId(@item.CommonUserId)">
+												<i class="fas fa-times text-danger" style="font-size:26px;"></i>
 											</button>
 										</td>
 									</tr>

@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
 using BTravel.BL.Services.CommonUser.Commands;
+using BTravel.BL.Services.ContractRoom.Commands;
 using BTravel.BL.Services.Contracts.Commands;
 using BTravel.BL.Services.Contracts.Queries;
 using BTravel.BL.Services.Mail;
@@ -18,6 +19,7 @@ using BTravel.BL.Services.Security.Encryption;
 using BTravel.CommonDefinitions.DTOs.Auth;
 using BTravel.CommonDefinitions.DTOs.CommonUser;
 using BTravel.CommonDefinitions.DTOs.Contract;
+using BTravel.CommonDefinitions.DTOs.ContractRoom;
 using BTravel.CommonDefinitions.Requests;
 using BTravel.DAL;
 using BTravel.DAL.Entities;
@@ -82,7 +84,6 @@ namespace BTravel.Controllers
             return View();
         }
 
-
         [AllowAnonymous]
         public IActionResult FAQ()
         {
@@ -90,7 +91,7 @@ namespace BTravel.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult TermsAndCondetion()
+        public IActionResult TermsAndConditions()
         {
             return View();
         }
@@ -107,225 +108,6 @@ namespace BTravel.Controllers
             return View();
         }
 
-
-
-
-
-        [AllowAnonymous]
-        public async Task<IActionResult> Logout()
-        {
-            //await HttpContext.SignOutAsync();
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index", "Home");
-        }
-
-
-        [AuthorizePerRole("View_Contract_Portal")]
-        public IActionResult Contracts(int PageIndex = 0, string Search = "")
-        {
-            var request = new BaseRequest
-            {
-                Context = _context,
-                RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID")),
-                UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID")),
-                PageIndex = PageIndex,
-            };
-
-            var query = new GetAllContractsByCustomerId(request);
-            var response = query.GetAll(Search, request.UserID);
-
-            return View("~/Views/Home/Contracts.cshtml", response);
-        }
-
-        [AuthorizePerRole("View_Contract_Portal")]
-        public IActionResult CDetails(int Id)
-        {
-            var request = new BaseRequest
-            {
-                Context = _context,
-                RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID")),
-                UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID")),
-            };
-
-            var query = new GetContractByIdForCustomer(request);
-            var response = query.GetById(Id);
-
-            if (response.Success)
-            {
-                //TempData["SuccessMessage"] = response.Message;
-                return View("~/Views/Home/CDetails.cshtml", response.Data);
-            }
-            else
-            {
-                TempData["ErrorMessage"] = response.Message;
-                return RedirectToAction("Contracts", "Home");
-            }
-        }
-
-        [AuthorizePerRole("Sign_Contract_Portal")]
-        public IActionResult CSign(int Id)
-        {
-            var request = new BaseRequest
-            {
-                Context = _context,
-                RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID")),
-                UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID")),
-            };
-
-            var query = new GetContractByIdForSign(request);
-            var response = query.GetById(Id);
-
-            if (response.Success)
-            {
-                //TempData["SuccessMessage"] = response.Message;
-                return View("~/Views/Home/CSign.cshtml", response.Data);
-            }
-            else
-            {
-                TempData["ErrorMessage"] = response.Message;
-                return RedirectToAction("Contracts", "Home");
-            }
-        }
-
-        [HttpPost]
-        [AuthorizePerRole("Sign_Contract_Portal")]
-        public IActionResult SignContract(ContractDTO model)
-        {
-            #region Create Signature Image
-
-            if (string.IsNullOrWhiteSpace(model.signatureData))
-            {
-                TempData["ErrorMessage"] = "Signature is empty";
-                return RedirectToAction("CSign", "Home", new { Id = model.ContractId });
-            }
-
-            // Remove base64 header
-            var base64Data = model.signatureData.Split(',')[1];
-            var imageBytes = Convert.FromBase64String(base64Data);
-
-            // Create a MemoryStream from the byte array
-            using (var stream = new MemoryStream(imageBytes))
-            {
-                // Create a form file from the stream
-                IFormFile formFile = new FormFile(stream, 0, stream.Length, "signature", "signature.png")
-                {
-                    Headers = new HeaderDictionary(),
-                    ContentType = "image/png"
-                };
-
-                var file = formFile.OpenReadStream();
-                var fileName = formFile.FileName;
-                if (file.Length > 0)
-                {
-                    var newFileName = Guid.NewGuid().ToString() + "-" + fileName;
-                    var physicalPath = Directory.GetCurrentDirectory() + "/wwwroot/" + "Content/" + newFileName;
-                    string dirPath = Path.GetDirectoryName(physicalPath);
-
-                    if (!Directory.Exists(dirPath))
-                        Directory.CreateDirectory(dirPath);
-
-                    var virtualPath = "Content/" + newFileName;
-
-                    using (var streamFile = new FileStream(physicalPath, FileMode.Create))
-                    {
-                        file.CopyTo(streamFile);
-                    }
-
-                    model.SignatureUrl = virtualPath;
-                }
-            }
-
-            #endregion
-
-            var request = new BaseRequest
-            {
-                Context = _context,
-                RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID")),
-                UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID")),
-            };
-
-            var query = new SignContract(request);
-            var response = query.Sign(model);
-
-            if (response.Success)
-            {
-                TempData["SuccessMessage"] = response.Message;
-                return RedirectToAction("CDetails", "Home", new { Id = model.ContractId });
-            }
-            else
-            {
-                TempData["ErrorMessage"] = response.Message;
-                return RedirectToAction("CSign", "Home", new { Id = model.ContractId });
-            }
-        }
-
-        [AuthorizePerRole("Download_Contract_Portal")]
-        public async Task<IActionResult> DownloadContract(int Id)
-        {
-            var request = new BaseRequest
-            {
-                Context = _context,
-                RoleID = int.Parse(AuthHelper.GetClaimValue(User, "RoleID")),
-                UserID = int.Parse(AuthHelper.GetClaimValue(User, "UserID")),
-            };
-
-            var query = new GetContractByIdForCustomer(request);
-            var response = query.GetById(Id);
-
-            if (response.Success)
-            {
-                //*** Choice (1)
-
-                //// Path to your HTML file
-                //var htmlFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Views", "Home", "ContractPDF.cshtml");
-
-                //// Read the HTML content
-                //var htmlContent = System.IO.File.ReadAllText(htmlFilePath);
-
-                //// Create a PDF document
-                //PdfDocument pdf = PdfGenerator.GeneratePdf(htmlContent, PdfSharp.PageSize.A4);
-
-                //// Save the PDF to a MemoryStream
-                //using (var stream = new MemoryStream())
-                //{
-                //    pdf.Save(stream, false);
-                //    var pdfBytes = stream.ToArray();
-
-                //    // Return the PDF file for download
-                //    return File(pdfBytes, "application/pdf", "SampleDocument.pdf");
-                //}
-
-
-                //*** Choice (2)
-
-                //string htmlContent = await _viewRenderService.RenderToStringAsync("ContractPDF", response.Data);
-
-                //PdfSharp.PageSize s = PdfSharp.PageSize.A4;
-                //var pdf = PdfGenerator.GeneratePdf(htmlContent, s);
-                //using var stream = new MemoryStream();
-                //pdf.Save(stream, false);
-                //stream.Position = 0;
-
-                //return File(stream.ToArray(), "application/pdf", "Contract.pdf");
-
-
-                //*** Choice (3)
-
-                //return new ViewAsPdf("ContractPDF", response.Data)
-                //{
-                //    FileName = $"Contract_{response.Data.ContractId}.pdf",
-                //    PageSize = Rotativa.AspNetCore.Options.Size.A4,
-                //    PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
-                //};
-
-                return null;
-            }
-            else
-            {
-                TempData["ErrorMessage"] = response.Message;
-                return RedirectToAction("Contracts", "Home");
-            }
-        }
 
         [HttpGet]
         public IActionResult ChangePassword()
@@ -364,8 +146,19 @@ namespace BTravel.Controllers
                 return View("~/Views/Home/ChangePassword.cshtml", model);
             }
         }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> Logout()
+        {
+            //await HttpContext.SignOutAsync();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
+        }
     }
 
+
+
+    //*** HTML to PDF using HTMLRender library
     public interface IViewRenderService
     {
         Task<string> RenderToStringAsync(string viewName, object model);

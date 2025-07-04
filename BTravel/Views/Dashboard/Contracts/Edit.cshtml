@@ -96,7 +96,7 @@
 										<label style="font-weight:bold">Rate / Night <span class="text-warning" style="font-size:12px;">(in EURO)</span></label>
 										<div class="input-icon">
 											<span class="input-icon-addon">
-												<i class="fas fa-dollar-sign"></i>
+												<i class="fas fa-euro-sign"></i>
 											</span>
 											<input asp-for="RatePerNight" class="form-control" type="number" min="0" required />
 										</div>
@@ -118,7 +118,7 @@
 										<label style="font-weight:bold">Service Fees</label>
 										<div class="input-icon">
 											<span class="input-icon-addon">
-												<i class="fas fa-dollar-sign"></i>
+												<i class="fas fa-euro-sign"></i>
 											</span>
 											<input asp-for="TaxPerc" class="form-control" type="number" min="0" required />
 										</div>
@@ -243,7 +243,7 @@
 													{
 														<tr>
 															<td><input style="width: 120px;" type="text" name="Rooms[@i].RoomType" class="form-control" value="@Model.Rooms[i].RoomType" required /></td>
-															<td><input style="width: 150px;" type="text" name="Rooms[@i].Names" class="form-control" value="@Model.Rooms[i].Names" required /></td>
+															<td><input style="width: 150px;" type="text" name="Rooms[@i].Names" class="form-control" value="@Model.Rooms[i].Names" /></td>
 															<td><input style="width: 130px;" type="date" name="Rooms[@i].CheckIn" class="form-control" value="@Model.Rooms[i].CheckIn.ToString("yyyy-MM-dd")" min="@DateTime.Now.ToString("yyyy-MM-dd")" required /></td>
 															<td><input style="width: 130px;" type="date" name="Rooms[@i].CheckOut" class="form-control" value="@Model.Rooms[i].CheckOut.ToString("yyyy-MM-dd")" min="@DateTime.Now.ToString("yyyy-MM-dd")" required /></td>
 															<td><input style="width: 70px;" type="number" name="Rooms[@i].NumOfNights" class="form-control" value="@Model.Rooms[i].NumOfNights" min="1" required /></td>
@@ -283,7 +283,7 @@
 		roomIndex++;
 		let row = `<tr>
 			<td><input style="width: 120px;" type="text" name="Rooms[${roomIndex}].RoomType" class="form-control" required /></td>
-			<td><input style="width: 150px;" type="text" name="Rooms[${roomIndex}].Names" class="form-control" required /></td>
+			<td><input style="width: 150px;" type="text" name="Rooms[${roomIndex}].Names" class="form-control"  /></td>
 			<td><input style="width: 130px;" type="date" name="Rooms[${roomIndex}].CheckIn" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" required /></td>
 			<td><input style="width: 130px;" type="date" name="Rooms[${roomIndex}].CheckOut" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" required /></td>
 			<td><input style="width: 70px;" type="number" name="Rooms[${roomIndex}].NumOfNights" class="form-control" min="1" required /></td>

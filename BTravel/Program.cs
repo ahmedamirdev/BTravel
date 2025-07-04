@@ -81,6 +81,11 @@ namespace BTravel
 
             builder.Services.AddControllers();
 
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+            });
+
             GlobalFontSettings.FontResolver = new CustomFontResolver();
             builder.Services.AddScoped<IViewRenderService, ViewRenderService>();
 

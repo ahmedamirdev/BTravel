@@ -170,9 +170,8 @@
 														}
 													}
 												</td>
-												<td class="text-end">@item.CreatedAt.ToString("dd/MM/yy h:mm tt")</td>
+												<td class="text-end">@item.CreatedAt.ToString("dd/MM/yy")</td>
 											</tr>
-
 										}
 									}
 								</tbody>
@@ -184,7 +183,7 @@
 			<div class="col-md-4">
 				<div class="card card-primary bg-primary-gradient">
 					<div class="card-body skew-shadow">
-						<h1 class="fw-bolder">@Model.TotalSalesAllTime <span class="fs-5">EUR</span></h1>
+						<h1 class="fw-bolder">@Model.TotalSalesAllTime <span class="fs-3"><i class="fas fa-euro-sign"></i></span></h1>
 						<h5 class="op-8">Total Sales</h5>
 						<div class="pull-left mt-3">
 							<label>From <span class="fw-bold">@Model.FirstContractCreatedAt.ToString("MMMM yyyy")</span>  - Till now</label>
@@ -193,7 +192,7 @@
 				</div>
 				<div class="card card-success bg-success-gradient">
 					<div class="card-body skew-shadow">
-						<h1 class="fw-bolder">@Model.TotalSalesLastWeek <span class="fs-5">EUR</span></h1>
+						<h1 class="fw-bolder">@Model.TotalSalesLastWeek <span class="fs-3"><i class="fas fa-euro-sign"></i></span></h1>
 						<h5 class="op-8">Last Week Sales</h5>
 						<div class="pull-left mt-3">
 							<label>From <span class="fw-bold">@Model.LastWeekStartAt.ToString("dddd dd MMMM")</span> - Till now</label>
@@ -225,7 +224,6 @@
 												<span class="badge badge-info fw-bolder">Customer</span>
 											}
 										}
-
 									</div>
 								}
 							}
@@ -234,6 +232,5 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
 </div>

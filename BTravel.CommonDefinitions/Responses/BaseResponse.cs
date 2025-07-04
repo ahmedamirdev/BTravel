@@ -4,9 +4,15 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using BTravel.CommonDefinitions.Enums;
 
 namespace BTravel.CommonDefinitions.Responses
 {
+    public class BaseResponse<T> : BaseResponse
+    {
+        public T Data { get; set; }
+    }
+
     public class BaseResponse
     {
         public string Message { get; set; }
@@ -20,22 +26,6 @@ namespace BTravel.CommonDefinitions.Responses
         public int To => Math.Min((PageIndex + 1) * PageSize, TotalCount);
 
         public string Search { get; set; }
+        public EErrorType ErrorType{ get; set; }
     } 
-
-    public class BaseResponse<T>
-    {
-        public string Message { get; set; }
-        public bool Success { get; set; }
-        public HttpStatusCode StatusCode { get; set; }
-        public int TotalCount { get; set; }
-        public int PageSize { get; set; }
-        public int PageIndex { get; set; } // where PageIndex start from 0
-        public int TotalPages { get; set; }
-        public int From => (PageIndex * PageSize) + 1; 
-        public int To => Math.Min((PageIndex + 1) * PageSize, TotalCount);
-
-        public string Search { get; set; }
-
-        public T Data { get; set; }
-    }
 }

@@ -29,6 +29,25 @@
 	</script>
 }
 
+<style>
+	.icon-btn {
+		background: none;
+		border: none;
+		padding: 0;
+		margin: 0;
+		cursor: pointer;
+		outline: none;
+	}
+
+	.no-wrap {
+		white-space: nowrap;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end; /* since you had text-end */
+		gap: 6px; /* spacing between buttons if you want */
+	}
+</style>
+
 
 <div class="container">
 	<div class="page-inner">
@@ -104,18 +123,20 @@
 												}
 											}
 										</td>
-										<td class="text-center">@item.CreatedAt.ToString("dd/MM/yy h:mm tt")</td>
-										<td class="text-end">
-											<button class="btn btn-icon btn-round btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#uploadModal" title="Upload File" onclick="setUploadFileContractId(@item.ContractId)">
-												<i class="fas fa-arrow-up"></i>
+										<td class="text-center">
+											@item.CreatedAt.ToString("dd/MM/yy")
+											<br />
+											@item.CreatedAt.ToString("h:mm tt")
+										</td>
+										<td class="text-end no-wrap">
+											<button style="cursor:pointer; margin-right:2px;" class="icon-btn" data-bs-toggle="modal" data-bs-target="#uploadModal" title="Upload File" onclick="setUploadFileContractId(@item.ContractId)">
+												<i class="fas fa-upload text-success" style="font-size:21px;"></i>
 											</button>
-
-											<a target="_blank" href="~/Contracts/Edit/@item.ContractId" class="btn btn-icon btn-round btn-info btn-sm" title="Edit">
-												<i class="fas fa-pen fa-xs"></i>
+											<a style="margin-right:2px;" target="_blank" href="~/Contracts/Edit/@item.ContractId" title="Edit">
+												<i class="fas fa-pen text-success" style="font-size:18px;"></i>
 											</a>
-
-											<button class="btn btn-icon btn-round btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Delete" onclick="setDeleteContractId(@item.ContractId)">
-												<i class="fas fa-times"></i>
+											<button style="cursor:pointer" class="icon-btn" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Delete" onclick="setDeleteContractId(@item.ContractId)">
+												<i class="fas fa-times text-danger" style="font-size:26px;"></i>
 											</button>
 										</td>
 									</tr>
@@ -133,7 +154,7 @@
 								<ul class="pagination">
 									@if ((Model.PageIndex + 1) > 1)
 									{
-										<li><a href="@Url.Action("All" , "Contracts", new { PageIndex = Model.PageIndex - 1, Search = Model.Search })">Prev</a></li>
+										<li><a href="@Url.Action("All", "Contracts", new { PageIndex = Model.PageIndex - 1, Search = Model.Search })">Prev</a></li>
 									}
 
 									@for (int i = 1; i <= Model.TotalPages; i++)
@@ -144,13 +165,13 @@
 										}
 										else
 										{
-											<li><a href="@Url.Action("All" , "Contracts", new { PageIndex = i - 1, Search = Model.Search })">@i</a></li>
+											<li><a href="@Url.Action("All", "Contracts", new { PageIndex = i - 1, Search = Model.Search })">@i</a></li>
 										}
 									}
 
 									@if ((Model.PageIndex + 1) < Model.TotalPages)
 									{
-										<li><a href="@Url.Action("All" , "Contracts", new { PageIndex = Model.PageIndex + 1, Search = Model.Search })">Next</a></li>
+										<li><a href="@Url.Action("All", "Contracts", new { PageIndex = Model.PageIndex + 1, Search = Model.Search })">Next</a></li>
 									}
 								</ul>
 							}

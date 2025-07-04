@@ -16,6 +16,15 @@
 		margin-bottom: 0;
 		padding: 10px;
 	}
+
+	.icon-btn {
+		background: none;
+		border: none;
+		padding: 0;
+		margin: 0;
+		cursor: pointer;
+		outline: none;
+	}
 </style>
 
 
@@ -46,7 +55,7 @@
 						@{
 							// if (Model.IsSigned)
 							// {
-							// 	<a href="~/Home/DownloadContract/@Model.ContractId" class="btn btn-secondary btn-sm ms-2 fs-6 fw-bolder text-white">
+							// 	<a href="~/Bookings/DownloadContract/@Model.ContractId" class="btn btn-secondary btn-sm ms-2 fs-6 fw-bolder text-white">
 							// 		<i class="fas fa-arrow-down fa-sm"></i>&nbsp;&nbsp;Download Contract
 							// 	</a>
 							// }
@@ -93,7 +102,7 @@
 							<div class="form-group">
 								<label style="font-weight:bold; color: #646464">Created At</label>
 								<div class="input-icon mt-1">
-									<label class="fw-bold fs-5" style="color:#1a1a1a">@Model.CreatedAt</label>
+									<label class="fw-bold fs-5" style="color:#1a1a1a">@Model.CreatedAt.ToString("dd/MM/yyyy hh:mm tt")</label>
 								</div>
 							</div>
 						</div>
@@ -110,7 +119,23 @@
 			</div>
 			<div class="card">
 				<div class="card-header">
-					<div class="card-title">Customer Details</div>
+					<div class="card-title">
+						Customer Details &nbsp;
+						@{
+							if (Model.StatusId == (int)EContractStatus.Pending)
+							{
+								<span class="badge badge-info fw-bolder">Pending</span>
+							}
+							else if (Model.StatusId == (int)EContractStatus.Opened)
+							{
+								<span class="badge badge-warning fw-bolder">Opened</span>
+							}
+							else if (Model.StatusId == (int)EContractStatus.Sigend)
+							{
+								<span class="badge badge-success fw-bolder">Signed</span>
+							}
+						}
+					</div>
 				</div>
 				<div class="card-body">
 					<div class="row">
@@ -152,7 +177,14 @@
 							<div class="form-group">
 								<label style="font-weight:bold; color: #646464">Viewed At</label>
 								<div class="input-icon mt-1">
-									<label class="fw-bold fs-5 text-wrap" style="color:#1a1a1a">@Model.ViewedAt</label>
+									<label class="fw-bold fs-5 text-wrap" style="color:#1a1a1a">
+										@{
+											if (Model.ViewedAt.HasValue)
+											{
+												@Model.ViewedAt.Value.ToString("dd/MM/yyyy hh:mm tt")
+											}
+										}
+									</label>
 								</div>
 							</div>
 						</div>
@@ -160,7 +192,14 @@
 							<div class="form-group">
 								<label style="font-weight:bold; color: #646464">Signed At</label>
 								<div class="input-icon mt-1">
-									<label class="fw-bold fs-5 text-wrap" style="color:#1a1a1a">@Model.SignedAt</label>
+									<label class="fw-bold fs-5 text-wrap" style="color:#1a1a1a">
+										@{
+											if (Model.SignedAt.HasValue)
+											{
+												@Model.SignedAt.Value.ToString("dd/MM/yyyy hh:mm tt")
+											}
+										}
+									</label>
 								</div>
 							</div>
 						</div>
@@ -291,20 +330,59 @@
 											<th scope="col" class="text-start">No. Of Nights</th>
 											<th scope="col" class="text-start">Amenities</th>
 											<th scope="col" class="text-start">Comments</th>
+											@{
+												if (Model.StatusId != (int)EContractStatus.Sigend)
+												{
+													<th scope="col" class="text-start">Actions</th>
+												}
+											}
 										</tr>
 									</thead>
 									<tbody>
 										@{
-											foreach (var item in Model.Rooms)
+											foreach (var item in Model.RoomsList)
 											{
-												<tr style="color:#1a1a1a">
-													<th class="text-start">@item.RoomType</th>
-													<td class="text-start">@item.Names</td>
+												<tr id="row-@item.ContractRoomId" style="color:#1a1a1a">
+													<form id="form-@item.ContractRoomId" method="post" action="@Url.Action("UpdateRoom", "Bookings")">
+														@* Hidden IDs *@
+														<input type="hidden" name="ContractRoomId" value="@item.ContractRoomId" />
+														<input type="hidden" name="ContractId" value="@Model.ContractId" />
+
+													<td class="text-start">@item.RoomType</td>
+
+													<td class="text-start">
+														<span class="view-mode">@item.Names</span>
+														@{
+															if (Model.StatusId != (int)EContractStatus.Sigend)
+															{
+																<input type="text" name="Names" value="@item.Names" class="form-control edit-mode d-none" />
+															}
+														}
+													</td>
+
 													<td class="text-start">@item.CheckIn.ToShortDateString()</td>
 													<td class="text-start">@item.CheckOut.ToShortDateString()</td>
 													<td class="text-start">@item.NumOfNights</td>
 													<td class="text-start">@item.RoomAmenities</td>
 													<td class="text-start">@item.Comment</td>
+
+													@{
+														if (Model.StatusId != (int)EContractStatus.Sigend)
+														{
+															<td class="text-center">
+																<a style="cursor:pointer" class="edit-btn" title="Edit" data-id="@item.ContractRoomId">
+																	<i class="fas fa-pen text-success" style="font-size:20px;"></i>
+																</a>
+																<button type="submit" style="cursor:pointer" class="save-btn icon-btn d-none me-1" title="Save" data-id="@item.ContractRoomId">
+																	<i class="fas fa-check text-success" style="font-size:25px;"></i>
+																</button>
+																<a style="cursor:pointer" class="cancel-btn d-none" title="Cancel" data-id="@item.ContractRoomId">
+																	<i class="fas fa-times text-danger" style="font-size:25px;"></i>
+																</a>
+															</td>
+														}
+													}
+													</form>
 												</tr>
 											}
 										}
@@ -352,3 +430,44 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const editButtons = document.querySelectorAll(".edit-btn");
+		const cancelButtons = document.querySelectorAll(".cancel-btn");
+
+		// Handle Edit
+		editButtons.forEach(button => {
+			button.addEventListener("click", function () {
+				const id = this.getAttribute("data-id");
+				const row = document.getElementById("row-" + id);
+
+				// Show/Hide appropriate elements
+				row.querySelector(".view-mode").classList.add("d-none");
+				row.querySelector(".edit-mode").classList.remove("d-none");
+				row.querySelector(".edit-btn").classList.add("d-none");
+				row.querySelector(".save-btn").classList.remove("d-none");
+				row.querySelector(".cancel-btn").classList.remove("d-none");
+			});
+		});
+
+		// Handle Cancel
+		cancelButtons.forEach(button => {
+			button.addEventListener("click", function () {
+				const id = this.getAttribute("data-id");
+				const row = document.getElementById("row-" + id);
+
+				// Restore visibility
+				row.querySelector(".view-mode").classList.remove("d-none");
+				row.querySelector(".edit-mode").classList.add("d-none");
+				row.querySelector(".edit-btn").classList.remove("d-none");
+				row.querySelector(".save-btn").classList.add("d-none");
+				row.querySelector(".cancel-btn").classList.add("d-none");
+
+				// Reset input value to original text
+				const originalValue = row.querySelector(".view-mode").textContent.trim();
+				row.querySelector("input[name='Names']").value = originalValue;
+			});
+		});
+	});
+</script>

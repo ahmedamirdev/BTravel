@@ -84,12 +84,12 @@ namespace BTravel.BL.Services.Contracts.Commands
                 {
                     for (int i = 0; i < model.Rooms.Count; i++)
                     {
-                        if (model.Rooms[i].CheckIn.Day < DateTime.UtcNow.Day || model.Rooms[i].CheckOut.Day < DateTime.UtcNow.Day)
+                        if (model.Rooms[i].CheckIn.ToUniversalTime() < DateTime.UtcNow || model.Rooms[i].CheckOut.ToUniversalTime() < DateTime.UtcNow)
                         {
                             response.Message = "CheckIn or CheckOut date is older than today";
                             return response;
                         }
-                        if (model.Rooms[i].CheckIn.Day > model.Rooms[i].CheckOut.Day)
+                        if (model.Rooms[i].CheckIn.ToUniversalTime() > model.Rooms[i].CheckOut.ToUniversalTime())
                         {
                             response.Message = "CheckIn date is older than CheckOut date";
                             return response;
@@ -104,7 +104,7 @@ namespace BTravel.BL.Services.Contracts.Commands
                 var isParsed = DateTime.TryParse(model.CardExpDate, out cardExp);
                 if (isParsed)
                 {
-                    if (cardExp.Day <= DateTime.UtcNow.Day)
+                    if (cardExp.ToUniversalTime() <= DateTime.UtcNow)
                     {
                         response.Message = "Card Exp. date is older than today";
                         return response;

@@ -61,7 +61,7 @@
 							{
 								<tr>
 									<th scope="row">
-										<a target="_blank" href="~/Home/CDetails/@item.ContractId">#@item.ContractId</a>
+										<a target="_blank" href="~/Bookings/Details/@item.ContractId">#@item.ContractId</a>
 									</th>
 									<td class="text-start fw-bold" style="color: #1d1d2e">@item.HotelName</td>
 									<td class="text-start">@item.NoOfRooms</td>
@@ -85,12 +85,12 @@
 									</td>
 									<td class="text-center">@item.CreatedAt.ToString("dd/MM/yyyy")</td>
 									<td class="text-center">
-										<a target="_blank" href="~/Home/CDetails/@item.ContractId" class="me-1" title="View">
+										<a target="_blank" href="~/Bookings/Details/@item.ContractId" class="me-1" title="View">
 											<i class="fas fa-eye" style="font-size:20px; color:darkorange"></i>
 										</a>
 										@if (item.IsSigned == false)
 										{
-											<a target="_blank" href="~/Home/CSign/@item.ContractId" class="text-success" title="Sign">
+											<a target="_blank" href="~/Bookings/Sign/@item.ContractId" class="text-success" title="Sign">
 												<i class="fas fa-pen" style="font-size:18px"></i>
 											</a>
 										}
@@ -113,7 +113,7 @@
 								@if ((Model.PageIndex + 1) > 1)
 								{
 									<li class="page-item">
-										<a href="@Url.Action("Contracts" , "Home", new { PageIndex = Model.PageIndex - 1 })" class="page-link">
+										<a href="@Url.Action("All", "Bookings", new { PageIndex = Model.PageIndex - 1 })" class="page-link">
 											@* <span aria-hidden="true">&laquo;</span> *@
 											<span>Previous</span>
 										</a>
@@ -127,13 +127,13 @@
 									}
 									else
 									{
-										<li class="page-item"><a class="page-link" href="@Url.Action("Contracts" , "Home", new { PageIndex = i - 1 })">@i</a></li>
+										<li class="page-item"><a class="page-link" href="@Url.Action("All", "Bookings", new { PageIndex = i - 1 })">@i</a></li>
 									}
 								}
 								@if ((Model.PageIndex + 1) < Model.TotalPages)
 								{
 									<li class="page-item">
-										<a href="@Url.Action("Contracts" , "Home", new { PageIndex = Model.PageIndex + 1 })" class="page-link">
+										<a href="@Url.Action("All", "Bookings", new { PageIndex = Model.PageIndex + 1 })" class="page-link">
 											@* <span aria-hidden="true">&raquo;</span> *@
 											<span>Next</span>
 										</a>

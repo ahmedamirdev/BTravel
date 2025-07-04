@@ -40,6 +40,7 @@ namespace BTravel.CommonDefinitions.DTOs.Contract
 
         public CommonUserDTO CommonUser { get; set; }
         public IEnumerable<ContractRoomDTO> Rooms { get; set; }
+        public List<ContractRoomDTO> RoomsList { get; set; }
         public IEnumerable<ContractFileDTO> Files { get; set; }
 
         public DateTime? ViewedAt { get; set; }

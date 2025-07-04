@@ -3,7 +3,7 @@
 @using BTravel.DAL.Entities;
 @using System.Globalization
 @model ContractDTO
-
+@Html.AntiForgeryToken()
 <!-- Import Fabric.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
 
@@ -52,6 +52,15 @@
 	.is-invalid {
 		border: 2px solid red;
 	}
+
+	.icon-btn {
+		background: none;
+		border: none;
+		padding: 0;
+		margin: 0;
+		cursor: pointer;
+		outline: none;
+	}
 </style>
 
 
@@ -75,7 +84,8 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
-			<form id="signatureForm" asp-action="SignContract" asp-controller="Home" method="post" novalidate>
+			<form id="signatureForm" asp-action="SignContract" asp-controller="Bookings" method="post" novalidate>
+				<input name="__RequestVerificationToken" type="hidden" value="TOKEN_VALUE" />
 				<input hidden asp-for="ContractId" class="form-control" type="text" required />
 				<div class="card">
 					<div class="card-header">
@@ -121,7 +131,7 @@
 								<div class="form-group">
 									<label style="font-weight:bold; color: #646464">Created At</label>
 									<div class="input-icon mt-1">
-										<label class="fw-bold fs-5" style="color:#1a1a1a">@Model.CreatedAt</label>
+										<label class="fw-bold fs-5" style="color:#1a1a1a">@Model.CreatedAt.ToString("dd/MM/yyyy hh:mm tt")</label>
 									</div>
 								</div>
 							</div>
@@ -273,24 +283,67 @@
 												<th scope="col" class="text-start">No. Of Nights</th>
 												<th scope="col" class="text-start">Amenities</th>
 												<th scope="col" class="text-start">Comments</th>
+												@{
+													if (Model.StatusId != (int)EContractStatus.Sigend)
+													{
+														<th scope="col" class="text-start">Actions</th>
+													}
+												}
 											</tr>
 										</thead>
 										<tbody>
 											@{
-												if (Model.Rooms != null)
+												if (Model.RoomsList != null)
 												{
-
-
-													foreach (var item in Model.Rooms)
+													for (int i = 0; i < Model.RoomsList.Count; i++)
 													{
-														<tr style="color: #1a1a1a;">
-															<th class="text-start">@item.RoomType</th>
-															<td class="text-start">@item.Names</td>
-															<td class="text-start">@item.CheckIn.ToShortDateString()</td>
-															<td class="text-start">@item.CheckOut.ToShortDateString()</td>
-															<td class="text-start">@item.NumOfNights</td>
-															<td class="text-start">@item.RoomAmenities</td>
-															<td class="text-start">@item.Comment</td>
+														<tr id="row-@Model.RoomsList[i].ContractRoomId" style="color:#1a1a1a">
+
+															@* Hidden IDs *@
+															<input type="hidden" name="RoomsList[@i].ContractId" value="@Model.ContractId" />
+															<input type="hidden" name="RoomsList[@i].ContractRoomId" value="@Model.RoomsList[i].ContractRoomId" />
+															<input type="hidden" name="RoomsList[@i].RoomType" value="@Model.RoomsList[i].RoomType" />
+															<input type="hidden" name="RoomsList[@i].CheckIn" value="@Model.RoomsList[i].CheckIn" />
+															<input type="hidden" name="RoomsList[@i].CheckOut" value="@Model.RoomsList[i].CheckOut" />
+															<input type="hidden" name="RoomsList[@i].NumOfNights" value="@Model.RoomsList[i].NumOfNights" />
+															<input type="hidden" name="RoomsList[@i].RoomAmenities" value="@Model.RoomsList[i].RoomAmenities" />
+															<input type="hidden" name="RoomsList[@i].Comment" value="@Model.RoomsList[i].Comment" />
+															<input type="hidden" name="RoomsList[@i].Deadline" value="@Model.RoomsList[i].Deadline" />
+															<input type="hidden" name="RoomsList[@i].CreatedAt" value="@Model.RoomsList[i].CreatedAt" />
+
+															<input type="hidden" id="input-RoomId-@Model.RoomsList[i].ContractRoomId" name="RoomsList[@i].ContractRoomId" value="@Model.RoomsList[i].ContractRoomId" />
+
+															<td class="text-start">@Model.RoomsList[i].RoomType</td>
+															<td class="text-start">
+																<span class="view-mode">@Model.RoomsList[i].Names</span>
+																@{
+																	if (Model.StatusId != (int)EContractStatus.Sigend)
+																	{
+																		<input type="text" id="input-Name-@Model.RoomsList[i].ContractRoomId" name="RoomsList[@i].Names" value="@Model.RoomsList[i].Names" class="form-control edit-mode d-none" />
+																	}
+																}
+															</td>
+															<td class="text-start">@Model.RoomsList[i].CheckIn.ToShortDateString()</td>
+															<td class="text-start">@Model.RoomsList[i].CheckOut.ToShortDateString()</td>
+															<td class="text-start">@Model.RoomsList[i].NumOfNights</td>
+															<td class="text-start">@Model.RoomsList[i].RoomAmenities</td>
+															<td class="text-start">@Model.RoomsList[i].Comment</td>
+															@{
+																if (Model.StatusId != (int)EContractStatus.Sigend)
+																{
+																	<td class="text-center">
+																		<a style="cursor:pointer" class="edit-btn" title="Edit" data-id="@Model.RoomsList[i].ContractRoomId">
+																			<i class="fas fa-pen text-success" style="font-size:20px;"></i>
+																		</a>
+																		<button type="button" style="cursor:pointer" class="save-btn icon-btn d-none me-1" title="Save" data-id="@Model.RoomsList[i].ContractRoomId">
+																			<i class="fas fa-check text-success" style="font-size:25px;"></i>
+																		</button>
+																		<a style="cursor:pointer" class="cancel-btn d-none" title="Cancel" data-id="@Model.RoomsList[i].ContractRoomId">
+																			<i class="fas fa-times text-danger" style="font-size:25px;"></i>
+																		</a>
+																	</td>
+																}
+															}
 														</tr>
 													}
 												}
@@ -310,8 +363,127 @@
 	</div>
 </div>
 
+<script>
+		document.addEventListener("DOMContentLoaded", function () {
+		const editButtons = document.querySelectorAll(".edit-btn");
+		const cancelButtons = document.querySelectorAll(".cancel-btn");
+		const saveButtons = document.querySelectorAll(".save-btn");
 
+		// Handle Edit
+		editButtons.forEach(button => {
+			button.addEventListener("click", function () {
+				const id = this.getAttribute("data-id");
+				const row = document.getElementById("row-" + id);
 
+				// Show/Hide appropriate elements
+				row.querySelector(".view-mode").classList.add("d-none");
+				row.querySelector(".edit-mode").classList.remove("d-none");
+				row.querySelector(".edit-btn").classList.add("d-none");
+				row.querySelector(".save-btn").classList.remove("d-none");
+				row.querySelector(".cancel-btn").classList.remove("d-none");
+			});
+		});
+
+		// Handle Cancel
+		cancelButtons.forEach(button => {
+			button.addEventListener("click", function () {
+				const id = this.getAttribute("data-id");
+				const row = document.getElementById("row-" + id);
+
+				// Restore visibility
+				row.querySelector(".view-mode").classList.remove("d-none");
+				row.querySelector(".edit-mode").classList.add("d-none");
+				row.querySelector(".edit-btn").classList.remove("d-none");
+				row.querySelector(".save-btn").classList.add("d-none");
+				row.querySelector(".cancel-btn").classList.add("d-none");
+
+				// Reset input value to original text
+				const originalValue = row.querySelector(".view-mode").textContent.trim();
+				row.querySelector("input").value = originalValue;
+			});
+		});
+
+		// Handle Save
+		saveButtons.forEach(button => {
+			button.addEventListener("click", function () {
+
+				const id = this.getAttribute("data-id");
+				const row = document.getElementById("row-" + id);
+				const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+				const roomId = document.getElementById("input-RoomId-" + id).value;
+				const Names = document.getElementById("input-Name-" + id).value;
+
+				// Build full room object from row
+				const roomData = {
+					ContractRoomId: roomId,
+					ContractId: @Model.ContractId,
+					Names: Names,
+					// RoomType: row.children[0].textContent.trim(),
+					// CheckIn: row.children[2].textContent.trim(),
+					// CheckOut: row.children[3].textContent.trim(),
+					// NumOfNights: row.children[4].textContent.trim(),
+					// RoomAmenities: row.children[5].textContent.trim(),
+					// Comment: row.children[6].textContent.trim()
+				};
+
+					// Valid payload
+					// {
+					//   "ContractRoomId": 94,
+					//   "ContractId": 35,
+					//   "Names": "Ahmed Amir Mohamed Farag",
+					//   "RoomType": "Standard",
+					//   "CheckIn": "2025-07-06T00:00:00",
+					//   "CheckOut": "2025-07-10T00:00:00",
+					//   "NumOfNights": 4,
+					//   "RoomAmenities": "Wi-Fi, AC",
+					//   "Comment": "Sea view room"
+					// }
+
+				fetch("/Bookings/UpdateRoom2", {
+					method: "POST",
+					headers: {
+						'Content-Type': 'application/json',
+						'RequestVerificationToken': token
+					},
+					body: JSON.stringify(roomData)
+				})
+				.then(response => response.json())
+				.then(data => {
+					if (data.success) {
+						Swal.fire({
+							icon: 'success',
+							title: 'Success!',
+							text: data.message
+						});
+
+					const row = document.getElementById("row-" + id);
+					row.querySelector(".view-mode").textContent = Names;
+					row.querySelector(".view-mode").classList.remove("d-none");
+					row.querySelector(".edit-mode").classList.add("d-none");
+					row.querySelector(".edit-btn").classList.remove("d-none");
+					row.querySelector(".save-btn").classList.add("d-none");
+					row.querySelector(".cancel-btn").classList.add("d-none");
+					} else {
+						Swal.fire({
+							icon: 'error',
+							title: 'Error!',
+							text: data.message
+						});
+					}
+				})
+				.catch(error => {
+					Swal.fire({
+						icon: 'error',
+						title: 'Error!',
+						text: 'An unexpected error occurred.'
+					});
+				});
+
+			});
+		});
+	});
+</script>
 
 
 <script>
