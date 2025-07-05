@@ -43,7 +43,7 @@ namespace BTravel.BL.Services.Mail
                 smtpClient.Credentials = new System.Net.NetworkCredential(_fromEmail, _password);
                 smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
 
-                //smtpClient.Send(message);
+                smtpClient.Send(message);
             }
             catch (Exception ex)
             {

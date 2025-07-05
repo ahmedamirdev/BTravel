@@ -147,6 +147,30 @@ namespace BTravel.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult TestEmail()
+        {           
+            //return View("~/Views/Home/TestEmail.cshtml");
+            return NotFound();
+        }
+
+        [HttpPost]
+        public IActionResult TestEmail(string EmailAddress)
+        {
+            try
+            {
+                //MailSender.SendMail(EmailAddress, "Test from BTravelMate", "Test from BTravelMate server");
+
+                TempData["SuccessMessage"] = "Email sent successfully";
+                return View("~/Views/Home/TestEmail.cshtml");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Error : {ex.Message}";
+                return View("~/Views/Home/TestEmail.cshtml");
+            }
+        }
+
         [AllowAnonymous]
         public async Task<IActionResult> Logout()
         {
