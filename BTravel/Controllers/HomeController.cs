@@ -37,13 +37,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.IdentityModel.Tokens;
 
-using PdfSharp.Fonts;
-//using TheArtOfDev.HtmlRenderer.PdfSharp;
-//using PdfSharp.Pdf;
-//using PdfSharp.Pdf;
-//using Rotativa.AspNetCore;
-//using TheArtOfDev.HtmlRenderer.PdfSharp;
-
 namespace BTravel.Controllers
 {
     [Authorize]
@@ -51,13 +44,11 @@ namespace BTravel.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly BTravelDbContext _context;
-        private readonly IViewRenderService _viewRenderService;
 
-        public HomeController(ILogger<HomeController> logger, BTravelDbContext context, IViewRenderService viewRenderService)
+        public HomeController(ILogger<HomeController> logger, BTravelDbContext context)
         {
             _logger = logger;
             _context = context;
-            _viewRenderService = viewRenderService;
         }
 
         [AllowAnonymous]
@@ -176,83 +167,8 @@ namespace BTravel.Controllers
         {
             //await HttpContext.SignOutAsync();
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
             return RedirectToAction("Index", "Home");
-        }
-    }
-
-
-
-    //*** HTML to PDF using HTMLRender library
-    public interface IViewRenderService
-    {
-        Task<string> RenderToStringAsync(string viewName, object model);
-    }
-
-    public class ViewRenderService : IViewRenderService
-    {
-        private readonly IRazorViewEngine _viewEngine;
-        private readonly ITempDataProvider _tempDataProvider;
-        private readonly IServiceProvider _serviceProvider;
-
-        public ViewRenderService(
-            IRazorViewEngine viewEngine,
-            ITempDataProvider tempDataProvider,
-            IServiceProvider serviceProvider)
-        {
-            _viewEngine = viewEngine;
-            _tempDataProvider = tempDataProvider;
-            _serviceProvider = serviceProvider;
-        }
-
-        public async Task<string> RenderToStringAsync(string viewName, object model)
-        {
-            var httpContext = new DefaultHttpContext { RequestServices = _serviceProvider };
-            var actionContext = new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
-
-            var viewResult = _viewEngine.FindView(actionContext, viewName, false);
-
-            if (viewResult.View == null)
-                throw new ArgumentNullException($"View '{viewName}' not found.");
-
-            await using var sw = new StringWriter();
-            var viewContext = new ViewContext(
-                actionContext,
-                viewResult.View,
-                new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary())
-                {
-                    Model = model
-                },
-                new TempDataDictionary(actionContext.HttpContext, _tempDataProvider),
-                sw,
-                new HtmlHelperOptions()
-            );
-
-            await viewResult.View.RenderAsync(viewContext);
-            return sw.ToString();
-        }
-    }
-
-    public class CustomFontResolver : IFontResolver
-    {
-        public byte[] GetFont(string faceName)
-        {
-            var fontPath = faceName switch
-            {
-                "Segoe UI" => Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Fonts", "segoeui.ttf"),
-                _ => throw new InvalidOperationException($"Font {faceName} not found.")
-            };
-
-            return File.ReadAllBytes(fontPath);
-        }
-
-        public FontResolverInfo ResolveTypeface(string familyName, bool isBold, bool isItalic)
-        {
-            if (familyName.Equals("Segoe UI", StringComparison.OrdinalIgnoreCase))
-            {
-                return new FontResolverInfo("Segoe UI");
-            }
-
-            return null;
         }
     }
 }

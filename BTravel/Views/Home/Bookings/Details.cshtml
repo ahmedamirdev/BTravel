@@ -53,12 +53,12 @@
 					<div class="card-title">
 						Hotel Details
 						@{
-							// if (Model.IsSigned)
-							// {
-							// 	<a href="~/Bookings/DownloadContract/@Model.ContractId" class="btn btn-secondary btn-sm ms-2 fs-6 fw-bolder text-white">
-							// 		<i class="fas fa-arrow-down fa-sm"></i>&nbsp;&nbsp;Download Contract
-							// 	</a>
-							// }
+							if (Model.IsSigned)
+							{
+								<a href="~/Bookings/DownloadContract/@Model.ContractId" class="btn btn-secondary btn-sm ms-2 fs-6 fw-bolder text-white">
+									<i class="fas fa-arrow-down fa-sm"></i>&nbsp;&nbsp;Download Booking
+								</a>
+							}
 						}
 					</div>
 				</div>

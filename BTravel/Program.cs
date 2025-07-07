@@ -9,8 +9,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NLog;
-using PdfSharp.Fonts;
-using Rotativa.AspNetCore;
 
 namespace BTravel
 {
@@ -86,8 +84,9 @@ namespace BTravel
                 options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
             });
 
-            GlobalFontSettings.FontResolver = new CustomFontResolver();
-            builder.Services.AddScoped<IViewRenderService, ViewRenderService>();
+            // Setup Rotativa.io — manual configuration
+            Rotativaio.AspNetCore.RotativaIoConfiguration.SetRotativaIoUrl("https://eunorth.rotativa.io");
+            Rotativaio.AspNetCore.RotativaIoConfiguration.SetRotativaIoApiKey("1bdba4796d2b439386b1f1af6a55b456");
 
 
             //***************************************** Build the WebApplication *****************************************//
@@ -95,9 +94,7 @@ namespace BTravel
 
             //*** Register exception handler HERE in the early stage of the pipeline flow ..........
             var logger = app.Services.GetRequiredService<ILoggerService>();
-            //app.ConfigureExceptionHandler(logger);
-
-            RotativaConfiguration.Setup(app.Environment.WebRootPath, "Rotativa");
+            app.ConfigureExceptionHandler(logger);
 
             app.UseSession();
 

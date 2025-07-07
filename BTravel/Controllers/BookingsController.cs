@@ -8,6 +8,7 @@ using BTravel.CommonDefinitions.Requests;
 using BTravel.DAL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Rotativaio.AspNetCore;
 
 namespace BTravel.Controllers
 {
@@ -235,43 +236,7 @@ namespace BTravel.Controllers
 
             if (response.Success)
             {
-                //*** Choice (1)
-
-                //// Path to your HTML file
-                //var htmlFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Views", "Home", "ContractPDF.cshtml");
-
-                //// Read the HTML content
-                //var htmlContent = System.IO.File.ReadAllText(htmlFilePath);
-
-                //// Create a PDF document
-                //PdfDocument pdf = PdfGenerator.GeneratePdf(htmlContent, PdfSharp.PageSize.A4);
-
-                //// Save the PDF to a MemoryStream
-                //using (var stream = new MemoryStream())
-                //{
-                //    pdf.Save(stream, false);
-                //    var pdfBytes = stream.ToArray();
-
-                //    // Return the PDF file for download
-                //    return File(pdfBytes, "application/pdf", "SampleDocument.pdf");
-                //}
-
-
-                //*** Choice (2)
-
-                //string htmlContent = await _viewRenderService.RenderToStringAsync("ContractPDF", response.Data);
-
-                //PdfSharp.PageSize s = PdfSharp.PageSize.A4;
-                //var pdf = PdfGenerator.GeneratePdf(htmlContent, s);
-                //using var stream = new MemoryStream();
-                //pdf.Save(stream, false);
-                //stream.Position = 0;
-
-                //return File(stream.ToArray(), "application/pdf", "Contract.pdf");
-
-
-                //*** Choice (3)
-
+                //*** Using Rotativa.AspNetCore -- Must install wkhtmltox on machine to run
                 //return new ViewAsPdf("ContractPDF", response.Data)
                 //{
                 //    FileName = $"Contract_{response.Data.ContractId}.pdf",
@@ -279,7 +244,11 @@ namespace BTravel.Controllers
                 //    PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
                 //};
 
-                return null;
+                //*** Using Rotativaio.AspNetCore -- Rotativa API
+                return new ViewAsPdf("ContractPDF", response.Data)
+                {
+                    FileName = $"Hotel Booking Form #{response.Data.ContractId}.pdf",
+                };
             }
             else
             {

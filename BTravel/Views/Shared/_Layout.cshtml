@@ -104,8 +104,7 @@
 	<div class="container-fluid position-relative p-0">
 		<nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
 			<a href="~/Home/Index" class="navbar-brand p-0">
-				@* <h1 class="text-primary m-0"><i class="fa fa-map-marker-alt me-3"></i>Btravelmate</h1> *@
-				<img src="~/PortalAssets/img/B.png" alt="Logo">
+				<img id="navbar-logo" src="~/PortalAssets/img/logo-white.png" alt="Logo">
 			</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
 				<span class="fa fa-bars"></span>
@@ -261,7 +260,23 @@
 	<!-- Template Javascript -->
 	<script src="~/PortalAssets/js/main.js"></script>
 
+	<script>
+		function updateNavbarLogo() {
+			var logo = document.getElementById("navbar-logo");
+			var scrollPosition = window.scrollY;
+			var windowWidth = window.innerWidth;
 
+			if (scrollPosition > 40 || windowWidth < 992) {
+				logo.src = "/PortalAssets/img/logo-blue.png";
+			} else {
+				logo.src = "/PortalAssets/img/logo-white.png";
+			}
+		}
+
+		window.addEventListener("scroll", updateNavbarLogo);
+		window.addEventListener("resize", updateNavbarLogo);
+		document.addEventListener("DOMContentLoaded", updateNavbarLogo);
+	</script>
 
 	@RenderSection("Scripts", required: false)
 </body>
