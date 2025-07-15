@@ -40,7 +40,7 @@ namespace BTravel.BL.Services.Mail
             body += $"<br> https://www.btravelmate.com/";
             body += $"<br> Reservation@btravelmate.com";
             body += $"<br> Support@btravelmate.com";
-            body += $"<br><br> <img src=\"https://admin.btravelmate.com/PortalAssets/img/B.png\" width=\"180px\" height=\"100px\">";
+            body += $"<br><br> <img src=\"https://btravelmate.com/PortalAssets/img/logo-blue.png\" width=\"180px\" height=\"100px\">";
 
             MailSender.SendMail(model.CommonUser.PrimaryMail, $"{Constants.AppName} Hotel Booking Form – Sign to Confirm Your Reservation", body, true);
         }
@@ -65,7 +65,7 @@ namespace BTravel.BL.Services.Mail
             body += $"<br> https://www.btravelmate.com/";
             body += $"<br> Reservation@btravelmate.com";
             body += $"<br> Support@btravelmate.com";
-            body += $"<br><br> <img src=\"https://admin.btravelmate.com/PortalAssets/img/B.png\" width=\"180px\" height=\"100px\">";
+            body += $"<br><br> <img src=\"https://btravelmate.com/PortalAssets/img/logo-blue.png\" width=\"180px\" height=\"100px\">";
 
             MailSender.SendMail(model.CommonUser.PrimaryMail, $"New Hotel Booking Form Ready – {model.HotelName}", body, true);
         }
@@ -87,7 +87,7 @@ namespace BTravel.BL.Services.Mail
             body += $"<br> https://www.btravelmate.com/";
             body += $"<br> Reservation@btravelmate.com";
             body += $"<br> Support@btravelmate.com";
-            body += $"<br><br> <img src=\"https://admin.btravelmate.com/PortalAssets/img/B.png\" width=\"180px\" height=\"100px\">";
+            body += $"<br><br> <img src=\"https://btravelmate.com/PortalAssets/img/logo-blue.png\" width=\"180px\" height=\"100px\">";
 
             MailSender.SendMail(model.CommonUser.PrimaryMail, $"Your Booking Has Been Updated – Please Review", body, true);
         }
@@ -113,7 +113,7 @@ namespace BTravel.BL.Services.Mail
             body += $"<br> https://www.btravelmate.com/";
             body += $"<br> Reservation@btravelmate.com";
             body += $"<br> Support@btravelmate.com";
-            body += $"<br><br> <img src=\"https://admin.btravelmate.com/PortalAssets/img/B.png\" width=\"180px\" height=\"100px\">";
+            body += $"<br><br> <img src=\"https://btravelmate.com/PortalAssets/img/logo-blue.png\" width=\"180px\" height=\"100px\">";
 
             MailSender.SendMail(model.CommonUser.PrimaryMail, $"{Constants.AppName}. Hotel Booking Form. Has Been Completed", body, true);
         }

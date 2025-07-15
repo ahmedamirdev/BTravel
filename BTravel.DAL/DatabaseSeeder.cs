@@ -32,11 +32,27 @@ namespace BTravel.DAL
                 PasswordHasher<DAL.Entities.CommonUser> hasher = new PasswordHasher<DAL.Entities.CommonUser>();
                 var hashedPassword = hasher.HashPassword(new DAL.Entities.CommonUser(), "123");
 
-                var newCommonUser = new CommonUser
+                var newCommonUser = new CommonUser // for emergency login
                 {
                     FullName = "Super Admin",
                     PhoneNumber = "1234567890",
                     PrimaryMail = "m@m.com",
+                    IsPrimaryMailVerified = true,
+                    CreatedAt = DateTime.UtcNow,
+                    CreatedBy = 0,
+                    IsDeleted = true,
+                    IsActive = false,
+                    Password = hashedPassword,
+                    CompanyName = "BTravelMate",
+                    RoleId = roleAdminId,
+                };
+                context.CommonUsers.Add(newCommonUser);
+
+                var newCommonUserAdmin = new CommonUser // for admin login
+                {
+                    FullName = "Mahmoud Deiab",
+                    PhoneNumber = "01101139998",
+                    PrimaryMail = "Apps@btravelmate.com",
                     IsPrimaryMailVerified = true,
                     CreatedAt = DateTime.UtcNow,
                     CreatedBy = 0,
@@ -46,8 +62,8 @@ namespace BTravel.DAL
                     CompanyName = "BTravelMate",
                     RoleId = roleAdminId,
                 };
+                context.CommonUsers.Add(newCommonUserAdmin);
 
-                context.CommonUsers.Add(newCommonUser);
                 context.SaveChanges();
             }
 

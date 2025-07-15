@@ -29,7 +29,7 @@ namespace BTravel.Controllers
             var results = await _context.CommonUsers
                 .Where(c => !c.IsDeleted && c.IsActive)
                 .Where(c => c.FullName.Contains(term) || c.PrimaryMail.Contains(term) || c.PhoneNumber.Contains(term))
-                .Select(c => new { id = c.CommonUserId, name = c.FullName + " (" + c.PhoneNumber + ")" })
+                .Select(c => new { id = c.CommonUserId, name = c.FullName + " (" + c.PrimaryMail + ")" })
                 .ToListAsync();
 
             return Ok(results);

@@ -47,6 +47,15 @@ namespace BTravel.BL.Services.Contracts.Queries
                 return response;
             }
 
+            //*** Update Contract
+            if (currContract.IsViewed == false || currContract.StatusId == (int)EContractStatus.Pending)
+            {
+                currContract.ViewedAt = DateTime.UtcNow;
+                currContract.IsViewed = true;
+                currContract.StatusId = (int)EContractStatus.Opened;
+
+                _request.Context.SaveChanges();
+            }
 
             var query = _request.Context.Contracts.Where(c => !c.IsDeleted && c.ContractId == Id)
                         .Select(c => new ContractDTO

@@ -14,8 +14,11 @@ namespace BTravel.BL.Services.Security.Encryption
 
         static AESEncryptionHelper()
         {
-            string keyString = "mySuperSecretKey123456";  // Change this to a strong key
-            string ivString = "myInitVector123456";       // Change this to a strong IV
+            //string keyString = "mySuperSecretKey123456"; // old
+            string keyString = "SecretKeyCsbuWJnAy2qjYUOolmfbCKffJYy4KqONDvBhGeYzvupX7P9R7c4rPmNVAlv43jx6"; // new  
+
+            //string ivString = "myInitVector123456"; // old
+            string ivString = "InitVectorCsbuWJnAy2qjYUOolmfbCKffJYy4KqONDvBhGeYzvupX7P9R7c4rPmNVAlv43jx6"; // new
 
             // Convert to 32-byte key for AES-256
             _key = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(keyString));
