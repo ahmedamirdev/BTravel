@@ -105,7 +105,7 @@ namespace BTravel.Controllers
         [HttpPost]
         [Route("LoginPost")]
         [AllowAnonymous]
-        public async Task<IActionResult> LoginPost(LoginDTO model)
+        public async Task<IActionResult> LoginPost(LoginDTO model, string ReturnUrl = null)
         {
             var request = new BaseRequest();
             request.Context = _context;
@@ -127,7 +127,12 @@ namespace BTravel.Controllers
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                if (response.Data.RoleId == (int)ERole.Admin)
+                // Redirect to ReturnUrl if present and valid
+                if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
+                {
+                    return Redirect(ReturnUrl);
+                }
+                else if (response.Data.RoleId == (int)ERole.Admin)
                 {
                     return RedirectToAction("Index", "Dashboard"); // Redirect to secure page
                 }
