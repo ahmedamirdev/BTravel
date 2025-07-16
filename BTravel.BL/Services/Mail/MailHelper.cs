@@ -16,20 +16,22 @@ namespace BTravel.BL.Services.Mail
         {
             string body = $"Dear, {model.CommonUser.FullName.Split(' ')[0]},";
             body += $"<br><br> Thank you for choosing {Constants.AppName}!";
-            body += $"<br> You invited to fill out and sign the {Constants.AppName} Hotel Booking Form document. " +
+            body += $"<br> You invited to fill out and sign the {Constants.AppName} Booking Form. " +
                     $"You will receive a confirmation email once you complete and sign your hotel booking form.";
-            body += $"<br> Please log in to your account and click on 'My Bookings' to review and sign the form.";
+            body += $"<br><b>Please click on 'Sign Now' to review and sign the booking form.</b>";
 
-            body += $"<br><br> Booking Details :";
+            body += $"<br><br> <b>Booking Details :</b>";
             body += $"<br> Hotel : {model.HotelName}";
 
-            body += $"<br><br> Your Login Information :";
+            body += $"<br><br> <b>Your Login Information :</b>";
             body += $"<br> Website : https://btravelmate.com";
             body += $"<br> Email : {model.CommonUser.PrimaryMail}";
             body += $"<br> Temporary Password : {password}";
-            body += $"<br> IMPORTANT NOTE : Please change this password to a strong one!";
+            body += $"<br> <b>IMPORTANT NOTE :</b> Please change this password to a strong one!";
+            body += $"<br><br><a href=\"https://btravelmate.com/Dashboard/Login?ReturnUrl=/Bookings/Sign/{model.ContractId}\" style=\"display:inline-block;padding:10px 24px;background-color:#007bff;color:#fff;text-decoration:none;border-radius:4px;font-weight:600;font-size:16px;line-height:1.1;margin-top:16px;\" target=\"_blank\">Sign Now</a>";
 
-            body += $"<br><br> Next Step :";
+
+            body += $"<br><br> <b>Next Step :</b>";
             body += $"<br> Please log in and sign the form as soon as possible to confirm your reservation. Availability and pricing may change until the form is signed.";
 
             body += $"<br><br><br> Best Regards,";
@@ -51,7 +53,9 @@ namespace BTravel.BL.Services.Mail
             body += $"<br><br> Welcome back, and thank you for continuing to trust {Constants.AppName}!";
             body += $"<br><br> As a valued and loyal customer, we’re pleased to assist you again. " +
                     $"A new hotel booking form has been created for your upcoming stay at {model.HotelName}";
-            body += $"<br><br> Please sign in to view and sign the form.";
+            body += $"<br><br><b>Please click on 'Sign Now' to view and sign the form.</b>";
+            body += $"<br><br><a href=\"https://btravelmate.com/Dashboard/Login?ReturnUrl=/Bookings/Sign/{model.ContractId}\" style=\"display:inline-block;padding:10px 24px;background-color:#007bff;color:#fff;text-decoration:none;border-radius:4px;font-weight:600;font-size:16px;line-height:1.1;margin-top:16px;\" target=\"_blank\">Sign Now</a>";
+
 
             body += $"<br><br> Once the form is signed, we’ll confirm your reservation and send a confirmation email.";
             body += $"<br><br> Thank you again for choosing us. " +

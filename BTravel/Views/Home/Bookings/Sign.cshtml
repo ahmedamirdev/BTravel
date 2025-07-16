@@ -147,6 +147,95 @@
 				</div>
 				<div class="card">
 					<div class="card-header">
+						<div class="card-title">
+							Customer Details &nbsp;
+							@{
+								if (Model.StatusId == (int)EContractStatus.Pending)
+								{
+									<span class="badge badge-info fw-bolder">Pending</span>
+								}
+								else if (Model.StatusId == (int)EContractStatus.Opened)
+								{
+									<span class="badge badge-warning fw-bolder">Opened</span>
+								}
+								else if (Model.StatusId == (int)EContractStatus.Sigend)
+								{
+									<span class="badge badge-success fw-bolder">Signed</span>
+								}
+							}
+						</div>
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-4 col-lg-4 text-wrap">
+								<div class="form-group">
+									<label style="font-weight:bold; color: #646464">Full Name</label>
+									<div class="input-icon mt-1">
+										<label class="fw-bold fs-5 text-wrap" style="color:#1a1a1a">@Model.CommonUser.FullName</label>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4 col-lg-4 text-wrap">
+								<div class="form-group">
+									<label style="font-weight:bold; color: #646464">Company Name</label>
+									<div class="input-icon mt-1">
+										<label class="fw-bold fs-5 text-wrap" style="color:#1a1a1a">@Model.CommonUser.CompanyName</label>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4 col-lg-4 text-wrap">
+								<div class="form-group">
+									<label style="font-weight:bold; color: #646464">Email</label>
+									<div class="input-icon mt-1">
+										<label class="fw-bold fs-5 text-wrap" style="color:#1a1a1a">@Model.CommonUser.PrimaryMail</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4 col-lg-4 text-wrap">
+								<div class="form-group">
+									<label style="font-weight:bold; color: #646464">Phone No.</label>
+									<div class="input-icon mt-1">
+										<label class="fw-bold fs-5 text-wrap" style="color:#1a1a1a">@Model.CommonUser.PhoneNumber</label>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4 col-lg-4 text-wrap">
+								<div class="form-group">
+									<label style="font-weight:bold; color: #646464">Viewed At</label>
+									<div class="input-icon mt-1">
+										<label class="fw-bold fs-5 text-wrap" style="color:#1a1a1a">
+											@{
+												if (Model.ViewedAt.HasValue)
+												{
+													@Model.ViewedAt.Value.ToString("dd/MM/yyyy hh:mm tt")
+												}
+											}
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4 col-lg-4 text-wrap">
+								<div class="form-group">
+									<label style="font-weight:bold; color: #646464">Signed At</label>
+									<div class="input-icon mt-1">
+										<label class="fw-bold fs-5 text-wrap" style="color:#1a1a1a">
+											@{
+												if (Model.SignedAt.HasValue)
+												{
+													@Model.SignedAt.Value.ToString("dd/MM/yyyy hh:mm tt")
+												}
+											}
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header">
 						<div class="card-title">Credit Card Details</div>
 					</div>
 					<div class="card-body">

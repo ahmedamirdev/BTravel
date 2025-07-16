@@ -247,7 +247,7 @@ namespace BTravel.Controllers
                 //*** Using Rotativaio.AspNetCore -- Rotativa API
                 return new ViewAsPdf("ContractPDF", response.Data)
                 {
-                    FileName = $"Hotel Booking Form #{response.Data.ContractId}.pdf",
+                    FileName = $"BtravelMate Booking Form #{response.Data.ContractId}.pdf",
                 };
             }
             else
