@@ -24,11 +24,11 @@ namespace BTravel.BL.Services.Mail
             body += $"<br> Hotel : {model.HotelName}";
 
             body += $"<br><br> <b>Your Login Information :</b>";
-            body += $"<br> Website : https://btravelmate.com";
+            body += $"<br> Website : {Constants.BaseUrl}";
             body += $"<br> Email : {model.CommonUser.PrimaryMail}";
             body += $"<br> Temporary Password : {password}";
             body += $"<br> <b>IMPORTANT NOTE :</b> Please change this password to a strong one!";
-            body += $"<br><br><a href=\"https://btravelmate.com/Dashboard/Login?ReturnUrl=/Bookings/Sign/{model.ContractId}\" style=\"display:inline-block;padding:10px 24px;background-color:#007bff;color:#fff;text-decoration:none;border-radius:4px;font-weight:600;font-size:16px;line-height:1.1;margin-top:16px;\" target=\"_blank\">Sign Now</a>";
+            body += $"<br><br><a href=\"{Constants.BaseUrl}/Dashboard/Login?ReturnUrl=/Bookings/Sign/{model.ContractId}\" style=\"display:inline-block;padding:10px 24px;background-color:#007bff;color:#fff;text-decoration:none;border-radius:4px;font-weight:600;font-size:16px;line-height:1.1;margin-top:16px;\" target=\"_blank\">Sign Now</a>";
 
 
             body += $"<br><br> <b>Next Step :</b>";
@@ -39,10 +39,10 @@ namespace BTravel.BL.Services.Mail
 
             body += $"<br><br> Btravelmate.com";
             body += $"<br> Reservation main line: +44 121 318 8658";
-            body += $"<br> https://www.btravelmate.com/";
+            body += $"<br> {Constants.BaseUrl}";
             body += $"<br> Reservation@btravelmate.com";
             body += $"<br> Support@btravelmate.com";
-            body += $"<br><br> <img src=\"https://btravelmate.com/PortalAssets/img/logo-blue.png\" width=\"180px\" height=\"100px\">";
+            body += $"<br><br> <img src=\"{Constants.BaseUrl}/PortalAssets/img/logo-blue.png\" width=\"180px\" height=\"100px\">";
 
             MailSender.SendMail(model.CommonUser.PrimaryMail, $"{Constants.AppName} Hotel Booking Form – Sign to Confirm Your Reservation", body, true);
         }
@@ -54,7 +54,7 @@ namespace BTravel.BL.Services.Mail
             body += $"<br><br> As a valued and loyal customer, we’re pleased to assist you again. " +
                     $"A new hotel booking form has been created for your upcoming stay at {model.HotelName}";
             body += $"<br><br><b>Please click on 'Sign Now' to view and sign the form.</b>";
-            body += $"<br><br><a href=\"https://btravelmate.com/Dashboard/Login?ReturnUrl=/Bookings/Sign/{model.ContractId}\" style=\"display:inline-block;padding:10px 24px;background-color:#007bff;color:#fff;text-decoration:none;border-radius:4px;font-weight:600;font-size:16px;line-height:1.1;margin-top:16px;\" target=\"_blank\">Sign Now</a>";
+            body += $"<br><br><a href=\"{Constants.BaseUrl}/Dashboard/Login?ReturnUrl=/Bookings/Sign/{model.ContractId}\" style=\"display:inline-block;padding:10px 24px;background-color:#007bff;color:#fff;text-decoration:none;border-radius:4px;font-weight:600;font-size:16px;line-height:1.1;margin-top:16px;\" target=\"_blank\">Sign Now</a>";
 
 
             body += $"<br><br> Once the form is signed, we’ll confirm your reservation and send a confirmation email.";
@@ -66,10 +66,10 @@ namespace BTravel.BL.Services.Mail
 
             body += $"<br><br> Btravelmate.com";
             body += $"<br> Reservation main line: +44 121 318 8658";
-            body += $"<br> https://www.btravelmate.com/";
+            body += $"<br> {Constants.BaseUrl}";
             body += $"<br> Reservation@btravelmate.com";
             body += $"<br> Support@btravelmate.com";
-            body += $"<br><br> <img src=\"https://btravelmate.com/PortalAssets/img/logo-blue.png\" width=\"180px\" height=\"100px\">";
+            body += $"<br><br> <img src=\"{Constants.BaseUrl}/PortalAssets/img/logo-blue.png\" width=\"180px\" height=\"100px\">";
 
             MailSender.SendMail(model.CommonUser.PrimaryMail, $"New Hotel Booking Form Ready – {model.HotelName}", body, true);
         }
@@ -88,10 +88,10 @@ namespace BTravel.BL.Services.Mail
 
             body += $"<br><br> Btravelmate.com";
             body += $"<br> Reservation main line: +44 121 318 8658";
-            body += $"<br> https://www.btravelmate.com/";
+            body += $"<br> {Constants.BaseUrl}";
             body += $"<br> Reservation@btravelmate.com";
             body += $"<br> Support@btravelmate.com";
-            body += $"<br><br> <img src=\"https://btravelmate.com/PortalAssets/img/logo-blue.png\" width=\"180px\" height=\"100px\">";
+            body += $"<br><br> <img src=\"{Constants.BaseUrl}/PortalAssets/img/logo-blue.png\" width=\"180px\" height=\"100px\">";
 
             MailSender.SendMail(model.CommonUser.PrimaryMail, $"Your Booking Has Been Updated – Please Review", body, true);
         }
@@ -114,10 +114,10 @@ namespace BTravel.BL.Services.Mail
 
             body += $"<br><br> Btravelmate.com";
             body += $"<br> Reservation main line: +44 121 318 8658";
-            body += $"<br> https://www.btravelmate.com/";
+            body += $"<br> {Constants.BaseUrl}";
             body += $"<br> Reservation@btravelmate.com";
             body += $"<br> Support@btravelmate.com";
-            body += $"<br><br> <img src=\"https://btravelmate.com/PortalAssets/img/logo-blue.png\" width=\"180px\" height=\"100px\">";
+            body += $"<br><br> <img src=\"{Constants.BaseUrl}/PortalAssets/img/logo-blue.png\" width=\"180px\" height=\"100px\">";
 
             MailSender.SendMail(model.CommonUser.PrimaryMail, $"{Constants.AppName}. Hotel Booking Form. Has Been Completed", body, true);
         }
