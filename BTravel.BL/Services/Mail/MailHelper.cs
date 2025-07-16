@@ -41,10 +41,11 @@ namespace BTravel.BL.Services.Mail
             body += $"<br> Reservation@btravelmate.com";
             body += $"<br> Support@btravelmate.com";
             body += $"<br><br> <img src=\"https://btravelmate.com/PortalAssets/img/logo-blue.png\" width=\"180px\" height=\"100px\">";
+            body += $"<br><br> <img src=\"https://btravelmate.com/PortalAssets/img/logo-blue.png\" width=\"180px\" height=\"100px\">";
 
             MailSender.SendMail(model.CommonUser.PrimaryMail, $"{Constants.AppName} Hotel Booking Form – Sign to Confirm Your Reservation", body, true);
         }
-
+        
         public static void Send_NewContractExistingCustomer(ContractDTO model)
         {
             string body = $"Dear, {model.CommonUser.FullName.Split(' ')[0]},";
