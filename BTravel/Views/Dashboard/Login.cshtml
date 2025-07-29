@@ -174,7 +174,7 @@
 
 		<label for="Password">Password</label>
 		<input asp-for="Password" class="form-control" type="password" required />
-
+		<input type="hidden" name="ReturnUrl" value="@Context.Request.Query["ReturnUrl"]" />
 		<button class="btn btn-success" type="submit" style="font-weight:bold">Login</button>
 		<br />
 		@if (TempData["ErrorMessage"] != null)

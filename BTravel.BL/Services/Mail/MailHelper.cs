@@ -15,36 +15,35 @@ namespace BTravel.BL.Services.Mail
         public static void Send_NewContractNewCustomer(ContractDTO model, string password)
         {
             string body = $"Dear, {model.CommonUser.FullName.Split(' ')[0]},";
-            body += $"<br><br> Thank you for choosing {Constants.AppName}!";
-            body += $"<br> You invited to fill out and sign the {Constants.AppName} Booking Form. " +
-                    $"You will receive a confirmation email once you complete and sign your hotel booking form.";
-            body += $"<br><b>Please click on 'Sign Now' to review and sign the booking form.</b>";
+            body += "<br><br> Thank you for choosing BTravelMate!";
+            body += "<br> You are invited to fill out and sign the <b>BTravelMate Booking Form</b>. You will receive a confirmation email once you complete and sign your hotel booking form.";
+            body += "<br><b>Please click on 'Sign Now' to sign and confirm your reservation.</b>";
 
-            body += $"<br><br> <b>Booking Details :</b>";
+            body += "<br><br> <b>Booking Details :</b>";
             body += $"<br> Hotel : {model.HotelName}";
 
-            body += $"<br><br> <b>Your Login Information :</b>";
+            body += "<br><br> <b>Your Login Information :</b>";
             body += $"<br> Website : {Constants.BaseUrl}";
             body += $"<br> Email : {model.CommonUser.PrimaryMail}";
             body += $"<br> Temporary Password : {password}";
-            body += $"<br> <b>IMPORTANT NOTE :</b> Please change this password to a strong one!";
+            body += "<br> <b>IMPORTANT NOTE :</b> Please change this password to a strong one!";
+
             body += $"<br><br><a href=\"{Constants.BaseUrl}Dashboard/Login?ReturnUrl=/Bookings/Sign/{model.ContractId}\" style=\"display:inline-block;padding:10px 24px;background-color:#007bff;color:#fff;text-decoration:none;border-radius:4px;font-weight:600;font-size:16px;line-height:1.1;margin-top:16px;\" target=\"_blank\">Sign Now</a>";
 
+            body += "<br><br> <b>Next Step :</b>";
+            body += "<br> Please click the 'Sign Now' button above and sign the form as soon as possible to confirm your reservation. Availability and pricing may change until the form is signed.";
 
-            body += $"<br><br> <b>Next Step :</b>";
-            body += $"<br> Please log in and sign the form as soon as possible to confirm your reservation. Availability and pricing may change until the form is signed.";
+            body += "<br><br><br> Best Regards,";
+            body += "<br> BTravelMate Team.";
 
-            body += $"<br><br><br> Best Regards,";
-            body += $"<br> {Constants.AppName} Team.";
-
-            body += $"<br><br> Btravelmate.com";
-            body += $"<br> Reservation main line: +44 121 318 8658";
+            body += "<br><br> Btravelmate.com";
+            body += "<br> Reservation main line: +44 121 318 8658";
             body += $"<br> {Constants.BaseUrl}";
-            body += $"<br> Reservation@btravelmate.com";
-            body += $"<br> Support@btravelmate.com";
+            body += "<br> Reservation@btravelmate.com";
+            body += "<br> Support@btravelmate.com";
             body += $"<br><br> <img src=\"{Constants.BaseUrl}PortalAssets/img/logo-blue.png\" width=\"180px\" height=\"100px\">";
 
-            MailSender.SendMail(model.CommonUser.PrimaryMail, $"{Constants.AppName} Hotel Booking Form – Sign to Confirm Your Reservation", body, true);
+            MailSender.SendMail(model.CommonUser.PrimaryMail, $"BTravelMate Booking Form – Sign to Confirm Your Reservation", body, true);
         }
 
         public static void Send_NewContractExistingCustomer(ContractDTO model)
