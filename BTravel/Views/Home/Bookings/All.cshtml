@@ -21,6 +21,9 @@
 		line-height: 1.2;
 		border-radius: 0.2rem;
 	}
+    #basic-datatables, #basic-datatables * {
+        font-size: 0.65rem !important;
+    }
 </style>
 
 <!-- Page Header -->
@@ -50,16 +53,16 @@
 						<h4 class="fw-bold mb-3">No data found</h4>
 					}
 				}
-				<table id="basic-datatables" class="table table-hover align-items-center mb-0">
+				<table id="basic-datatables" class="table table-hover align-items-center mb-0" style="font-size: 0.5rem;">
 					<thead class="thead-light">
 						<tr>
 							<th scope="col">#ID</th>
 							<th scope="col" class="text-start">Hotel</th>
-							<th scope="col" class="text-start" style="width:5%">No. Of Rooms</th>
-							<th scope="col" class="text-start" style="width:5%">No. Of Nights</th>
-							<th scope="col" class="text-end">SubTotal <span style="font-size: 12px;">(EUR)</span></th>
+							<th scope="col" class="text-start">Rooms</th>
+							<th scope="col" class="text-start">Nights</th>
+							<th scope="col" class="text-start">SubTotal</th>
 							<th scope="col" class="text-end">Status</th>
-							<th scope="col" class="text-center">Created At</th>
+							<th scope="col" class="text-center">Created</th>
 							<th scope="col" class="text-center">Actions</th>
 						</tr>
 					</thead>
@@ -74,7 +77,7 @@
 									<td class="text-start fw-bold" style="color: #1d1d2e">@item.HotelName</td>
 									<td class="text-start">@item.NoOfRooms</td>
 									<td class="text-start">@item.NoOfNights</td>
-									<td class="text-end fw-bold" style="color: #1d1d2e">@item.SubTotal</td>
+									<td class="text-start fw-bold" style="color: #1d1d2e"><span style="font-weight:bold">€</span> @item.SubTotal</td>
 									<td class="text-end">
 										@{
 											if (item.StatusId == (int)EContractStatus.Pending)

@@ -236,18 +236,18 @@ namespace BTravel.Controllers
 
             if (response.Success)
             {
-                //*** Using Rotativa.AspNetCore -- Must install wkhtmltox on machine to run
-                //return new ViewAsPdf("ContractPDF", response.Data)
-                //{
-                //    FileName = $"Contract_{response.Data.ContractId}.pdf",
-                //    PageSize = Rotativa.AspNetCore.Options.Size.A4,
-                //    PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
-                //};
+                // Sanitize hotel name for filename (remove invalid characters)
+                string hotelName = response.Data.HotelName ?? "Hotel";
+                foreach (char c in System.IO.Path.GetInvalidFileNameChars())
+                {
+                    hotelName = hotelName.Replace(c, '_');
+                }
+                string fileName = $"BtravelMate Booking Form - {hotelName} #{response.Data.ContractId}.pdf";
 
                 //*** Using Rotativaio.AspNetCore -- Rotativa API
                 return new ViewAsPdf("ContractPDF", response.Data)
                 {
-                    FileName = $"BtravelMate Booking Form #{response.Data.ContractId}.pdf",
+                    FileName = fileName,
                 };
             }
             else
